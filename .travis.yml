@@ -1,0 +1,14 @@
+language: php
+
+php:
+  - 7.0
+  - nightly
+
+install:
+  - composer install --no-interaction --prefer-source
+
+script:
+  - vendor/bin/phpunit
+
+notifications:
+  email: false

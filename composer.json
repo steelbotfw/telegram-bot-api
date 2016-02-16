@@ -1,0 +1,38 @@
+{
+    "name": "steelbotfw/telegram-bot-api",
+    "description": "Telegram bot API implementation using Icicle",
+    "keywords": ["bot", "telegram", "asynchronous", "api"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Pavel Chebotarev",
+            "email": "chebotarevp@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/steelbotfw/telegram-bot-api/issues",
+        "source": "https://github.com/steelbotfw/telegram-bot-api"
+    },
+    "type": "library",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0",
+
+        "icicleio/icicle": "dev-master",
+        "icicleio/http": "*",
+        "icicleio/dns": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Steelbot\\TelegramBotApi\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Steelbot\\Tests\\TelegramBotApi\\": "tests"
+        }
+    }
+}
