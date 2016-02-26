@@ -6,6 +6,7 @@ use Icicle\Http\{
     Client\Client,
     Message\Response
 };
+use Icicle\Http\Message\BasicUri;
 use Steelbot\TelegramBotApi\Entity;
 
 /**
@@ -62,7 +63,7 @@ class Api
      * @param string $url
      * @param array $params
      *
-     * @yield Generator
+     * @return \Generator
      */
     protected function get(string $pathName, array $params = []): \Generator
     {
@@ -80,7 +81,6 @@ class Api
      * @param null   $body
      * @param array  $options
      *
-     * @resolve
      *
      * @return \Generator
      */
@@ -98,10 +98,12 @@ class Api
      */
     protected function buildUrl(string $pathName, array $params = []): string
     {
-        $nonEmptyParams = array_filter($params, function ($value) { return $value !== null; });
-        $paramStr = count($nonEmptyParams) ? '?'.http_build_query($nonEmptyParams) : null;
+        $uri = new BasicUri($this->baseUrl.$this->token.$pathName);
+        foreach ($params as $name => $value) {
+            $uri = $uri->withQueryValue($name, $value);
+        }
 
-        return $this->baseUrl.$this->token.$pathName.$paramStr;
+        return (string) $uri;
     }
 
     /**
