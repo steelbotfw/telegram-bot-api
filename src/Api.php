@@ -8,6 +8,7 @@ use Icicle\Http\{
 };
 use Icicle\Http\Message\BasicUri;
 use Steelbot\TelegramBotApi\Entity;
+use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 
 /**
  * Telegram bot API
@@ -34,10 +35,22 @@ class Api
     /**
      * @param string $token
      */
-    public function __construct(string $token, Client $httpClient)
+    public function __construct(string $token, Client $httpClient = null)
     {
         $this->token = $token;
+
+        if ($httpClient === null) {
+            $httpClient = new Client();
+        }
         $this->httpClient = $httpClient;
+    }
+
+    /**
+     * @return \Icicle\Http\Client\Client
+     */
+    public function getHttpClient(): Client
+    {
+        return $this->httpClient;
     }
 
     /**
@@ -60,6 +73,65 @@ class Api
     }
 
     /**
+     * Send message to a user
+     *
+     * @see https://core.telegram.org/bots/api#sendmessage
+     *
+     * @coroutine
+     *
+     * @param int|string  $chatId
+     * @param string      $text
+     * @param bool        $disableWebPagePreview
+     * @param bool        $disableNotification
+     * @param int|null    $replyToMessageId
+     * @param string|null $replyMarkup
+     *
+     * @return \Generator
+     * @resolve Entity\Message
+     */
+    public function sendMessage(       $chatId,
+                                string $text,
+                                string $parseMode = null,
+                                bool   $disableWebPagePreview = false,
+                                bool   $disableNotification = false,
+                                int    $replyToMessageId = null,
+                                string $replyMarkup = null): \Generator
+    {
+        $params = [
+            'chat_id' => $chatId,
+            'text' => $text
+        ];
+
+        if ($parseMode) {
+            $params['parse_mode'] = $parseMode;
+        }
+
+        if ($disableWebPagePreview) {
+            $params['disable_web_page_preview'] = $disableWebPagePreview;
+        }
+        if ($disableNotification) {
+            $params['disable_notification'] = $disableNotification;
+        }
+        if ($replyToMessageId) {
+            $params['reply_to_message_id'] = $replyToMessageId;
+        }
+        if ($replyMarkup) {
+            $params['reply_markup'] = $replyMarkup;
+        }
+
+        $response = yield from $this->post('/sendMessage', $params);
+
+        $body = yield from $this->getResponseBody($response);
+        $body = json_decode($body, true);
+
+        if ($body['ok'] === false) {
+            throw new TelegramBotApiException($body['description'], $body['error_code']);
+        }
+
+        return new Entity\Message($body['result']);
+    }
+
+    /**
      * @param string $url
      * @param array $params
      *
@@ -70,6 +142,21 @@ class Api
         $url = $this->buildUrl($pathName, $params);
 
         return $this->request('GET', $url, [], null, [
+            'timeout' => 60
+        ]);
+    }
+
+    /**
+     * @param string $pathName
+     * @param array $params
+     *
+     * @yield Generator
+     */
+    protected function post(string $pathName, array $params = []): \Generator
+    {
+        $url = $this->buildUrl($pathName, $params);
+
+        return $this->request('POST', $url, [], null, [
             'timeout' => 60
         ]);
     }
