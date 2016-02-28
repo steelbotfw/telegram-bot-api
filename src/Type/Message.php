@@ -1,11 +1,7 @@
 <?php
 
-namespace Steelbot\TelegramBotApi\Entity;
+namespace Steelbot\TelegramBotApi\Type;
 
-/**
- * Class Message
- * @package Telegram\Entity
- */
 class Message
 {
     /**

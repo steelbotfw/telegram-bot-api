@@ -1,6 +1,6 @@
 <?php
 
-namespace Steelbot\TelegramBotApi\Entity;
+namespace Steelbot\TelegramBotApi\Type;
 
 /**
  * Telegram Chat entity

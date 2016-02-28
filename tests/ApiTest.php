@@ -39,7 +39,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $coroutine = new Coroutine($api->getMe());
         $user = $coroutine->wait();
 
-        $this->assertInstanceOf(\Steelbot\TelegramBotApi\Entity\User::class, $user);
+        $this->assertInstanceOf(\Steelbot\TelegramBotApi\Type\User::class, $user);
         $this->assertEquals($data['result']['id'], $user->id);
         $this->assertEquals($data['result']['first_name'], $user->firstName);
         $this->assertEquals($data['result']['username'], $user->username);
@@ -73,7 +73,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $coroutine = new Coroutine($api->sendMessage($data['result']['chat']['id'], $data['result']['text']));
         $message = $coroutine->wait();
 
-        $this->assertInstanceOf(\Steelbot\TelegramBotApi\Entity\Message::class, $message);
+        $this->assertInstanceOf(\Steelbot\TelegramBotApi\Type\Message::class, $message);
         $this->assertEquals($data['result']['message_id'], $message->messageId);
         $this->assertEquals($data['result']['from']['id'], $message->from->id);
         $this->assertEquals($data['result']['chat']['id'], $message->chat->id);

@@ -7,7 +7,7 @@ use Icicle\Http\{
     Message\Response
 };
 use Icicle\Http\Message\BasicUri;
-use Steelbot\TelegramBotApi\Entity;
+use Steelbot\TelegramBotApi\Type;
 use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 
 /**
@@ -59,7 +59,7 @@ class Api
      * @coroutine
      *
      * @return \Generator
-     * @resolve Entity\User
+     * @resolve Type\User
      */
     public function getMe() : \Generator
     {
@@ -69,7 +69,7 @@ class Api
         $body = yield from $this->getResponseBody($response);
         $body = json_decode($body, true);
 
-        return new Entity\User($body['result']);
+        return new Type\User($body['result']);
     }
 
     /**
@@ -87,7 +87,7 @@ class Api
      * @param string|null $replyMarkup
      *
      * @return \Generator
-     * @resolve Entity\Message
+     * @resolve Type\Message
      */
     public function sendMessage(       $chatId,
                                 string $text,
@@ -128,7 +128,7 @@ class Api
             throw new TelegramBotApiException($body['description'], $body['error_code']);
         }
 
-        return new Entity\Message($body['result']);
+        return new Type\Message($body['result']);
     }
 
     /**
@@ -143,7 +143,7 @@ class Api
      *
      * @return \Generator
      * @throws TelegramBotApiException
-     * @resolve Entity\Message
+     * @resolve Type\Message
      */
     public function forwardMessage(      $chatId,
                                          $fromChatId,
@@ -170,7 +170,7 @@ class Api
             throw new TelegramBotApiException($body['description'], $body['error_code']);
         }
 
-        return new Entity\Message($body['result']);
+        return new Type\Message($body['result']);
     }
 
     /**
