@@ -132,6 +132,48 @@ class Api
     }
 
     /**
+     * Forward message to a user or chat
+     *
+     * @see     https://core.telegram.org/bots/api#forwardmessage
+     *
+     * @param int|string $chatId
+     * @param int|string $fromChatId
+     * @param bool       $disableNotification
+     * @param int        $messageId
+     *
+     * @return \Generator
+     * @throws TelegramBotApiException
+     * @resolve Entity\Message
+     */
+    public function forwardMessage(      $chatId,
+                                         $fromChatId,
+                                    bool $disableNotification = false,
+                                    int  $messageId
+                                  ): \Generator
+    {
+        $params = [
+            'chat_id' => $chatId,
+            'from_chat_id' => $fromChatId,
+            'message_id' => $messageId
+        ];
+
+        if ($disableNotification) {
+            $params['disable_notification'] = $disableNotification;
+        }
+
+        $response = yield from $this->post('/forwardMessage', $params);
+
+        $body = yield from $this->getResponseBody($response);
+        $body = json_decode($body, true);
+
+        if ($body['ok'] === false) {
+            throw new TelegramBotApiException($body['description'], $body['error_code']);
+        }
+
+        return new Entity\Message($body['result']);
+    }
+
+    /**
      * @param string $url
      * @param array $params
      *
