@@ -23,6 +23,8 @@ $coroutine->done(null, function (\Throwable $exception) {
     echo "Exception catched:\n";
     echo "    Code: {$exception->getCode()}\n";
     echo "    Message: {$exception->getMessage()}\n";
+    echo "    File: {$exception->getFile()}\n";
+    echo "    Line: {$exception->getLine()}\n";
 });
 
 Loop\run();

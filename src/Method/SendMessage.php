@@ -195,11 +195,11 @@ class SendMessage extends AbstractMethod
         }
 
         if ($this->disableWebPagePreview) {
-            $params['disable_web_page_preview'] = $this->disableWebPagePreview;
+            $params['disable_web_page_preview'] = (int)$this->disableWebPagePreview;
         }
 
         if ($this->disableNotification) {
-            $params['disable_notification'] = $this->disableNotification;
+            $params['disable_notification'] = (int)$this->disableNotification;
         }
 
         if ($this->replyToMessageId) {

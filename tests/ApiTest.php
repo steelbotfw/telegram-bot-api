@@ -6,6 +6,7 @@ use Icicle\Coroutine\Coroutine;
 use Icicle\Http\Client\Client;
 use Icicle\Http\Message\Response;
 use Steelbot\TelegramBotApi\Api;
+use Steelbot\TelegramBotApi\Method\ForwardMessage;
 use Steelbot\TelegramBotApi\Method\GetMe;
 use Steelbot\TelegramBotApi\Method\SendMessage;
 use Steelbot\Tests\TelegramBotApi\Stub\ReadableStreamStub;
@@ -73,6 +74,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api = new Api($this->telegramToken, $this->httpClient);
 
         $method = new SendMessage($data['result']['chat']['id'], $data['result']['text']);
+        $method->setDisableNotification(true)->setDisableWebPagePreview(true);
         $coroutine = new Coroutine($api->send($method));
         $message = $coroutine->wait();
 
@@ -155,6 +157,54 @@ class ApiTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($data['error_code'], $e->getCode());
             $this->assertEquals($data['description'], $e->getMessage());
         }
+    }
+
+    /**
+     * @dataProvider forwardMessageDataProvider
+     *
+     * @param array  $data
+     * @param string $responseData
+     *
+     * @throws TelegramBotApiException
+     */
+    public function testForwardMessageSuccess(array $data, string $responseData)
+    {
+        $this->setUpHttpClient($responseData);
+
+        $api = new Api($this->telegramToken, $this->httpClient);
+
+        $method = new ForwardMessage($data['result']['chat']['id'], $data['result']['chat'], $data['result']['message_id']);
+        $coroutine = new Coroutine($api->send($method));
+        $message = $coroutine->wait();
+
+        $this->assertInstanceOf(\Steelbot\TelegramBotApi\Type\Message::class, $message);
+        $this->assertEquals($data['result']['message_id'], $message->messageId);
+        $this->assertEquals($data['result']['from']['id'], $message->from->id);
+        $this->assertEquals($data['result']['chat']['id'], $message->chat->id);
+        $this->assertEquals($data['result']['text'], $message->text);
+    }
+
+    public function forwardMessageDataProvider()
+    {
+        $data = [
+            'ok' => true,
+            'result' => [
+                'message_id' => 4567,
+                'from' => [
+                    'id' => 987654320
+                ],
+                'chat' => [
+                    'id' => 12345678,
+                    'type' => 'private'
+                ],
+                'text' => "Hello",
+                'date' => time()
+            ]
+        ];
+
+        return [
+            [$data, json_encode($data)]
+        ];
     }
 
     /**
