@@ -6,6 +6,7 @@ use Icicle\Coroutine\Coroutine;
 use Icicle\Http\Client\Client;
 use Icicle\Http\Message\Response;
 use Steelbot\TelegramBotApi\Api;
+use Steelbot\TelegramBotApi\Method\GetMe;
 use Steelbot\Tests\TelegramBotApi\Stub\ReadableStreamStub;
 use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 
@@ -36,7 +37,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $api = new Api($this->telegramToken, $this->httpClient);
 
-        $coroutine = new Coroutine($api->getMe());
+        $coroutine = new Coroutine($api->send(new GetMe()));
         $user = $coroutine->wait();
 
         $this->assertInstanceOf(\Steelbot\TelegramBotApi\Type\User::class, $user);

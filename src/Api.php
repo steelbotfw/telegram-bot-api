@@ -7,6 +7,7 @@ use Icicle\Http\{
     Message\Response
 };
 use Icicle\Http\Message\BasicUri;
+use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Type;
 use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 
@@ -54,22 +55,32 @@ class Api
     }
 
     /**
-     * @see https://core.telegram.org/bots/api#getme
-     *
-     * @coroutine
+     * @param AbstractMethod $method
      *
      * @return \Generator
-     * @resolve Type\User
+     * @throws TelegramBotApiException
+     * @resolve object
      */
-    public function getMe() : \Generator
+    public function send(AbstractMethod $method): \Generator
     {
-        /** @var Response $response */
-        $response = yield from $this->get('/getMe');
+        switch ($method->getHttpMethod()) {
+            case $method::HTTP_GET:
+                $response = yield from $this->get('/'.$method->getMethodName(), $method->getParams());
+                break;
+            case $method::HTTP_POST:
+                $body = json_encode($method, JSON_UNESCAPED_UNICODE);
+                $response = yield from $this->post('/'.$method->getMethodName(), $method->getParams(), $body);
+                break;
+        }
 
         $body = yield from $this->getResponseBody($response);
         $body = json_decode($body, true);
 
-        return new Type\User($body['result']);
+        if ($body['ok'] === false) {
+            throw new TelegramBotApiException($body['description'], $body['error_code']);
+        }
+
+        return $method->buildResult($body['result']);
     }
 
     /**
@@ -194,11 +205,11 @@ class Api
      *
      * @yield Generator
      */
-    protected function post(string $pathName, array $params = []): \Generator
+    protected function post(string $pathName, array $params = [], string $body = null): \Generator
     {
         $url = $this->buildUrl($pathName, $params);
 
-        return $this->request('POST', $url, [], null, [
+        return $this->request('POST', $url, [], $body, [
             'timeout' => 60
         ]);
     }
