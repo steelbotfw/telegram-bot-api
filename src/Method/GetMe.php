@@ -28,6 +28,6 @@ class GetMe extends AbstractMethod
 
     public function jsonSerialize()
     {
-        return null;
+        return [];
     }
 }

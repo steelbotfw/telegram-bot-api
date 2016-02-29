@@ -11,7 +11,8 @@ const TELEGRAM_BOT_TOKEN = '123456789:telegramBotToken';
 $generator = function () {
     $api = new Api(TELEGRAM_BOT_TOKEN);
 
-    $message = yield from $api->sendMessage('104442434', "Hello there!");
+    $method = new \Steelbot\TelegramBotApi\Method\SendMessage('104442434', "Hello there!");
+    $message = yield from $api->send($method);
 
     echo "Message was sent:\n";
     print_r($message);

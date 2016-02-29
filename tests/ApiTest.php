@@ -7,6 +7,7 @@ use Icicle\Http\Client\Client;
 use Icicle\Http\Message\Response;
 use Steelbot\TelegramBotApi\Api;
 use Steelbot\TelegramBotApi\Method\GetMe;
+use Steelbot\TelegramBotApi\Method\SendMessage;
 use Steelbot\Tests\TelegramBotApi\Stub\ReadableStreamStub;
 use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 
@@ -71,7 +72,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $api = new Api($this->telegramToken, $this->httpClient);
 
-        $coroutine = new Coroutine($api->sendMessage($data['result']['chat']['id'], $data['result']['text']));
+        $method = new SendMessage($data['result']['chat']['id'], $data['result']['text']);
+        $coroutine = new Coroutine($api->send($method));
         $message = $coroutine->wait();
 
         $this->assertInstanceOf(\Steelbot\TelegramBotApi\Type\Message::class, $message);
@@ -143,8 +145,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $api = new Api($this->telegramToken.'_invalid', $this->httpClient);
 
+        $method = new SendMessage(123, "Hello");
         try {
-            $coroutine = new Coroutine($api->sendMessage(123, "Hello"));
+            $coroutine = new Coroutine($api->send($method));
 
             $coroutine->wait();
             $this->fail("Expected exception TelegramBotApiException not thrown");

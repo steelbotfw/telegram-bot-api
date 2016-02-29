@@ -7,6 +7,8 @@ use Icicle\Http\{
     Message\Response
 };
 use Icicle\Http\Message\BasicUri;
+use Icicle\Stream\MemoryStream;
+use Icicle\Stream\ReadableStream;
 use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Type;
 use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
@@ -69,7 +71,15 @@ class Api
                 break;
             case $method::HTTP_POST:
                 $body = json_encode($method, JSON_UNESCAPED_UNICODE);
-                $response = yield from $this->post('/'.$method->getMethodName(), $method->getParams(), $body);
+
+                $bodyStream = new MemoryStream(0, $body);
+                yield from $bodyStream->end();
+
+                $headers = [
+                    'Content-Type' => 'application/json',
+                    'Content-Length' => mb_strlen($body)
+                ];
+                $response = yield from $this->post('/'.$method->getMethodName(), $method->getParams(), $headers, $bodyStream);
                 break;
         }
 
@@ -81,65 +91,6 @@ class Api
         }
 
         return $method->buildResult($body['result']);
-    }
-
-    /**
-     * Send message to a user
-     *
-     * @see https://core.telegram.org/bots/api#sendmessage
-     *
-     * @coroutine
-     *
-     * @param int|string  $chatId
-     * @param string      $text
-     * @param bool        $disableWebPagePreview
-     * @param bool        $disableNotification
-     * @param int|null    $replyToMessageId
-     * @param string|null $replyMarkup
-     *
-     * @return \Generator
-     * @resolve Type\Message
-     */
-    public function sendMessage(       $chatId,
-                                string $text,
-                                string $parseMode = null,
-                                bool   $disableWebPagePreview = false,
-                                bool   $disableNotification = false,
-                                int    $replyToMessageId = null,
-                                string $replyMarkup = null): \Generator
-    {
-        $params = [
-            'chat_id' => $chatId,
-            'text' => $text
-        ];
-
-        if ($parseMode) {
-            $params['parse_mode'] = $parseMode;
-        }
-
-        if ($disableWebPagePreview) {
-            $params['disable_web_page_preview'] = $disableWebPagePreview;
-        }
-        if ($disableNotification) {
-            $params['disable_notification'] = $disableNotification;
-        }
-        if ($replyToMessageId) {
-            $params['reply_to_message_id'] = $replyToMessageId;
-        }
-        if ($replyMarkup) {
-            $params['reply_markup'] = $replyMarkup;
-        }
-
-        $response = yield from $this->post('/sendMessage', $params);
-
-        $body = yield from $this->getResponseBody($response);
-        $body = json_decode($body, true);
-
-        if ($body['ok'] === false) {
-            throw new TelegramBotApiException($body['description'], $body['error_code']);
-        }
-
-        return new Type\Message($body['result']);
     }
 
     /**
@@ -190,11 +141,11 @@ class Api
      *
      * @return \Generator
      */
-    protected function get(string $pathName, array $params = []): \Generator
+    protected function get(string $pathName, array $params = [], $headers = []): \Generator
     {
         $url = $this->buildUrl($pathName, $params);
 
-        return $this->request('GET', $url, [], null, [
+        return $this->httpClient->request('GET', $url, $headers, null, [
             'timeout' => 60
         ]);
     }
@@ -205,28 +156,13 @@ class Api
      *
      * @yield Generator
      */
-    protected function post(string $pathName, array $params = [], string $body = null): \Generator
+    protected function post(string $pathName, array $params = [], $headers = [], ReadableStream $body = null): \Generator
     {
         $url = $this->buildUrl($pathName, $params);
 
-        return $this->request('POST', $url, [], $body, [
+        return $this->httpClient->request('POST', $url, $headers, $body, [
             'timeout' => 60
         ]);
-    }
-
-    /**
-     * @param string $method
-     * @param        $uri
-     * @param array  $headers
-     * @param null   $body
-     * @param array  $options
-     *
-     *
-     * @return \Generator
-     */
-    protected function request(string $method, $uri, array $headers = [], $body = null, array $options = []): \Generator
-    {
-        return $this->httpClient->request($method, $uri, $headers, $body, $options);
     }
 
     /**

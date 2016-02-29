@@ -15,7 +15,7 @@ abstract class AbstractMethod implements \JsonSerializable
     abstract public function getMethodName(): string;
 
     /**
-     * GET or POST
+     * HTTP method
      *
      * @return string
      */
