@@ -6,12 +6,10 @@ require dirname(__DIR__).'/vendor/autoload.php';
 use Steelbot\TelegramBotApi\Api;
 use Icicle\Loop;
 
-const TELEGRAM_BOT_TOKEN = '123456789:telegramBotToken';
-
 $generator = function () {
-    $api = new Api(TELEGRAM_BOT_TOKEN);
+    $api = new Api(getenv('BOT_TOKEN'));
 
-    $method = new \Steelbot\TelegramBotApi\Method\SendMessage('104442434', "Hello there!");
+    $method = new \Steelbot\TelegramBotApi\Method\SendMessage('104442434', 'Hello, world!');
     $message = yield from $api->send($method);
 
     echo "Message was sent:\n";
@@ -28,5 +26,3 @@ $coroutine->done(null, function (\Throwable $exception) {
 });
 
 Loop\run();
-
-

@@ -2,16 +2,9 @@
 
 namespace Steelbot\Tests\TelegramBotApi\Method;
 
-use Icicle\Coroutine\Coroutine;
-use Icicle\Http\Client\Client;
-use Icicle\Http\Message\Response;
-use Steelbot\TelegramBotApi\Api;
 use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Method\GetMe;
-use Steelbot\TelegramBotApi\Method\SendMessage;
 use Steelbot\TelegramBotApi\Type\User;
-use Steelbot\Tests\TelegramBotApi\Stub\ReadableStreamStub;
-use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 
 class GetMeTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,14 +39,5 @@ class GetMeTest extends \PHPUnit_Framework_TestCase
         $user = $method->buildResult($result);
 
         $this->assertInstanceOf(User::class, $user);
-    }
-
-    public function testJsonSerialize()
-    {
-        $method = new GetMe();
-
-        $json = json_encode([], JSON_UNESCAPED_UNICODE);
-
-        $this->assertEquals($json, json_encode($method, JSON_UNESCAPED_UNICODE));
     }
 }

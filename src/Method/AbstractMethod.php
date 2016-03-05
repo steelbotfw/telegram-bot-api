@@ -2,7 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
-abstract class AbstractMethod implements \JsonSerializable
+abstract class AbstractMethod
 {
     const HTTP_GET = 'GET';
     const HTTP_POST = 'POST';
@@ -31,9 +31,9 @@ abstract class AbstractMethod implements \JsonSerializable
     /**
      * Build result type from array of data.
      *
-     * @param array $result
+     * @param array|bool $result
      *
      * @return object
      */
-    abstract public function buildResult(array $result);
+    abstract public function buildResult($result);
 }

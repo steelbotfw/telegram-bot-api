@@ -21,13 +21,13 @@ class GetMe extends AbstractMethod
         return [];
     }
 
-    public function buildResult(array $result)
+    /**
+     * @param array $result
+     *
+     * @return User
+     */
+    public function buildResult($result)
     {
         return new User($result);
-    }
-
-    public function jsonSerialize()
-    {
-        return [];
     }
 }

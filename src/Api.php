@@ -40,6 +40,9 @@ class Api
      */
     public function __construct(string $token, Client $httpClient = null)
     {
+        if (!$token) {
+            throw new \UnexpectedValueException("Telegram token must be set.");
+        }
         $this->token = $token;
 
         if ($httpClient === null) {
@@ -70,14 +73,20 @@ class Api
                 $response = yield from $this->get('/'.$method->getMethodName(), $method->getParams());
                 break;
             case $method::HTTP_POST:
-                $body = json_encode($method, JSON_UNESCAPED_UNICODE);
+                if ($method instanceof \JsonSerializable) {
+                    $body = json_encode($method, JSON_UNESCAPED_UNICODE);
 
-                $bodyStream = new MemoryStream(0, $body);
-                yield from $bodyStream->end();
+                    $bodyStream = new MemoryStream(0, $body);
+                    yield from $bodyStream->end();
+                    $contentLength = mb_strlen($body);
+                } else {
+                    $bodyStream = null;
+                    $contentLength = 0;
+                }
 
                 $headers = [
                     'Content-Type' => 'application/json',
-                    'Content-Length' => mb_strlen($body)
+                    'Content-Length' => $contentLength
                 ];
                 $response = yield from $this->post('/'.$method->getMethodName(), $method->getParams(), $headers, $bodyStream);
                 break;
@@ -91,48 +100,6 @@ class Api
         }
 
         return $method->buildResult($body['result']);
-    }
-
-    /**
-     * Forward message to a user or chat
-     *
-     * @see     https://core.telegram.org/bots/api#forwardmessage
-     *
-     * @param int|string $chatId
-     * @param int|string $fromChatId
-     * @param bool       $disableNotification
-     * @param int        $messageId
-     *
-     * @return \Generator
-     * @throws TelegramBotApiException
-     * @resolve Type\Message
-     */
-    public function forwardMessage(      $chatId,
-                                         $fromChatId,
-                                    bool $disableNotification = false,
-                                    int  $messageId
-                                  ): \Generator
-    {
-        $params = [
-            'chat_id' => $chatId,
-            'from_chat_id' => $fromChatId,
-            'message_id' => $messageId
-        ];
-
-        if ($disableNotification) {
-            $params['disable_notification'] = $disableNotification;
-        }
-
-        $response = yield from $this->post('/forwardMessage', $params);
-
-        $body = yield from $this->getResponseBody($response);
-        $body = json_decode($body, true);
-
-        if ($body['ok'] === false) {
-            throw new TelegramBotApiException($body['description'], $body['error_code']);
-        }
-
-        return new Type\Message($body['result']);
     }
 
     /**

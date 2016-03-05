@@ -4,7 +4,7 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Type\Message;
 
-class SendMessage extends AbstractMethod
+class SendMessage extends AbstractMethod implements \JsonSerializable
 {
     protected $chatId;
     protected $text;
@@ -216,7 +216,7 @@ class SendMessage extends AbstractMethod
      *
      * @return object
      */
-    public function buildResult(array $result)
+    public function buildResult($result)
     {
         return new Message($result);
     }

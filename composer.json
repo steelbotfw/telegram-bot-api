@@ -17,6 +17,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.0",
+        "ext-mbstring": "*",
 
         "icicleio/icicle": "dev-master",
         "icicleio/http": "*",

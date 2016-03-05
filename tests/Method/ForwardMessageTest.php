@@ -23,16 +23,4 @@ class ForwardMessageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf(Message::class, $message);
     }
-
-    function testJsonSerialize()
-    {
-        $method = new ForwardMessage(123, 456, 789);
-
-        $json = [
-            'text' => "Hello"
-        ];
-        $json = json_encode([], JSON_UNESCAPED_UNICODE);
-
-        $this->assertEquals($json, json_encode($method, JSON_UNESCAPED_UNICODE));
-    }
 }
