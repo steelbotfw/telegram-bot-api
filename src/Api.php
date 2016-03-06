@@ -10,6 +10,7 @@ use Icicle\Http\Message\BasicUri;
 use Icicle\Stream\MemoryStream;
 use Icicle\Stream\ReadableStream;
 use Steelbot\TelegramBotApi\Method\AbstractMethod;
+use Steelbot\TelegramBotApi\Method\GetUpdates;
 use Steelbot\TelegramBotApi\Type;
 use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 
@@ -34,6 +35,11 @@ class Api
      * @var \Icicle\Http\Client\Client
      */
     protected $httpClient;
+
+    /**
+     * @var int
+     */
+    protected $lastUpdateId = 1;
 
     /**
      * @param string $token
@@ -102,6 +108,28 @@ class Api
         }
 
         return $method->buildResult($body['result']);
+    }
+
+    /**
+     * @param int $lastUpdateId
+     * @param int $limit
+     * @param int $timeout
+     *
+     * @return \Generator
+     * @resolve Update[]
+     */
+    public function getUpdates($lastUpdateId = null, int $limit = 5, int $timeout = 30) : \Generator
+    {
+        if ($lastUpdateId !== null) {
+            $this->lastUpdateId = $lastUpdateId;
+        }
+
+        $method = new GetUpdates($this->lastUpdateId + 1, $limit, $timeout);
+
+        $updates = yield from $this->execute($method);
+        $this->lastUpdateId = $method->getLastUpdateId();
+
+        return $updates;
     }
 
     /**

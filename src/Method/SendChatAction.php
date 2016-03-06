@@ -2,8 +2,6 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
-use Steelbot\TelegramBotApi\Type\Message;
-
 class SendChatAction extends AbstractMethod
 {
     const ACTION_TYPING = 'typing';
