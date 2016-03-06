@@ -6,9 +6,11 @@ use Icicle\Coroutine\Coroutine;
 use Icicle\Http\Client\Client;
 use Icicle\Http\Message\Response;
 use Steelbot\TelegramBotApi\Api;
+use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Method\ForwardMessage;
 use Steelbot\TelegramBotApi\Method\GetMe;
 use Steelbot\TelegramBotApi\Method\SendMessage;
+use Steelbot\Tests\TelegramBotApi\Stub\AbstractMethodWithBodyStub;
 use Steelbot\Tests\TelegramBotApi\Stub\ReadableStreamStub;
 use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 
@@ -30,6 +32,90 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Client::class, $api->getHttpClient());
     }
 
+    public function testExecuteOk()
+    {
+        $method = $this->getMock(AbstractMethod::class);
+        $method->expects($this->once())->method('getMethodName')->willReturn('/someMethod');
+        $method->expects($this->once())->method('getHttpMethod')->willReturn('GET');
+        $method->expects($this->once())->method('getParams')->willReturn([
+            'param1' => 'value1',
+            'param2' => 'value2'
+        ]);
+        $method->expects($this->once())->method('buildResult')->willReturn('result');
+
+        $responseData = json_encode([
+            'ok' => true,
+            'result' => 'result'
+        ], JSON_UNESCAPED_UNICODE);
+        $this->setUpHttpClient($responseData);
+
+        $api = new Api($this->telegramToken, $this->httpClient);
+
+        $coroutine = new Coroutine($api->execute($method));
+        $result = $coroutine->wait();
+
+        $this->assertEquals('result', $result);
+    }
+
+    public function testExecuteNotOk()
+    {
+        $method = $this->getMock(AbstractMethod::class);
+        $method->expects($this->once())->method('getMethodName')->willReturn('/someMethod');
+        $method->expects($this->once())->method('getHttpMethod')->willReturn('GET');
+        $method->expects($this->once())->method('getParams')->willReturn([
+            'param1' => 'value1',
+            'param2' => 'value2'
+        ]);
+        $method->expects($this->never())->method('buildResult')->willReturn('result');
+
+        $responseData = [
+            'ok' => false,
+            'description' => 'Error description',
+            'error_code' => 42
+        ];
+        $this->setUpHttpClient(json_encode($responseData, JSON_UNESCAPED_UNICODE));
+
+        $api = new Api($this->telegramToken, $this->httpClient);
+
+        $coroutine = new Coroutine($api->execute($method));
+        try {
+            $result = $coroutine->wait();
+            $this->fail("Expected exception TelegramBotApiException not thrown");
+        } catch (TelegramBotApiException $exception) {
+            $this->assertEquals('Error description', $exception->getMessage());
+            $this->assertEquals(42, $exception->getCode());
+        }
+    }
+
+    public function testExecuteWithJsonBody()
+    {
+        $method = $this->getMock(AbstractMethodWithBodyStub::class);
+        $method->expects($this->once())->method('getMethodName')->willReturn('/someMethod');
+        $method->expects($this->once())->method('getHttpMethod')->willReturn('POST');
+        $method->expects($this->once())->method('getParams')->willReturn([
+            'param1' => 'value1',
+            'param2' => 'value2'
+        ]);
+        $method->expects($this->once())->method('buildResult')->willReturn('result');
+        $method->expects($this->once())->method('jsonSerialize')->willReturn([
+            'jsonParam1' => 'jsonValue1',
+            'jsonParam2' => 'jsonValue2'
+        ]);
+
+        $responseData = json_encode([
+            'ok' => true,
+            'result' => 'result'
+        ], JSON_UNESCAPED_UNICODE);
+        $this->setUpHttpClient($responseData);
+
+        $api = new Api($this->telegramToken, $this->httpClient);
+
+        $coroutine = new Coroutine($api->execute($method));
+        $result = $coroutine->wait();
+
+        $this->assertEquals('result', $result);
+    }
+
     /**
      * @dataProvider getMeDataProvider
      */
@@ -39,7 +125,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $api = new Api($this->telegramToken, $this->httpClient);
 
-        $coroutine = new Coroutine($api->send(new GetMe()));
+        $coroutine = new Coroutine($api->execute(new GetMe()));
         $user = $coroutine->wait();
 
         $this->assertInstanceOf(\Steelbot\TelegramBotApi\Type\User::class, $user);
@@ -75,7 +161,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $method = new SendMessage($data['result']['chat']['id'], $data['result']['text']);
         $method->setDisableNotification(true)->setDisableWebPagePreview(true);
-        $coroutine = new Coroutine($api->send($method));
+        $coroutine = new Coroutine($api->execute($method));
         $message = $coroutine->wait();
 
         $this->assertInstanceOf(\Steelbot\TelegramBotApi\Type\Message::class, $message);
@@ -149,7 +235,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $method = new SendMessage(123, "Hello");
         try {
-            $coroutine = new Coroutine($api->send($method));
+            $coroutine = new Coroutine($api->execute($method));
 
             $coroutine->wait();
             $this->fail("Expected exception TelegramBotApiException not thrown");
@@ -174,7 +260,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api = new Api($this->telegramToken, $this->httpClient);
 
         $method = new ForwardMessage($data['result']['chat']['id'], $data['result']['chat'], $data['result']['message_id']);
-        $coroutine = new Coroutine($api->send($method));
+        $coroutine = new Coroutine($api->execute($method));
         $message = $coroutine->wait();
 
         $this->assertInstanceOf(\Steelbot\TelegramBotApi\Type\Message::class, $message);

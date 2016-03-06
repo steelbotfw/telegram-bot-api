@@ -60,13 +60,15 @@ class Api
     }
 
     /**
+     * Execute an API method.
+     *
      * @param AbstractMethod $method
      *
      * @return \Generator
      * @throws TelegramBotApiException
      * @resolve object
      */
-    public function send(AbstractMethod $method): \Generator
+    public function execute(AbstractMethod $method): \Generator
     {
         switch ($method->getHttpMethod()) {
             case $method::HTTP_GET:
