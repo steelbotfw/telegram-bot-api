@@ -98,7 +98,7 @@ class Message
         $this->chat      = new Chat($data['chat']);
         $this->date      = \DateTimeImmutable::createFromFormat('U', $data['date']);
         $this->text      = isset($data['text']) ? $data['text'] : null;
-        //$this->location  = isset($data['location']) ? new Location($data['location']) : null;
+        $this->location  = isset($data['location']) ? new Location($data['location']) : null;
         //$this->newChatParticipant = isset($data['new_chat_participant']) ? new User($data['new_chat_participant']) : null;
         //$this->leftChatParticipant = isset($data['left_chat_participant']) ? new User($data['left_chat_participant']) : null;
         //$this->newChatTitle = $data['new_chat_title'] ?? null;
