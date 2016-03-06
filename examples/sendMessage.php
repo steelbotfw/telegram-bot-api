@@ -5,12 +5,13 @@ require dirname(__DIR__).'/vendor/autoload.php';
 
 use Steelbot\TelegramBotApi\Api;
 use Icicle\Loop;
+use Steelbot\TelegramBotApi\Method\SendMessage;
 
-$generator = function () {
+$generator = function (): \Generator {
     $api = new Api(getenv('BOT_TOKEN'));
+    $method = new SendMessage('104442434', 'Hello, world!');
 
-    $method = new \Steelbot\TelegramBotApi\Method\SendMessage('104442434', 'Hello, world!');
-    $message = yield from $api->send($method);
+    $message = yield from $api->execute($method);
 
     echo "Message was sent:\n";
     print_r($message);
