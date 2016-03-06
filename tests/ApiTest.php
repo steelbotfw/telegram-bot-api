@@ -117,54 +117,6 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider forwardMessageDataProvider
-     *
-     * @param array  $data
-     * @param string $responseData
-     *
-     * @throws TelegramBotApiException
-     */
-    public function testForwardMessageSuccess(array $data, string $responseData)
-    {
-        $this->setUpHttpClient($responseData);
-
-        $api = new Api($this->telegramToken, $this->httpClient);
-
-        $method = new ForwardMessage($data['result']['chat']['id'], $data['result']['chat'], $data['result']['message_id']);
-        $coroutine = new Coroutine($api->execute($method));
-        $message = $coroutine->wait();
-
-        $this->assertInstanceOf(\Steelbot\TelegramBotApi\Type\Message::class, $message);
-        $this->assertEquals($data['result']['message_id'], $message->messageId);
-        $this->assertEquals($data['result']['from']['id'], $message->from->id);
-        $this->assertEquals($data['result']['chat']['id'], $message->chat->id);
-        $this->assertEquals($data['result']['text'], $message->text);
-    }
-
-    public function forwardMessageDataProvider()
-    {
-        $data = [
-            'ok' => true,
-            'result' => [
-                'message_id' => 4567,
-                'from' => [
-                    'id' => 987654320
-                ],
-                'chat' => [
-                    'id' => 12345678,
-                    'type' => 'private'
-                ],
-                'text' => "Hello",
-                'date' => time()
-            ]
-        ];
-
-        return [
-            [$data, json_encode($data)]
-        ];
-    }
-
-    /**
      * @param string $responseData
      */
     protected function setUpHttpClient(string $responseData)

@@ -3,10 +3,31 @@
 namespace Steelbot\Tests\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Method\SendMessage;
+use Steelbot\TelegramBotApi\ParseMode;
 use Steelbot\TelegramBotApi\Type\Message;
 
 class SendMessageTest extends \PHPUnit_Framework_TestCase
 {
+    public function testGetParams()
+    {
+        $method = new SendMessage(123, "Hello");
+        $method->setDisableWebPagePreview(true)
+               ->setDisableNotification(true)
+               ->setReplyToMessageId(321)
+               ->setParseMode(ParseMode::MARKDOWN);
+
+        $params = $method->getParams();
+
+        $this->assertArrayHasKey('disable_web_page_preview', $params);
+        $this->assertEquals(1, $params['disable_web_page_preview']);
+        $this->assertArrayHasKey('disable_notification', $params);
+        $this->assertEquals(1, $params['disable_notification']);
+        $this->assertArrayHasKey('reply_to_message_id', $params);
+        $this->assertEquals(321, $params['reply_to_message_id']);
+        $this->assertArrayHasKey('parse_mode', $params);
+        $this->assertEquals(ParseMode::MARKDOWN, $params['parse_mode']);
+    }
+
     /**
      * @dataProvider buildResultDataProvider
      */
@@ -67,7 +88,7 @@ class SendMessageTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    function testJsonSerialize()
+    public function testJsonSerialize()
     {
         $method = new SendMessage(123, "Hello");
 
@@ -79,4 +100,45 @@ class SendMessageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($json, json_encode($method, JSON_UNESCAPED_UNICODE));
     }
 
+    public function testGetHttpMethod()
+    {
+        $method = new SendMessage(123, "Hello");
+
+        $this->assertEquals(SendMessage::HTTP_POST, $method->getHttpMethod());
+    }
+
+    public function testGetMethodName()
+    {
+        $method = new SendMessage(123, "Hello");
+
+        $this->assertEquals('sendMessage', $method->getMethodName());
+    }
+
+    public function testGetSetText()
+    {
+        $method = new SendMessage(123, "Old text");
+
+        $method->setText("New text");
+
+        $this->assertEquals("New text", $method->getText());
+    }
+
+    public function testGetSetChatId()
+    {
+        $method = new SendMessage(123, "Hello");
+
+        $method->setChatId('@chatid');
+
+        $this->assertEquals('@chatid', $method->getChatId());
+    }
+
+    public function testGetSetReplyMarkup()
+    {
+        $method = new SendMessage(123, "Hello");
+
+        $markupJson = json_encode([1,2,3, '4']);
+        $method->setReplyMarkup($markupJson);
+
+        $this->assertEquals($markupJson, $method->getReplyMarkup());
+    }
 }
