@@ -24,45 +24,154 @@ class InlineQueryResultArticle implements \JsonSerializable
      */
     protected $messageText;
 
-    public $parseMode;
-
-    public $disableWebPagePreview;
-
-    public $url;
-
-    public $hideUrl;
-
-    public $description;
+    /**
+     * @var string|null
+     */
+    protected $parseMode = null;
 
     /**
-     * @var string
+     * @var bool
      */
-    protected $thumbUrl;
+    protected $disableWebPagePreview = null;
 
     /**
-     * @var int
+     * @var string|null
      */
-    protected $thumbWidth;
+    protected $url = null;
 
     /**
-     * @var int
+     * @var bool|null
      */
-    protected $thumbHeight;
+    protected $hideUrl = null;
+
+    /**
+     * @var string|null
+     */
+    protected $description = null;
+
+    /**
+     * @var string|null
+     */
+    protected $thumbUrl = null;
+
+    /**
+     * @var int|null
+     */
+    protected $thumbWidth = null;
+
+    /**
+     * @var int|null
+     */
+    protected $thumbHeight = null;
 
     /**
      * @param array $data
      */
-    public function __construct($id = null, string $title, string $messageText, array $data = [])
+    public function __construct($id = null, string $title, string $messageText)
     {
         $this->id = $id ? $id : uniqid('steelbot', true);
         $this->title = $title;
         $this->messageText = $messageText;
+    }
 
-        $this->parseMode = $data['parse_mode'] ?? null;
-        $this->disableWebPagePreview = $data['disable_web_page_preview'] ?? null;
-        $this->url = $data['url'] ?? null;
-        $this->hideUrl = $data['hide_url'] ?? null;
-        $this->description = $data['description'] ?? null;
+    /**
+     * @return null|string
+     */
+    public function getParseMode()
+    {
+        return $this->parseMode;
+    }
+
+    /**
+     * @param null|string $parseMode
+     *
+     * @return InlineQueryResultArticle
+     */
+    public function setParseMode(string $parseMode = null)
+    {
+        $this->parseMode = $parseMode;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getDisableWebPagePreview()
+    {
+        return $this->disableWebPagePreview;
+    }
+
+    /**
+     * @param boolean $disableWebPagePreview
+     *
+     * @return InlineQueryResultArticle
+     */
+    public function setDisableWebPagePreview(bool $disableWebPagePreview = null)
+    {
+        $this->disableWebPagePreview = $disableWebPagePreview;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param null|string $url
+     *
+     * @return InlineQueryResultArticle
+     */
+    public function setUrl(string $url = null)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getHideUrl()
+    {
+        return $this->hideUrl;
+    }
+
+    /**
+     * @param bool|null $hideUrl
+     *
+     * @return InlineQueryResultArticle
+     */
+    public function setHideUrl(bool $hideUrl = null)
+    {
+        $this->hideUrl = $hideUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param null|string $description
+     *
+     * @return InlineQueryResultArticle
+     */
+    public function setDescription(string $description = null)
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -137,35 +246,35 @@ class InlineQueryResultArticle implements \JsonSerializable
             'message_text' => $this->messageText
         ];
 
-        if ($this->parseMode) {
+        if ($this->parseMode !== null) {
             $result['parse_mode'] = $this->parseMode;
         }
 
-        if ($this->disableWebPagePreview) {
+        if ($this->disableWebPagePreview !== null) {
             $result['disable_web_page_preview'] = (int)$this->disableWebPagePreview;
         }
 
-        if ($this->url) {
+        if ($this->url !== null) {
             $result['url'] = $this->url;
         }
 
-        if ($this->hideUrl) {
+        if ($this->hideUrl !== null) {
             $result['hide_url'] = (int)$this->hideUrl;
         }
 
-        if ($this->description) {
+        if ($this->description !== null) {
             $result['description'] = $this->description;
         }
 
-        if ($this->thumbUrl) {
+        if ($this->thumbUrl !== null) {
             $result['thumb_url'] = $this->thumbUrl;
         }
 
-        if ($this->thumbWidth) {
+        if ($this->thumbWidth !== null) {
             $result['thumb_width'] = $this->thumbWidth;
         }
 
-        if ($this->thumbHeight) {
+        if ($this->thumbHeight !== null) {
             $result['thumb_height'] = $this->thumbHeight;
         }
 

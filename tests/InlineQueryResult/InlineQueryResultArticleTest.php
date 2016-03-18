@@ -3,7 +3,7 @@
 namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult;
 
 use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultArticle;
-use Steelbot\TelegramBotApi\Method\AnswerInlineQuery;
+use Steelbot\TelegramBotApi\ParseMode;
 
 class InlineQueryResultArticleTest extends \PHPUnit_Framework_TestCase
 {
@@ -43,27 +43,57 @@ class InlineQueryResultArticleTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSetParseMode()
     {
-        $this->markTestIncomplete();
+        $inlineResult = new InlineQueryResultArticle(null, 'Title', 'Text');
+
+        $this->assertNull($inlineResult->getParseMode());
+
+        $inlineResult->setParseMode(ParseMode::MARKDOWN);
+
+        $this->assertEquals(ParseMode::MARKDOWN, $inlineResult->getParseMode());
     }
 
     public function testGetSetDisableWebPagePreview()
     {
-        $this->markTestIncomplete();
+        $inlineResult = new InlineQueryResultArticle(null, 'Title', 'Text');
+
+        $this->assertNull($inlineResult->getDisableWebPagePreview());
+
+        $inlineResult->setDisableWebPagePreview(true);
+
+        $this->assertTrue($inlineResult->getDisableWebPagePreview());
     }
 
     public function testGetSetUrl()
     {
-        $this->markTestIncomplete();
+        $inlineResult = new InlineQueryResultArticle(null, 'Title', 'Text');
+
+        $this->assertNull($inlineResult->getUrl());
+
+        $inlineResult->setUrl('http://test.com');
+
+        $this->assertEquals('http://test.com', $inlineResult->getUrl());
     }
 
     public function testGetSetHideUrl()
     {
-        $this->markTestIncomplete();
+        $inlineResult = new InlineQueryResultArticle(null, 'Title', 'Text');
+
+        $this->assertNull($inlineResult->getHideUrl());
+
+        $inlineResult->setHideUrl(true);
+
+        $this->assertTrue($inlineResult->getHideUrl());
     }
 
     public function testGetSetDescription()
     {
-        $this->markTestIncomplete();
+        $inlineResult = new InlineQueryResultArticle(null, 'Title', 'Text');
+
+        $this->assertNull($inlineResult->getDescription());
+
+        $inlineResult->setDescription('Some description');
+
+        $this->assertEquals('Some description', $inlineResult->getDescription());
     }
 
 

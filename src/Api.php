@@ -82,7 +82,7 @@ class Api
                 break;
             case $method::HTTP_POST:
                 if ($method instanceof \JsonSerializable) {
-                    $body = json_encode($method, JSON_UNESCAPED_UNICODE);
+                    $body = json_encode($method);
 
                     $bodyStream = new MemoryStream(0, $body);
                     yield from $bodyStream->end();
