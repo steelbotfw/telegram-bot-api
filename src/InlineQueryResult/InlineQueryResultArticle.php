@@ -2,8 +2,18 @@
 
 namespace Steelbot\TelegramBotApi\InlineQueryResult;
 
+use Steelbot\TelegramBotApi\InlineQueryResult\Traits\DescriptionTrait;
+use Steelbot\TelegramBotApi\InlineQueryResult\Traits\DisableWebPagePreviewTrait;
+use Steelbot\TelegramBotApi\InlineQueryResult\Traits\ParseModeTrait;
+use Steelbot\TelegramBotApi\InlineQueryResult\Traits\HideUrlTrait;
+
 class InlineQueryResultArticle implements \JsonSerializable
 {
+    use ParseModeTrait;
+    use DisableWebPagePreviewTrait;
+    use HideUrlTrait;
+    use DescriptionTrait;
+
     /**
      * @var string
      */
@@ -27,27 +37,7 @@ class InlineQueryResultArticle implements \JsonSerializable
     /**
      * @var string|null
      */
-    protected $parseMode = null;
-
-    /**
-     * @var bool
-     */
-    protected $disableWebPagePreview = null;
-
-    /**
-     * @var string|null
-     */
     protected $url = null;
-
-    /**
-     * @var bool|null
-     */
-    protected $hideUrl = null;
-
-    /**
-     * @var string|null
-     */
-    protected $description = null;
 
     /**
      * @var string|null
@@ -77,46 +67,6 @@ class InlineQueryResultArticle implements \JsonSerializable
     /**
      * @return null|string
      */
-    public function getParseMode()
-    {
-        return $this->parseMode;
-    }
-
-    /**
-     * @param null|string $parseMode
-     *
-     * @return InlineQueryResultArticle
-     */
-    public function setParseMode(string $parseMode = null)
-    {
-        $this->parseMode = $parseMode;
-
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function getDisableWebPagePreview()
-    {
-        return $this->disableWebPagePreview;
-    }
-
-    /**
-     * @param boolean $disableWebPagePreview
-     *
-     * @return InlineQueryResultArticle
-     */
-    public function setDisableWebPagePreview(bool $disableWebPagePreview = null)
-    {
-        $this->disableWebPagePreview = $disableWebPagePreview;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
     public function getUrl()
     {
         return $this->url;
@@ -130,46 +80,6 @@ class InlineQueryResultArticle implements \JsonSerializable
     public function setUrl(string $url = null)
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function getHideUrl()
-    {
-        return $this->hideUrl;
-    }
-
-    /**
-     * @param bool|null $hideUrl
-     *
-     * @return InlineQueryResultArticle
-     */
-    public function setHideUrl(bool $hideUrl = null)
-    {
-        $this->hideUrl = $hideUrl;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param null|string $description
-     *
-     * @return InlineQueryResultArticle
-     */
-    public function setDescription(string $description = null)
-    {
-        $this->description = $description;
 
         return $this;
     }

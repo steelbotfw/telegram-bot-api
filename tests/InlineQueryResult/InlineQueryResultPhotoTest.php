@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult;
 
 use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultArticle;
 
-class InlineQueryResultArticleTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultPhotoTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetSetThumbUrl()
     {
