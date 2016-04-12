@@ -15,6 +15,11 @@ class InlineQuery
     public $from;
 
     /**
+     * @var Location
+     */
+    public $location;
+
+    /**
      * @var string
      */
     public $query;
@@ -31,6 +36,7 @@ class InlineQuery
     {
         $this->id = $data['id'];
         $this->from  = new User($data['from']);
+        $this->location = $data['location'] ? new Location($data['location']) : null;
         $this->query = $data['query'];
         $this->offset = $data['offset'];
     }
