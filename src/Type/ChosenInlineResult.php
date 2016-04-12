@@ -2,12 +2,12 @@
 
 namespace Steelbot\TelegramBotApi\Type;
 
-class InlineQuery
+class ChosenInlineResult
 {
     /**
      * @var string
      */
-    public $id;
+    public $resultId;
 
     /**
      * @var User
@@ -20,24 +20,24 @@ class InlineQuery
     public $location;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $query;
+    public $inlineMessageId;
 
     /**
      * @var string
      */
-    public $offset;
+    public $query;
 
     /**
      * @param array $data
      */
     public function __construct(array $data)
     {
-        $this->id = $data['id'];
+        $this->resultId = $data['result_id'];
         $this->from  = new User($data['from']);
         $this->location = isset($data['location']) ? new Location($data['location']) : null;
+        $this->inlineMessageId = $data['inline_message_id'] ?? null;
         $this->query = $data['query'];
-        $this->offset = $data['offset'];
     }
 }
