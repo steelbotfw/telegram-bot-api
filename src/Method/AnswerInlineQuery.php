@@ -29,6 +29,16 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      */
     protected $nextOffset;
 
+    /**
+     * @var string|null
+     */
+    protected $switchPmText;
+
+    /**
+     * @var string|null
+     */
+    protected $switchPmParameter;
+
     public function __construct($inlineQueryId, array $results)
     {
         $this->inlineQueryId = $inlineQueryId;
@@ -133,6 +143,38 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
         $this->isPersonal = $isPersonal;
 
         return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSwitchPmText()
+    {
+        return $this->switchPmText;
+    }
+
+    /**
+     * @param null|string $switchPmText
+     */
+    public function setSwitchPmText(string $switchPmText = null)
+    {
+        $this->switchPmText = $switchPmText;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSwitchPmParameter()
+    {
+        return $this->switchPmParameter;
+    }
+
+    /**
+     * @param null|string $switchPmParameter
+     */
+    public function setSwitchPmParameter(string $switchPmParameter = null)
+    {
+        $this->switchPmParameter = $switchPmParameter;
     }
 
     /**

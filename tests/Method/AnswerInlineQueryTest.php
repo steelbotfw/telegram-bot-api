@@ -104,4 +104,26 @@ class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $method->getResults());
         $this->assertContains($result1, $method->getResults());
     }
+
+    public function testGetSetSwitchPmText()
+    {
+        $method = new AnswerInlineQuery(123, []);
+
+        $this->assertNull($method->getSwitchPmText());
+
+        $method->setSwitchPmText('pm text');
+
+        $this->assertEquals('pm text', $method->getSwitchPmText());
+    }
+
+    public function testGetSetSwitchPmParameter()
+    {
+        $method = new AnswerInlineQuery(123, []);
+
+        $this->assertNull($method->getSwitchPmParameter());
+
+        $method->setSwitchPmParameter('pm parameter');
+
+        $this->assertEquals('pm parameter', $method->getSwitchPmParameter());
+    }
 }
