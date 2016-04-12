@@ -2,7 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
 
-use Steelbot\TelegramBotApi\InlineQueryResult\Traits\DisableWebPagePreviewTrait;
+use Steelbot\TelegramBotApi\Traits\DisableWebPagePreviewTrait;
 
 class DisableWebPagePreviewTraitTest extends \PHPUnit_Framework_TestCase
 {

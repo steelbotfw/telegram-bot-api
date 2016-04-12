@@ -2,7 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
 
-use Steelbot\TelegramBotApi\InlineQueryResult\Traits\ParseModeTrait;
+use Steelbot\TelegramBotApi\Traits\ParseModeTrait;
 use Steelbot\TelegramBotApi\ParseMode;
 
 class ParseModeTraitTest extends \PHPUnit_Framework_TestCase

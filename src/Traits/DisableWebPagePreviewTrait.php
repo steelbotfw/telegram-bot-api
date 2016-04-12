@@ -1,6 +1,6 @@
 <?php
 
-namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
+namespace Steelbot\TelegramBotApi\Traits;
 
 trait DisableWebPagePreviewTrait
 {
@@ -20,9 +20,9 @@ trait DisableWebPagePreviewTrait
     /**
      * @param boolean $disableWebPagePreview
      *
-     * @return InlineQueryResultArticle
+     * @return $this
      */
-    public function setDisableWebPagePreview(bool $disableWebPagePreview = null)
+    public function setDisableWebPagePreview(bool $disableWebPagePreview = null): self
     {
         $this->disableWebPagePreview = $disableWebPagePreview;
 

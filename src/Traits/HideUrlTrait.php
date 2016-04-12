@@ -1,6 +1,6 @@
 <?php
 
-namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
+namespace Steelbot\TelegramBotApi\Traits;
 
 trait HideUrlTrait
 {
@@ -20,9 +20,9 @@ trait HideUrlTrait
     /**
      * @param bool|null $hideUrl
      *
-     * @return InlineQueryResultArticle
+     * @return $this
      */
-    public function setHideUrl(bool $hideUrl = null)
+    public function setHideUrl(bool $hideUrl = null): self
     {
         $this->hideUrl = $hideUrl;
 

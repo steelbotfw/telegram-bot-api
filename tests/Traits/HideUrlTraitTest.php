@@ -2,7 +2,7 @@
 
 namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult\Traits;
 
-use Steelbot\TelegramBotApi\InlineQueryResult\Traits\HideUrlTrait;
+use Steelbot\TelegramBotApi\Traits\HideUrlTrait;
 
 class HideUrlTraitTest extends \PHPUnit_Framework_TestCase
 {

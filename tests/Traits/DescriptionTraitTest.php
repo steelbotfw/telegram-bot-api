@@ -2,7 +2,7 @@
 
 namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult\Traits;
 
-use Steelbot\TelegramBotApi\InlineQueryResult\Traits\DescriptionTrait;
+use Steelbot\TelegramBotApi\Traits\DescriptionTrait;
 
 class DescriptionTraitTest extends \PHPUnit_Framework_TestCase
 {

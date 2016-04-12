@@ -2,10 +2,12 @@
 
 namespace Steelbot\TelegramBotApi\InlineQueryResult;
 
-use Steelbot\TelegramBotApi\InlineQueryResult\Traits\DescriptionTrait;
-use Steelbot\TelegramBotApi\InlineQueryResult\Traits\DisableWebPagePreviewTrait;
-use Steelbot\TelegramBotApi\InlineQueryResult\Traits\ParseModeTrait;
-use Steelbot\TelegramBotApi\InlineQueryResult\Traits\HideUrlTrait;
+use Steelbot\TelegramBotApi\Traits\{
+    DescriptionTrait,
+    DisableWebPagePreviewTrait,
+    ParseModeTrait,
+    HideUrlTrait
+};
 
 class InlineQueryResultPhoto implements \JsonSerializable
 {

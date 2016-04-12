@@ -1,6 +1,6 @@
 <?php
 
-namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
+namespace Steelbot\TelegramBotApi\Traits;
 
 trait DescriptionTrait
 {
@@ -20,9 +20,9 @@ trait DescriptionTrait
     /**
      * @param null|string $description
      *
-     * @return InlineQueryResultArticle
+     * @return $this
      */
-    public function setDescription(string $description = null)
+    public function setDescription(string $description = null): self
     {
         $this->description = $description;
 

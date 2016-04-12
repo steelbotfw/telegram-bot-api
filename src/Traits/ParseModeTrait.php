@@ -1,6 +1,6 @@
 <?php
 
-namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
+namespace Steelbot\TelegramBotApi\Traits;
 
 trait ParseModeTrait
 {
@@ -20,9 +20,9 @@ trait ParseModeTrait
     /**
      * @param null|string $parseMode
      *
-     * @return InlineQueryResultArticle
+     * @return $this
      */
-    public function setParseMode(string $parseMode = null)
+    public function setParseMode(string $parseMode = null): self
     {
         $this->parseMode = $parseMode;
 
