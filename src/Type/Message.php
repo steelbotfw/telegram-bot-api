@@ -49,12 +49,18 @@ class Message
 //video 	Video 	Optional. Message is a video, information about the video
 //voice 	Voice 	Optional. Message is a voice message, information about the file
 //caption 	String 	Optional. Caption for the photo or video, 0-200 characters
-//contact 	Contact 	Optional. Message is a shared contact, information about the contact
+
+    /**
+     * Optional. Message is a shared contact, information about the contact
+     *
+     * @var Contact|null
+     */
+    public $contact;
 
     /**
      * Message is a shared location, information about the location.
      *
-     * @var \Steelbot\Protocol\Telegram\Entity\Location|null
+     * @var Location|null
      */
     public $location;
 
@@ -87,6 +93,7 @@ class Message
 //channel_chat_created 	True 	Optional. Service message: the channel has been created
 //migrate_to_chat_id 	Integer 	Optional. The group has been migrated to a supergroup with the specified identifier, not exceeding 1e13 by absolute value
 //migrate_from_chat_id 	Integer 	Optional. The supergroup has been migrated from a group with the specified identifier, not exceeding 1e13 by absolute value
+//pinned_message Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
 
     /**
      * @param array $data
@@ -98,6 +105,7 @@ class Message
         $this->chat      = new Chat($data['chat']);
         $this->date      = \DateTimeImmutable::createFromFormat('U', $data['date']);
         $this->text      = isset($data['text']) ? $data['text'] : null;
+        $this->contact   = isset($data['contact']) ? new Contact($data['contact']) : null;
         $this->location  = isset($data['location']) ? new Location($data['location']) : null;
         //$this->newChatParticipant = isset($data['new_chat_participant']) ? new User($data['new_chat_participant']) : null;
         //$this->leftChatParticipant = isset($data['left_chat_participant']) ? new User($data['left_chat_participant']) : null;
