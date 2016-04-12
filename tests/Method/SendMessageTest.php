@@ -131,14 +131,4 @@ class SendMessageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('@chatid', $method->getChatId());
     }
-
-    public function testGetSetReplyMarkup()
-    {
-        $method = new SendMessage(123, "Hello");
-
-        $markupJson = json_encode([1,2,3, '4']);
-        $method->setReplyMarkup($markupJson);
-
-        $this->assertEquals($markupJson, $method->getReplyMarkup());
-    }
 }

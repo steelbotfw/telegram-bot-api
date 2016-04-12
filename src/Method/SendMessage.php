@@ -4,18 +4,19 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Traits\DisableWebPagePreviewTrait;
 use Steelbot\TelegramBotApi\Traits\ParseModeTrait;
+use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
 class SendMessage extends AbstractMethod implements \JsonSerializable
 {
     use ParseModeTrait;
     use DisableWebPagePreviewTrait;
+    use ReplyMarkupTrait;
 
     protected $chatId;
     protected $text;
     protected $disableNotification = false;
     protected $replyToMessageId = null;
-    protected $replyMarkup = null;
 
     public function __construct($chatId, string $text)
     {
@@ -39,26 +40,6 @@ class SendMessage extends AbstractMethod implements \JsonSerializable
     public function setChatId($chatId)
     {
         $this->chatId = $chatId;
-
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getReplyMarkup()
-    {
-        return $this->replyMarkup;
-    }
-
-    /**
-     * @param string|null $replyMarkup
-     *
-     * @return SendMessage
-     */
-    public function setReplyMarkup(string $replyMarkup = null)
-    {
-        $this->replyMarkup = $replyMarkup;
 
         return $this;
     }

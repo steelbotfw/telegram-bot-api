@@ -3,7 +3,6 @@
 namespace Steelbot\Tests\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Method\SendLocation;
-use Steelbot\TelegramBotApi\ParseMode;
 use Steelbot\TelegramBotApi\Type\Message;
 
 class SendLocationTest extends \PHPUnit_Framework_TestCase
@@ -138,15 +137,5 @@ class SendLocationTest extends \PHPUnit_Framework_TestCase
         $method->setChatId('@chatid');
 
         $this->assertEquals('@chatid', $method->getChatId());
-    }
-
-    public function testGetSetReplyMarkup()
-    {
-        $method = new SendLocation(123, 80.635561, 49.910422);
-
-        $markupJson = json_encode([1,2,3, '4']);
-        $method->setReplyMarkup($markupJson);
-
-        $this->assertEquals($markupJson, $method->getReplyMarkup());
     }
 }
