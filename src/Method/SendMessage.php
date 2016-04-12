@@ -2,14 +2,17 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\DisableWebPagePreviewTrait;
+use Steelbot\TelegramBotApi\Traits\ParseModeTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
 class SendMessage extends AbstractMethod implements \JsonSerializable
 {
+    use ParseModeTrait;
+    use DisableWebPagePreviewTrait;
+
     protected $chatId;
     protected $text;
-    protected $parseMode = null;
-    protected $disableWebPagePreview = false;
     protected $disableNotification = false;
     protected $replyToMessageId = null;
     protected $replyMarkup = null;
@@ -96,46 +99,6 @@ class SendMessage extends AbstractMethod implements \JsonSerializable
     public function setDisableNotification(bool $disableNotification = false)
     {
         $this->disableNotification = $disableNotification;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getDisableWebPagePreview()
-    {
-        return $this->disableWebPagePreview;
-    }
-
-    /**
-     * @param boolean $disableWebPagePreview
-     *
-     * @return SendMessage
-     */
-    public function setDisableWebPagePreview(bool $disableWebPagePreview = false)
-    {
-        $this->disableWebPagePreview = $disableWebPagePreview;
-
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getParseMode()
-    {
-        return $this->parseMode;
-    }
-
-    /**
-     * @param string|null $parseMode
-     *
-     * @return SendMessage
-     */
-    public function setParseMode(string $parseMode = null)
-    {
-        $this->parseMode = $parseMode;
 
         return $this;
     }

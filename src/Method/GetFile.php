@@ -3,7 +3,6 @@
 namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Type\File;
-use Steelbot\TelegramBotApi\Type\Update;
 
 class GetFile extends AbstractMethod
 {
