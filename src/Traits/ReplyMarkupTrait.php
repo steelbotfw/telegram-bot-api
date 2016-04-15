@@ -2,15 +2,17 @@
 
 namespace Steelbot\TelegramBotApi\Traits;
 
+use Steelbot\TelegramBotApi\Type\ReplyMarkupInterface;
+
 trait ReplyMarkupTrait
 {
     /**
-     * @var string|null
+     * @var ReplyMarkupInterface|null
      */
-    protected $replyMarkup = null;
+    protected $replyMarkup;
 
     /**
-     * @return null
+     * @return ReplyMarkupInterface|null
      */
     public function getReplyMarkup()
     {
@@ -18,11 +20,11 @@ trait ReplyMarkupTrait
     }
 
     /**
-     * @param string|null $replyMarkup
+     * @param ReplyMarkupInterface|null $replyMarkup
      *
-     * @return SendMessage
+     * @return $this
      */
-    public function setReplyMarkup(string $replyMarkup = null)
+    public function setReplyMarkup(ReplyMarkupInterface $replyMarkup = null)
     {
         $this->replyMarkup = $replyMarkup;
 

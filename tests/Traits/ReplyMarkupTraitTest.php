@@ -3,6 +3,7 @@
 namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
+use Steelbot\TelegramBotApi\Type\ReplyKeyboardMarkup;
 
 class ReplyMarkupTraitTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,9 +11,9 @@ class ReplyMarkupTraitTest extends \PHPUnit_Framework_TestCase
     {
         $mock = $this->getMockForTrait(ReplyMarkupTrait::class);
 
-        $markupJson = json_encode([1,2,3, '4']);
-        $mock->setReplyMarkup($markupJson);
+        $markup = new ReplyKeyboardMarkup(['1', '2']);
+        $mock->setReplyMarkup($markup);
 
-        $this->assertEquals($markupJson, $mock->getReplyMarkup());
+        $this->assertSame($markup, $mock->getReplyMarkup());
     }
 }
