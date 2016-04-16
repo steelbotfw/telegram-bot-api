@@ -4,7 +4,6 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultArticle;
 use Steelbot\TelegramBotApi\Method\AnswerInlineQuery;
-use Steelbot\TelegramBotApi\Method\SendMessage;
 
 class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
 {
@@ -59,7 +58,7 @@ class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
     {
         $method = new AnswerInlineQuery(123, []);
 
-        $this->assertEquals(SendMessage::HTTP_POST, $method->getHttpMethod());
+        $this->assertEquals(AnswerInlineQuery::HTTP_POST, $method->getHttpMethod());
     }
 
     public function testGetMethodName()

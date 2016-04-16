@@ -8,36 +8,77 @@ class ReplyKeyboardMarkupTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetSetKeyboard()
     {
-        $this->markTestIncomplete();
+        $markup = new ReplyKeyboardMarkup([]);
+
+        $markup->setKeyboard([['1', '2', '3']]);
+
+        $this->assertEquals([['1', '2', '3']], $markup->getKeyboard());
     }
 
     public function testAddKeyboardRow()
     {
-        $this->markTestIncomplete();
+        $markup = new ReplyKeyboardMarkup([['1', '2', '3']]);
+
+        $this->assertCount(1, $markup->getKeyboard());
+
+        $markup->addKeyboardRow(['4', '5', '6']);
+
+        $this->assertEquals([
+            ['1', '2', '3'],
+            ['4', '5', '6']
+        ], $markup->getKeyboard());
     }
 
     public function testAddKeyboardButton()
     {
-        $this->markTestIncomplete();
+        $markup = new ReplyKeyboardMarkup([['1', '2', '3']]);
+
+        $markup->addKeyboardButton('4');
+
+        $this->assertEquals([
+            ['1', '2', '3', '4']
+        ], $markup->getKeyboard());
     }
 
     public function testGetSetOneTimeKeyboard()
     {
-        $this->markTestIncomplete();
+        $markup = new ReplyKeyboardMarkup(['1', '2', '3']);
+
+        $this->assertNull($markup->getOneTimeKeyboard());
+
+        $markup->setOneTimeKeyboard(true);
+
+        $this->assertTrue($markup->getOneTimeKeyboard());
     }
 
     public function testGetSetResizeKeyboard()
     {
-        $this->markTestIncomplete();
-    }
+        $markup = new ReplyKeyboardMarkup(['1', '2', '3']);
 
-    public function testGetSetSelective()
-    {
-        $this->markTestIncomplete();
+        $this->assertNull($markup->getResizeKeyboard());
+
+        $markup->setResizeKeyboard(true);
+
+        $this->assertTrue($markup->getResizeKeyboard());
     }
 
     public function testJsonSerialize()
     {
-        $this->markTestIncomplete();
+        $markup = new ReplyKeyboardMarkup(['1', '2', '3']);
+
+        $expectedJson = json_encode([
+            'keyboard' => ['1', '2', '3']
+        ]);
+
+        $this->assertJsonStringEqualsJsonString($expectedJson, json_encode($markup));
+
+        $markup->setSelective(true);
+
+        $expectedJson = json_encode([
+            'keyboard' => ['1', '2', '3'],
+            'selective' => 1
+        ]);
+
+        $this->assertJsonStringEqualsJsonString($expectedJson, json_encode($markup));
     }
 }

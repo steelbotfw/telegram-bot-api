@@ -76,6 +76,10 @@ class KeyboardButton implements \JsonSerializable
     {
         $this->requestLocation = $requestLocation;
 
+        if ($requestLocation === true) {
+            $this->requestContact = null;
+        }
+
         return $this;
     }
 
@@ -95,6 +99,10 @@ class KeyboardButton implements \JsonSerializable
     public function setRequestContact(bool $requestContact = null): self
     {
         $this->requestContact = $requestContact;
+
+        if ($requestContact === true) {
+            $this->requestLocation = null;
+        }
 
         return $this;
     }

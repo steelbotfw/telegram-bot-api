@@ -1,12 +1,14 @@
 <?php
 
 namespace Steelbot\TelegramBotApi\Type;
+use Steelbot\TelegramBotApi\Traits\SelectiveTrait;
 
 /**
  * ReplyKeyboardMarkup
  */
 class ReplyKeyboardMarkup implements ReplyMarkupInterface
 {
+    use SelectiveTrait;
 
     /**
      * Array of button rows, each represented by an Array of KeyboardButton objects.
@@ -34,16 +36,6 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
      * @var bool|null
      */
     protected $oneTimeKeyboard;
-
-    /**
-     * Use this parameter if you want to show the keyboard to specific users only.
-     * Targets:
-     *  1) users that are @mentioned in the text of the Message object;
-     *  2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
-     *
-     * @var bool|null
-     */
-    protected $selective;
 
     /**
      * ReplyKeyboardMarkup constructor.
@@ -117,7 +109,7 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
      *
      * @return ReplyKeyboardMarkup
      */
-    public function setOneTimeKeyboard($oneTimeKeyboard): self
+    public function setOneTimeKeyboard(bool $oneTimeKeyboard = null): self
     {
         $this->oneTimeKeyboard = $oneTimeKeyboard;
 
@@ -140,26 +132,6 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
     public function setResizeKeyboard(bool $resizeKeyboard = null): self
     {
         $this->resizeKeyboard = $resizeKeyboard;
-
-        return $this;
-    }
-
-    /**
-     * @return null
-     */
-    public function getSelective(): bool
-    {
-        return $this->selective;
-    }
-
-    /**
-     * @param null $selective
-     *
-     * @return ReplyKeyboardHide
-     */
-    public function setSelective(bool $selective = null)
-    {
-        $this->selective = $selective;
 
         return $this;
     }

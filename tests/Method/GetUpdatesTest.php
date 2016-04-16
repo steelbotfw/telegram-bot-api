@@ -93,6 +93,8 @@ class GetUpdatesTest extends \PHPUnit_Framework_TestCase
 
         // @todo chosenInlineResult
 
+        // @todo callbackQuery
+
         return [
             [$messageUpdate]
         ];

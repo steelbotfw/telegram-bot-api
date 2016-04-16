@@ -30,11 +30,33 @@ class KeyboardButtonTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSetRequestContact()
     {
-        $this->markTestIncomplete();
+        $button = new KeyboardButton("Text one");
+
+        $this->assertNull($button->getRequestContact());
+
+        $button->setRequestContact(true);
+
+        $this->assertTrue($button->getRequestContact());
     }
 
     public function testJsonSerialize()
     {
-        $this->markTestIncomplete();
+        $button = new KeyboardButton("Text one");
+
+        $expectedJson = json_encode([
+            'text' => 'Text one'
+        ]);
+
+        $this->assertJsonStringEqualsJsonString($expectedJson, json_encode($button));
+
+        $button->setRequestContact(true);
+        $button->setRequestLocation(true);
+
+        $expectedJson = json_encode([
+            'text' => 'Text one',
+            'request_location' => 1
+        ]);
+
+        $this->assertJsonStringEqualsJsonString($expectedJson, json_encode($button));
     }
 }
