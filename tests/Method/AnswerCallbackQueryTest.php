@@ -22,7 +22,7 @@ class AnswerCallbackQueryTest extends \PHPUnit_Framework_TestCase
         $params = $method->getParams();
 
         $this->assertArrayHasKey('show_alert', $params);
-        $this->assertTrue($params['show_alert']);
+        $this->assertEquals(1, $params['show_alert']);
     }
 
     public function testBuildResult()
