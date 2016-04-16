@@ -5,6 +5,8 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Method\GetUpdates;
 use Steelbot\TelegramBotApi\Type\Chat;
+use Steelbot\TelegramBotApi\Type\ChosenInlineResult;
+use Steelbot\TelegramBotApi\Type\Message;
 use Steelbot\TelegramBotApi\Type\Update;
 
 class GetUpdatesTest extends \PHPUnit_Framework_TestCase
@@ -35,11 +37,42 @@ class GetUpdatesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($params, $method->getParams());
     }
 
-    /**
-     * @dataProvider buildResultDataProvider
-     */
-    public function testBuildResult($result)
+    public function testBuildResultMessage()
     {
+        $result = [[
+            'update_id' => 79947337,
+            'message' => [
+                'message_id' => 4768,
+                'from' => [
+                    'id' => 104442434,
+                    'first_name' => 'FirstName',
+                    'last_name' => 'LastName',
+                    'username' => 'UserName'
+                ],
+
+                'date' => 123456789,
+
+                'chat' => [
+                    'id' => 12121212,
+                    'type' => Chat::TYPE_PRIVATE,
+                    'title' => null,
+                    'username' => 'ChatUserName',
+                    'first_name' => 'ChatFirstName',
+                    'last_name' => 'ChatLastName'
+                ],
+
+                'text' => 'hello',
+                'location' => null,
+                'new_chat_participant' => null,
+                'left_chat_participant' => null,
+                'new_chat_title' => null,
+            ],
+
+            'inline_query' => null,
+            'chosen_inline_result' => null,
+            'callback_query' => null,
+        ]];
+
         $method = new GetUpdates(1);
 
         $updates = $method->buildResult($result);
@@ -49,54 +82,49 @@ class GetUpdatesTest extends \PHPUnit_Framework_TestCase
         $update = array_pop($updates);
         $this->assertInstanceOf(Update::class, $update);
         $this->assertEquals($result[0]['update_id'], $update->updateId);
+        $this->assertInstanceOf(Message::class, $update->message);
+
     }
 
-    public function buildResultDataProvider(): array
+    public function testBuildResultInlineQuery()
     {
-        $messageUpdate = [
-            [
-                'update_id' => 79947337,
-                'message' => [
-                    'message_id' => 4768,
-                    'from' => [
-                        'id' => 104442434,
-                        'first_name' => 'FirstName',
-                        'last_name' => 'LastName',
-                        'username' => 'UserName'
-                    ],
+        $this->markTestIncomplete();
 
-                    'date' => 123456789,
+    }
 
-                    'chat' => [
-                        'id' => 12121212,
-                        'type' => Chat::TYPE_PRIVATE,
-                        'title' => null,
-                        'username' => 'ChatUserName',
-                        'first_name' => 'ChatFirstName',
-                        'last_name' => 'ChatLastName'
-                    ],
-
-                    'text' => 'hello',
-                    'location' => null,
-                    'new_chat_participant' => null,
-                    'left_chat_participant' => null,
-                    'new_chat_title' => null,
+    public function testBuildResultChosenInlineResult()
+    {
+        $result = [[
+            'update_id' => 79947337,
+            'message' => null,
+            'inline_query' => null,
+            'chosen_inline_result' => [
+                'result_id' => 123,
+                'from' => [
+                    'id' => 104442434,
+                    'first_name' => 'FirstName',
+                    'last_name' => 'LastName',
+                    'username' => 'UserName'
                 ],
-
-                'inlineQuery' => null,
-                'chosenInlineResult' => null,
-
+                'query' => 'query string'
             ],
-        ];
+            'callback_query' => null,
+        ]];
 
-        // @todo inlineQuery
+        $method = new GetUpdates(1);
 
-        // @todo chosenInlineResult
+        $updates = $method->buildResult($result);
 
-        // @todo callbackQuery
+        $this->assertCount(1, $updates);
 
-        return [
-            [$messageUpdate]
-        ];
+        $update = array_pop($updates);
+        $this->assertInstanceOf(Update::class, $update);
+        $this->assertEquals($result[0]['update_id'], $update->updateId);
+        $this->assertInstanceOf(ChosenInlineResult::class, $update->chosenInlineResult);
+    }
+
+    public function testBuildResultCallbackQuery()
+    {
+        $this->markTestIncomplete();
     }
 }

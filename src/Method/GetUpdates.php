@@ -129,7 +129,7 @@ class GetUpdates extends AbstractMethod
      *
      * @param array $result
      *
-     * @return object
+     * @return Update[]
      */
     public function buildResult($result)
     {
