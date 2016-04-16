@@ -29,7 +29,7 @@ class CallbackQuery
     {
         $this->id = $data['id'];
         $this->from = new User($data['from']);
-        $this->message = $data['message'] ? new Message($data['message']) : null;
+        $this->message = isset($data['message']) ? new Message($data['message']) : null;
         $this->inlineMessageId = $data['inline_message_id'] ?? null;
         $this->data = $data['data'];
     }

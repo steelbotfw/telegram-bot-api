@@ -24,6 +24,11 @@ class Update
     public $chosenInlineResult;
 
     /**
+     * @var CallbackQuery|null
+     */
+    public $callbackQuery;
+
+    /**
      * @param array $data
      */
     public function __construct(array $data)
@@ -35,5 +40,7 @@ class Update
             new InlineQuery($data['inline_query']) : null;
         $this->chosenInlineResult = isset($data['chosen_inline_result']) ?
             new ChosenInlineResult($data['chosen_inline_result']) : null;
+        $this->callbackQuery = isset($data['callback_query']) ?
+            new CallbackQuery($data['callback_query']) : null;
     }
 }
