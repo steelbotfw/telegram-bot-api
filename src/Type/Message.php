@@ -44,11 +44,18 @@ class Message
 //reply_to_message 	Message 	Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
 //audio 	Audio 	Optional. Message is an audio file, information about the file
 //document 	Document 	Optional. Message is a general file, information about the file
-//photo 	Array of PhotoSize 	Optional. Message is a photo, available sizes of the photo
+
+    /**
+     * Message is a photo, available sizes of the photo.
+     *
+     * @var PhotoSize[]|null
+     */
+    public $photo;
+
     /**
      * Message is a sticker, information about the sticker.
      *
-     * @var Sticker
+     * @var Sticker|null
      */
     public $sticker;
 
@@ -111,6 +118,9 @@ class Message
         $this->chat      = new Chat($data['chat']);
         $this->date      = \DateTimeImmutable::createFromFormat('U', $data['date']);
         $this->text      = isset($data['text']) ? $data['text'] : null;
+        $this->photo     = isset($data['photo']) ? array_map(function(array $photoSizeData) {
+            return new PhotoSize($photoSizeData);
+        }, $data['photo']) : null;
         $this->sticker   = isset($data['sticker']) ? new Sticker($data['sticker']) : null;
         $this->contact   = isset($data['contact']) ? new Contact($data['contact']) : null;
         $this->location  = isset($data['location']) ? new Location($data['location']) : null;
