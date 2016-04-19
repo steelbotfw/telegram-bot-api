@@ -2,12 +2,14 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
 class SendContact extends AbstractMethod implements \JsonSerializable
 {
     use ReplyMarkupTrait;
+    use DisableNotificationTrait;
 
     /**
      * @var string|integer
@@ -24,8 +26,11 @@ class SendContact extends AbstractMethod implements \JsonSerializable
      */
     protected $firstName;
 
+    /**
+     * @var string
+     */
     protected $lastName;
-    protected $disableNotification = false;
+
     protected $replyToMessageId = null;
 
     public function __construct($chatId, string $phoneNumber, string $firstName)
@@ -136,26 +141,6 @@ class SendContact extends AbstractMethod implements \JsonSerializable
     }
 
     /**
-     * @return boolean
-     */
-    public function getDisableNotification()
-    {
-        return $this->disableNotification;
-    }
-
-    /**
-     * @param boolean $disableNotification
-     *
-     * @return $this
-     */
-    public function setDisableNotification(bool $disableNotification = false): self
-    {
-        $this->disableNotification = $disableNotification;
-
-        return $this;
-    }
-
-    /**
      * Get method name.
      *
      * @return string
@@ -191,7 +176,7 @@ class SendContact extends AbstractMethod implements \JsonSerializable
             $params['last_name'] = $this->lastName;
         }
 
-        if ($this->disableNotification) {
+        if ($this->disableNotification !== null) {
             $params['disable_notification'] = (int)$this->disableNotification;
         }
 

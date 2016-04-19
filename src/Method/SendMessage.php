@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 use Steelbot\TelegramBotApi\Traits\DisableWebPagePreviewTrait;
 use Steelbot\TelegramBotApi\Traits\ParseModeTrait;
 use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
@@ -12,10 +13,10 @@ class SendMessage extends AbstractMethod implements \JsonSerializable
     use ParseModeTrait;
     use DisableWebPagePreviewTrait;
     use ReplyMarkupTrait;
+    use DisableNotificationTrait;
 
     protected $chatId;
     protected $text;
-    protected $disableNotification = false;
     protected $replyToMessageId = null;
 
     public function __construct($chatId, string $text)
@@ -60,26 +61,6 @@ class SendMessage extends AbstractMethod implements \JsonSerializable
     public function setReplyToMessageId(int $replyToMessageId = null)
     {
         $this->replyToMessageId = $replyToMessageId;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getDisableNotification()
-    {
-        return $this->disableNotification;
-    }
-
-    /**
-     * @param boolean $disableNotification
-     *
-     * @return SendMessage
-     */
-    public function setDisableNotification(bool $disableNotification = false)
-    {
-        $this->disableNotification = $disableNotification;
 
         return $this;
     }
@@ -142,7 +123,7 @@ class SendMessage extends AbstractMethod implements \JsonSerializable
             $params['disable_web_page_preview'] = (int)$this->disableWebPagePreview;
         }
 
-        if ($this->disableNotification) {
+        if ($this->disableNotification !== null) {
             $params['disable_notification'] = (int)$this->disableNotification;
         }
 

@@ -2,12 +2,14 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
 class SendLocation extends AbstractMethod implements \JsonSerializable
 {
     use ReplyMarkupTrait;
+    use DisableNotificationTrait;
 
     protected $chatId;
 
@@ -21,7 +23,6 @@ class SendLocation extends AbstractMethod implements \JsonSerializable
      */
     protected $longitude;
 
-    protected $disableNotification = false;
     protected $replyToMessageId = null;
 
     public function __construct($chatId, float $latitude, float $longitude)
@@ -67,26 +68,6 @@ class SendLocation extends AbstractMethod implements \JsonSerializable
     public function setReplyToMessageId(int $replyToMessageId = null)
     {
         $this->replyToMessageId = $replyToMessageId;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getDisableNotification()
-    {
-        return $this->disableNotification;
-    }
-
-    /**
-     * @param boolean $disableNotification
-     *
-     * @return SendLocation
-     */
-    public function setDisableNotification(bool $disableNotification = false)
-    {
-        $this->disableNotification = $disableNotification;
 
         return $this;
     }
@@ -163,7 +144,7 @@ class SendLocation extends AbstractMethod implements \JsonSerializable
             'longitude' => $this->longitude
         ];
 
-        if ($this->disableNotification) {
+        if ($this->disableNotification !== null) {
             $params['disable_notification'] = (int)$this->disableNotification;
         }
 

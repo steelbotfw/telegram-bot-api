@@ -2,13 +2,19 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
 class ForwardMessage extends AbstractMethod
 {
+    use DisableNotificationTrait;
+
     protected $chatId;
     protected $fromChatId;
-    protected $disableNotification = false;
+
+    /**
+     * @var int
+     */
     protected $messageId;
 
     public function __construct($chatId, $fromChatId, int $messageId)
@@ -54,26 +60,6 @@ class ForwardMessage extends AbstractMethod
     public function setMessageId(int $messageId)
     {
         $this->messageId = $messageId;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getDisableNotification()
-    {
-        return $this->disableNotification;
-    }
-
-    /**
-     * @param boolean $disableNotification
-     *
-     * @return ForwardMessage
-     */
-    public function setDisableNotification(bool $disableNotification = false)
-    {
-        $this->disableNotification = $disableNotification;
 
         return $this;
     }

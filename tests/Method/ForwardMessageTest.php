@@ -42,4 +42,21 @@ class ForwardMessageTest extends \PHPUnit_Framework_TestCase
             [$data]
         ];
     }
+
+    public function testGetParams()
+    {
+        $method = new ForwardMessage(123, 456, 789);
+        $method->setDisableNotification(true);
+
+        $params = $method->getParams();
+
+        $this->assertArrayHasKey('disable_notification', $params);
+        $this->assertEquals(1, $params['disable_notification']);
+        $this->assertArrayHasKey('chat_id', $params);
+        $this->assertEquals(123, $params['chat_id']);
+        $this->assertArrayHasKey('from_chat_id', $params);
+        $this->assertEquals(456, $params['from_chat_id']);
+        $this->assertArrayHasKey('message_id', $params);
+        $this->assertEquals(789, $params['message_id']);
+    }
 }
