@@ -46,7 +46,7 @@ class InlineQueryResultPhoto implements \JsonSerializable
      */
     public function __construct($id, string $photoUrl, string $thumbUrl)
     {
-        $this->id = $id;
+        $this->id = $id ? $id : uniqid('steelbot', true);
         $this->photoUrl = $photoUrl;
         $this->thumbUrl = $thumbUrl;
     }

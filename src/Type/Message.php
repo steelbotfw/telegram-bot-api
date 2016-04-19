@@ -45,7 +45,13 @@ class Message
 //audio 	Audio 	Optional. Message is an audio file, information about the file
 //document 	Document 	Optional. Message is a general file, information about the file
 //photo 	Array of PhotoSize 	Optional. Message is a photo, available sizes of the photo
-//sticker 	Sticker 	Optional. Message is a sticker, information about the sticker
+    /**
+     * Message is a sticker, information about the sticker.
+     *
+     * @var Sticker
+     */
+    public $sticker;
+
 //video 	Video 	Optional. Message is a video, information about the video
 //voice 	Voice 	Optional. Message is a voice message, information about the file
 //caption 	String 	Optional. Caption for the photo or video, 0-200 characters
@@ -105,6 +111,7 @@ class Message
         $this->chat      = new Chat($data['chat']);
         $this->date      = \DateTimeImmutable::createFromFormat('U', $data['date']);
         $this->text      = isset($data['text']) ? $data['text'] : null;
+        $this->sticker   = isset($data['sticker']) ? new Sticker($data['sticker']) : null;
         $this->contact   = isset($data['contact']) ? new Contact($data['contact']) : null;
         $this->location  = isset($data['location']) ? new Location($data['location']) : null;
         //$this->newChatParticipant = isset($data['new_chat_participant']) ? new User($data['new_chat_participant']) : null;
