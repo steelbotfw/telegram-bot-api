@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult;
 
 use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultCachedSticker;
 
-class InlineQueryResultCachedPhotoTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultCachedStickerTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetSetStickerFileId()
     {
