@@ -38,6 +38,9 @@ class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
         $result1 = new InlineQueryResultArticle('steelbot123', 'Test article', 'Text');
 
         $method = new AnswerInlineQuery(123, [$result1]);
+        $method->setSwitchPmText('switchPmText')
+            ->setSwitchPmParameter('switchPmParameter')
+            ->setSwitchPmText('switchPmText');
 
         $json = [
             'results' => [
@@ -47,7 +50,9 @@ class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
                     'title' => 'Test article',
                     'message_text' => 'Text'
                 ]
-            ]
+            ],
+            'switch_pm_parameter' => 'switchPmParameter',
+            'switch_pm_text' => 'switchPmText'
         ];
         $json = json_encode($json, JSON_UNESCAPED_UNICODE);
 
@@ -110,7 +115,7 @@ class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($method->getSwitchPmText());
 
-        $method->setSwitchPmText('pm text');
+        $this->assertInstanceOf(AnswerInlineQuery::class, $method->setSwitchPmText('pm text'));
 
         $this->assertEquals('pm text', $method->getSwitchPmText());
     }
@@ -121,7 +126,9 @@ class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($method->getSwitchPmParameter());
 
-        $method->setSwitchPmParameter('pm parameter');
+        $this->assertInstanceOf(AnswerInlineQuery::class,
+            $method->setSwitchPmParameter('pm parameter')
+        );
 
         $this->assertEquals('pm parameter', $method->getSwitchPmParameter());
     }

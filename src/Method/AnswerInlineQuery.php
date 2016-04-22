@@ -155,10 +155,14 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
 
     /**
      * @param null|string $switchPmText
+     *
+     * @return self
      */
     public function setSwitchPmText(string $switchPmText = null)
     {
         $this->switchPmText = $switchPmText;
+
+        return $this;
     }
 
     /**
@@ -171,10 +175,14 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
 
     /**
      * @param null|string $switchPmParameter
+     *
+     * @return self
      */
     public function setSwitchPmParameter(string $switchPmParameter = null)
     {
         $this->switchPmParameter = $switchPmParameter;
+
+        return $this;
     }
 
     /**
@@ -239,8 +247,18 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      */
     function jsonSerialize()
     {
-        return [
+        $result =  [
             'results' => $this->results
         ];
+
+        if ($this->switchPmText !== null) {
+            $result['switch_pm_parameter'] = $this->switchPmParameter;
+        }
+
+        if ($this->switchPmText !== null) {
+            $result['switch_pm_text'] = $this->switchPmText;
+        }
+
+        return $result;
     }
 }
