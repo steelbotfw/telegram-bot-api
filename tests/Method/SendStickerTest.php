@@ -109,15 +109,6 @@ class SendStickerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('sendSticker', $method->getMethodName());
     }
 
-    public function testGetSetReplyToMessageId()
-    {
-        $method = new SendSticker(123, '1234');
-
-        $method->setReplyToMessageId(234);
-
-        $this->assertEquals(234, $method->getReplyToMessageId());
-    }
-
     public function testGetSetChatId()
     {
         $method = new SendSticker(123, '1234');

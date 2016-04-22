@@ -4,12 +4,14 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
+use Steelbot\TelegramBotApi\Traits\ReplyToMessageIdTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
 class SendSticker extends AbstractMethod implements \JsonSerializable
 {
     use ReplyMarkupTrait;
     use DisableNotificationTrait;
+    use ReplyToMessageIdTrait;
 
     /**
      * @var string|integer
@@ -20,11 +22,6 @@ class SendSticker extends AbstractMethod implements \JsonSerializable
      * @var string
      */
     protected $sticker;
-
-    /**
-     * @var int|null
-     */
-    protected $replyToMessageId;
 
     public function __construct($chatId, string $sticker)
     {
@@ -68,26 +65,6 @@ class SendSticker extends AbstractMethod implements \JsonSerializable
     public function setSticker(string $sticker)
     {
         $this->sticker = $sticker;
-
-        return $this;
-    }
-
-    /**
-     * @return integer|null
-     */
-    public function getReplyToMessageId()
-    {
-        return $this->replyToMessageId;
-    }
-
-    /**
-     * @param null $replyToMessageId
-     *
-     * @return $this
-     */
-    public function setReplyToMessageId(int $replyToMessageId = null): self
-    {
-        $this->replyToMessageId = $replyToMessageId;
 
         return $this;
     }
