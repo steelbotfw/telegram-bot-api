@@ -19,7 +19,7 @@
         "php": ">=7.0",
         "ext-mbstring": "*",
 
-        "icicleio/icicle": "dev-master",
+        "icicleio/icicle": "*",
         "icicleio/http": "*",
         "icicleio/dns": "*"
     },
