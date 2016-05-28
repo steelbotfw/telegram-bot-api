@@ -89,7 +89,12 @@ class Message
      */
     public $audio;
 
-//document 	Document 	Optional. Message is a general file, information about the file
+    /**
+     * Message is a general file, information about the file.
+     *
+     * @var Document|null
+     */
+    public $document;
 
     /**
      * Message is a photo, available sizes of the photo.
@@ -228,6 +233,7 @@ class Message
             return new MessageEntity($entityData);
         }, $data['entities']) : null;
         $this->audio     = isset($data['audio']) ? new Audio($data['audio']) : null;
+        $this->document  = isset($data['document']) ? new Document($data['document']) : null;
         $this->photo     = isset($data['photo']) ? array_map(function(array $photoSizeData) {
             return new PhotoSize($photoSizeData);
         }, $data['photo']) : null;
