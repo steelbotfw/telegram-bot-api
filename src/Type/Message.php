@@ -145,7 +145,12 @@ class Message
      */
     public $location;
 
-//venue 	Venue 	Optional. Message is a venue, information about the venue
+    /**
+     * Message is a venue, information about the venue.
+     *
+     * @var Venue|null
+     */
+    public $venue;
 
     /**
      * A new member was added to the group, information about them (this member may be the bot itself).
@@ -254,6 +259,7 @@ class Message
         $this->caption = $data['caption'] ?? null;
         $this->contact   = isset($data['contact']) ? new Contact($data['contact']) : null;
         $this->location  = isset($data['location']) ? new Location($data['location']) : null;
+        $this->venue     = isset($data['venue']) ? new Venue($data['venue']) : null;
         $this->newChatMember = isset($data['new_chat_member']) ? new User($data['new_chat_member']) : null;
         $this->leftChatMember = isset($data['left_chat_member']) ? new User($data['left_chat_member']) : null;
         $this->newChatTitle = $data['new_chat_title'] ?? null;
