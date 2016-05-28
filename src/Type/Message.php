@@ -110,7 +110,13 @@ class Message
      */
     public $sticker;
 
-//video 	Video 	Optional. Message is a video, information about the video
+    /**
+     * Message is a video, information about the video.
+     *
+     * @var Video|null
+     */
+    public $video;
+
     /**
      * Message is a voice message, information about the file.
      *
@@ -243,6 +249,7 @@ class Message
             return new PhotoSize($photoSizeData);
         }, $data['photo']) : null;
         $this->sticker   = isset($data['sticker']) ? new Sticker($data['sticker']) : null;
+        $this->video     = isset($data['video']) ? new Video($data['video']) : null;
         $this->voice     = isset($data['voice']) ? new Voice($data['voice']) : null;
         $this->caption = $data['caption'] ?? null;
         $this->contact   = isset($data['contact']) ? new Contact($data['contact']) : null;
