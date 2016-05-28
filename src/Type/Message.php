@@ -39,10 +39,49 @@ class Message
      */
     public $text;
 
-//forward_from 	User 	Optional. For forwarded messages, sender of the original message
-//forward_from_chat 	Chat 	Optional. For messages forwarded from a channel, information about the original channel
-//forward_date 	Integer 	Optional. For forwarded messages, date the original message was sent in Unix time
-//reply_to_message 	Message 	Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
+    /**
+     * For forwarded messages, sender of the original message.
+     *
+     * @var User|null
+     */
+    public $forwardFrom;
+
+    /**
+     * For messages forwarded from a channel, information about the original channel.
+     *
+     * @var Chat|null
+     */
+    public $forwardFromChat;
+
+    /**
+     * For forwarded messages, date the original message was sent in Unix time.
+     *
+     * @var \DateTimeImmutable|null
+     */
+    public $forwardDate;
+
+    /**
+     * For replies, the original message. Note that the Message object in this field will not contain further
+     * reply_to_message fields even if it itself is a reply.
+     *
+     * @var Message|null
+     */
+    public $replyToMessage;
+
+    /**
+     * Date the message was last edited in Unix time.
+     *
+     * @var \DateTimeImmutable|null
+     */
+    public $editDate;
+
+    /**
+     * For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.
+     *
+     * @var MessageEntity[]|null
+     */
+    public $entities;
+
 //audio 	Audio 	Optional. Message is an audio file, information about the file
 //document 	Document 	Optional. Message is a general file, information about the file
 
@@ -62,7 +101,13 @@ class Message
 
 //video 	Video 	Optional. Message is a video, information about the video
 //voice 	Voice 	Optional. Message is a voice message, information about the file
-//caption 	String 	Optional. Caption for the photo or video, 0-200 characters
+
+    /**
+     * Caption for the photo or video, 0-200 characters.
+     *
+     * @var string|null
+     */
+    public $caption;
 
     /**
      * Optional. Message is a shared contact, information about the contact
@@ -78,20 +123,21 @@ class Message
      */
     public $location;
 
+//venue 	Venue 	Optional. Message is a venue, information about the venue
 
     /**
      * A new member was added to the group, information about them (this member may be the bot itself).
      *
      * @var User|null
      */
-    public $newChatParticipant;
+    public $newChatMember;
 
     /**
      * A member was removed from the group, information about them (this member may be the bot itself).
      *
      * @var User
      */
-    public $leftChatParticipant;
+    public $leftChatMember;
 
     /**
      * A chat title was changed to this value.
@@ -100,14 +146,62 @@ class Message
      */
     public $newChatTitle;
 
-//new_chat_photo 	Array of PhotoSize 	Optional. A chat photo was change to this value
-//delete_chat_photo 	True 	Optional. Service message: the chat photo was deleted
-//group_chat_created 	True 	Optional. Service message: the group has been created
-//supergroup_chat_created 	True 	Optional. Service message: the supergroup has been created
-//channel_chat_created 	True 	Optional. Service message: the channel has been created
-//migrate_to_chat_id 	Integer 	Optional. The group has been migrated to a supergroup with the specified identifier, not exceeding 1e13 by absolute value
-//migrate_from_chat_id 	Integer 	Optional. The supergroup has been migrated from a group with the specified identifier, not exceeding 1e13 by absolute value
-//pinned_message Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
+    /**
+     * A chat photo was change to this value.
+     *
+     * @var PhotoSize[]|null
+     */
+    public $newChatPhoto;
+
+    /**
+     * Service message: the chat photo was deleted.
+     *
+     * @var bool|null
+     */
+    public $deleteChatPhoto;
+
+    /**
+     * Service message: the group has been created.
+     *
+     * @var bool|null
+     */
+    public $groupChatCreated;
+
+    /**
+     * Service message: the supergroup has been created.
+     *
+     * @var bool|null
+     */
+    public $supergroupChatCreated;
+
+    /**
+     * Service message: the channel has been created.
+     *
+     * @var bool|null
+     */
+    public $channelChatCreated;
+
+    /**
+     * The group has been migrated to a supergroup with the specified identifier, not exceeding 1e13 by absolute value.
+     *
+     * @var int|null
+     */
+    public $migrateToChatId;
+
+    /**
+     * The supergroup has been migrated from a group with the specified identifier, not exceeding 1e13 by absolute value.
+     *
+     * @var int|null
+     */
+    public $migrateFromChatId;
+
+    /**
+     * Specified message was pinned. Note that the Message object in this field will not contain further
+     * reply_to_message fields even if it is itself a reply.
+     *
+     * @var Message|null
+     */
+    public $pinnedMessage;
 
     /**
      * @param array $data
@@ -118,15 +212,34 @@ class Message
         $this->from      = isset($data['from']) ? new User($data['from']) : null;
         $this->chat      = new Chat($data['chat']);
         $this->date      = \DateTimeImmutable::createFromFormat('U', $data['date']);
-        $this->text      = isset($data['text']) ? $data['text'] : null;
+        $this->text      = $data['text'] ?? null;
+        $this->forwardFrom = isset($data['forward_from']) ? new User($data['forward_from']) : null;
+        $this->forwardFromChat = isset($data['forward_from_chat']) ? new Chat($data['forward_from_chat']) : null;
+        $this->forwardDate = isset($data['forward_date']) ? \DateTimeImmutable::createFromFormat('U', $data['forward_date']) : null;
+        $this->replyToMessage = isset($data['reply_to_message']) ? new Message($data['reply_to_message']) : null;
+        $this->editDate = isset($data['edit_date']) ? \DateTimeImmutable::createFromFormat('U', $data['edit_date']) : null;
+        $this->entities = isset($data['entities']) ? array_map(function(array $entityData) {
+            return new MessageEntity($entityData);
+        }, $data['entities']) : null;
         $this->photo     = isset($data['photo']) ? array_map(function(array $photoSizeData) {
             return new PhotoSize($photoSizeData);
         }, $data['photo']) : null;
         $this->sticker   = isset($data['sticker']) ? new Sticker($data['sticker']) : null;
+        $this->caption = $data['caption'] ?? null;
         $this->contact   = isset($data['contact']) ? new Contact($data['contact']) : null;
         $this->location  = isset($data['location']) ? new Location($data['location']) : null;
-        //$this->newChatParticipant = isset($data['new_chat_participant']) ? new User($data['new_chat_participant']) : null;
-        //$this->leftChatParticipant = isset($data['left_chat_participant']) ? new User($data['left_chat_participant']) : null;
-        //$this->newChatTitle = $data['new_chat_title'] ?? null;
+        $this->newChatMember = isset($data['new_chat_member']) ? new User($data['new_chat_member']) : null;
+        $this->leftChatMember = isset($data['left_chat_member']) ? new User($data['left_chat_member']) : null;
+        $this->newChatTitle = $data['new_chat_title'] ?? null;
+        $this->newChatPhoto = isset($data['new_chat_photo']) ? array_map(function(array $photoSizeData) {
+            return new PhotoSize($photoSizeData);
+        }, $data['new_chat_photo']) : null;
+        $this->deleteChatPhoto = isset($data['delete_chat_photo']) ? true : null;
+        $this->groupChatCreated = isset($data['group_chat_created']) ? true : null;
+        $this->supergroupChatCreated = isset($data['super_group_chat_created']) ? true : null;
+        $this->channelChatCreated = isset($data['channel_chat_created']) ? true : null;
+        $this->migrateToChatId = $data['migrate_to_chat_id'] ?? null;
+        $this->migrateFromChatId = $data['migrate_from_chat_id'] ?? null;
+        $this->pinnedMessage = isset($data['pinned_message']) ? new Message($data['pinned_message']) : null;
     }
 }
