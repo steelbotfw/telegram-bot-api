@@ -40,6 +40,7 @@ class Message
     public $text;
 
 //forward_from 	User 	Optional. For forwarded messages, sender of the original message
+//forward_from_chat 	Chat 	Optional. For messages forwarded from a channel, information about the original channel
 //forward_date 	Integer 	Optional. For forwarded messages, date the original message was sent in Unix time
 //reply_to_message 	Message 	Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
 //audio 	Audio 	Optional. Message is an audio file, information about the file

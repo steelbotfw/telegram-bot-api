@@ -36,6 +36,11 @@ class Sticker
     public $thumb;
 
     /**
+     * @var string|null
+     */
+    public $emoji;
+
+    /**
      * File size.
      *
      * @var int
@@ -51,6 +56,7 @@ class Sticker
         $this->width = $data['width'];
         $this->height = $data['height'];
         $this->thumb = isset($data['thumb']) ? new PhotoSize($data['thumb']) : null;
+        $this->emoji = $data['emoji'] ?? null;
         $this->fileSize = $data['file_size'] ?? null;
     }
 }

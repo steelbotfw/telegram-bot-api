@@ -22,7 +22,7 @@ trait ReplyToMessageIdTrait
     /**
      * @param null $replyToMessageId
      *
-     * @return SendLocation
+     * @return self
      */
     public function setReplyToMessageId(int $replyToMessageId = null)
     {
