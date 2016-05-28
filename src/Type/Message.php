@@ -111,7 +111,12 @@ class Message
     public $sticker;
 
 //video 	Video 	Optional. Message is a video, information about the video
-//voice 	Voice 	Optional. Message is a voice message, information about the file
+    /**
+     * Message is a voice message, information about the file.
+     *
+     * @var Voice|null
+     */
+    public $voice;
 
     /**
      * Caption for the photo or video, 0-200 characters.
@@ -238,6 +243,7 @@ class Message
             return new PhotoSize($photoSizeData);
         }, $data['photo']) : null;
         $this->sticker   = isset($data['sticker']) ? new Sticker($data['sticker']) : null;
+        $this->voice     = isset($data['voice']) ? new Voice($data['voice']) : null;
         $this->caption = $data['caption'] ?? null;
         $this->contact   = isset($data['contact']) ? new Contact($data['contact']) : null;
         $this->location  = isset($data['location']) ? new Location($data['location']) : null;
