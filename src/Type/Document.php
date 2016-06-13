@@ -48,9 +48,7 @@ class Document
     public function __construct(array $data)
     {
         $this->fileId = $data['file_id'];
-        $this->thumb    = isset($data['thumb']) ? array_map(function(array $photoSizeData) {
-            return new PhotoSize($photoSizeData);
-        }, $data['thumb']) : null;
+        $this->thumb    = isset($data['thumb']) ? new PhotoSize($data['thumb']) : null;
         $this->fileName = $data['file_name'] ?? null;
         $this->mimeType = $data['mime_type'] ?? null;
         $this->fileSize = $data['file_size'] ?? null;
