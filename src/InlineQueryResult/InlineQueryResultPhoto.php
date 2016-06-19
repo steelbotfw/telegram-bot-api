@@ -3,28 +3,19 @@
 namespace Steelbot\TelegramBotApi\InlineQueryResult;
 
 use Steelbot\TelegramBotApi\Traits\{
-    DescriptionTrait,
-    DisableWebPagePreviewTrait,
-    ParseModeTrait,
-    HideUrlTrait
+    CaptionTrait, DescriptionTrait, TitleTrait
 };
 
-class InlineQueryResultPhoto implements \JsonSerializable
+class InlineQueryResultPhoto extends AbstractInlineQueryResult
 {
-    use ParseModeTrait;
-    use DisableWebPagePreviewTrait;
-    use HideUrlTrait;
+    use TitleTrait;
+    use CaptionTrait;
     use DescriptionTrait;
 
     /**
      * @var string
      */
     protected $type = 'photo';
-
-    /**
-     * @var
-     */
-    protected $id;
 
     /**
      * @var string
@@ -37,34 +28,103 @@ class InlineQueryResultPhoto implements \JsonSerializable
     protected $thumbUrl;
 
     /**
-     * @var string|null
+     * @var int|null
      */
-    protected $messageText;
+    protected $photoWidth;
+
+    /**
+     * @var int|null
+     */
+    protected $photoHeight;
 
     /**
      * @param array $data
      */
     public function __construct($id, string $photoUrl, string $thumbUrl)
     {
-        $this->id = $id ? $id : uniqid('steelbot', true);
+        parent::__construct($id);
         $this->photoUrl = $photoUrl;
         $this->thumbUrl = $thumbUrl;
     }
 
     /**
-     * @param string|null $text
+     * @return string
      */
-    public function setMessageText(string $text = null)
+    public function getPhotoUrl(): string
     {
-        $this->messageText = $text;
+        return $this->photoUrl;
     }
 
     /**
-     * @return string|null
+     * @param string $photoUrl
+     *
+     * @return InlineQueryResultPhoto
      */
-    public function getMessageText()
+    public function setPhotoUrl(string $photoUrl)
     {
-        return $this->messageText;
+        $this->photoUrl = $photoUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThumbUrl(): string
+    {
+        return $this->thumbUrl;
+    }
+
+    /**
+     * @param string $thumbUrl
+     *
+     * @return InlineQueryResultPhoto
+     */
+    public function setThumbUrl(string $thumbUrl)
+    {
+        $this->thumbUrl = $thumbUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPhotoWidth()
+    {
+        return $this->photoWidth;
+    }
+
+    /**
+     * @param int|null $photoWidth
+     *
+     * @return InlineQueryResultPhoto
+     */
+    public function setPhotoWidth(int $photoWidth = null)
+    {
+        $this->photoWidth = $photoWidth;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPhotoHeight()
+    {
+        return $this->photoHeight;
+    }
+
+    /**
+     * @param int|null $photoHeight
+     *
+     * @return InlineQueryResultPhoto
+     */
+    public function setPhotoHeight(int $photoHeight = null)
+    {
+        $this->photoHeight = $photoHeight;
+
+        return $this;
     }
 
     /**
@@ -72,27 +132,29 @@ class InlineQueryResultPhoto implements \JsonSerializable
      */
     function jsonSerialize()
     {
-        $result = [
-            'type' => $this->type,
-            'id' => $this->id,
-            'photo_url' => $this->photoUrl,
-            'thumb_url' => $this->thumbUrl
-        ];
+        $result = parent::jsonSerialize();
 
-        if ($this->messageText !== null) {
-            $result['message_text'] = $this->messageText;
+        $result['photo_url'] = $this->photoUrl;
+        $result['thumb_url'] = $this->thumbUrl;
+
+        if ($this->photoHeight !== null) {
+            $result['photo_height'] = $this->photoHeight;
         }
 
-        if ($this->parseMode) {
-            $result['parse_mode'] = $this->parseMode;
+        if ($this->photoWidth !== null) {
+            $result['photo_width'] = $this->photoWidth;
         }
 
-        if ($this->disableWebPagePreview) {
-            $result['disable_web_page_preview'] = (int)$this->disableWebPagePreview;
+        if ($this->title !== null) {
+            $result['title'] = $this->title;
         }
 
-        if ($this->description) {
+        if ($this->description !== null) {
             $result['description'] = $this->description;
+        }
+
+        if ($this->caption !== null) {
+            $result['caption'] = $this->caption;
         }
 
         return $result;

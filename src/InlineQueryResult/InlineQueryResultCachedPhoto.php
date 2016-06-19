@@ -3,12 +3,14 @@
 namespace Steelbot\TelegramBotApi\InlineQueryResult;
 
 use Steelbot\TelegramBotApi\Traits\{
-    DescriptionTrait, DisableWebPagePreviewTrait, InputMessageContentTrait, ParseModeTrait, HideUrlTrait, ReplyMarkupTrait
+    CaptionTrait, DescriptionTrait, DisableWebPagePreviewTrait, InputMessageContentTrait, ParseModeTrait, HideUrlTrait, ReplyMarkupTrait, TitleTrait
 };
 
-class InlineQueryResultCachedPhoto implements \JsonSerializable
+class InlineQueryResultCachedPhoto extends AbstractInlineQueryResult
 {
+    use TitleTrait;
     use DescriptionTrait;
+    use CaptionTrait;
     use ReplyMarkupTrait;
     use InputMessageContentTrait;
 
@@ -18,31 +20,16 @@ class InlineQueryResultCachedPhoto implements \JsonSerializable
     protected $type = 'photo';
 
     /**
-     * @var
-     */
-    protected $id;
-
-    /**
      * @var string
      */
     protected $photoFileId;
-
-    /**
-     * @var string|null
-     */
-    protected $title;
-
-    /**
-     * @var string|null
-     */
-    protected $caption;
 
     /**
      * @param array $data
      */
     public function __construct($id, string $photoFileId)
     {
-        $this->id = $id ? $id : uniqid('steelbot', true);
+        parent::__construct($id);
         $this->photoFileId = $photoFileId;
     }
 
@@ -67,55 +54,12 @@ class InlineQueryResultCachedPhoto implements \JsonSerializable
     }
 
     /**
-     * @return null|string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param null|string $title
-     *
-     * @return InlineQueryResultCachedPhoto
-     */
-    public function setTitle(string $title = null)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getCaption()
-    {
-        return $this->caption;
-    }
-
-    /**
-     * @param null|string $caption
-     *
-     * @return InlineQueryResultCachedPhoto
-     */
-    public function setCaption(string $caption = null)
-    {
-        $this->caption = $caption;
-
-        return $this;
-    }
-
-    /**
      * @return array
      */
     function jsonSerialize()
     {
-        $result = [
-            'type' => $this->type,
-            'id' => $this->id,
-            'photo_file_id' => $this->photoFileId
-        ];
+        $result = parent::jsonSerialize();
+        $result['photo_file_id'] = $this->photoFileId;
 
         if ($this->title !== null) {
             $result['title'] = $this->title;

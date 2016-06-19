@@ -2,57 +2,53 @@
 
 namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult;
 
-use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultCachedPhoto;
+use Steelbot\TelegramBotApi\{
+    InlineQueryResult\InlineQueryResultCachedPhoto,
+    Type\InputMessageContentInterface,
+    Type\ReplyKeyboardMarkup
+};
 
 class InlineQueryResultCachedPhotoTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var InlineQueryResultCachedPhoto
+     */
+    protected $inlineQueryResult;
+
+    public function setUp()
+    {
+        $inputMessageContent = $this->getMock(InputMessageContentInterface::class);
+        $this->inlineQueryResult = new InlineQueryResultCachedPhoto(null, '123-4');
+        $this->inlineQueryResult->setInputMessageContent($inputMessageContent);
+    }
+
     public function testGetSetPhotoFileId()
     {
-        $inlineResult = new InlineQueryResultCachedPhoto(null, '123-4');
+        $this->assertEquals('123-4', $this->inlineQueryResult->getPhotoFileId());
 
-        $this->assertEquals('123-4', $inlineResult->getPhotoFileId());
+        $this->inlineQueryResult->setPhotoFileId('12-34');
 
-        $inlineResult->setPhotoFileId('12-34');
-
-        $this->assertEquals('12-34', $inlineResult->getPhotoFileId());
+        $this->assertEquals('12-34', $this->inlineQueryResult->getPhotoFileId());
     }
 
-    public function testGetSetTitle()
-    {
-        $inlineResult = new InlineQueryResultCachedPhoto(null, '123-4');
-
-        $this->assertNull($inlineResult->getTitle());
-
-        $inlineResult->setTitle('Title');
-
-        $this->assertEquals('Title', $inlineResult->getTitle());
-    }
-
-    public function testGetSetCaption()
-    {
-        $inlineResult = new InlineQueryResultCachedPhoto(null, '123-4');
-
-        $this->assertNull($inlineResult->getCaption());
-
-        $inlineResult->setCaption('Caption');
-
-        $this->assertEquals('Caption', $inlineResult->getCaption());
-    }
-
-    /**
-     * @todo add tests for optional fields
-     */
     public function testJsonSerialize()
     {
-        $inlineResult = new InlineQueryResultCachedPhoto('steelbot123', '123-4');
+        $this->inlineQueryResult->setTitle('title');
+        $this->inlineQueryResult->setDescription('description');
+        $this->inlineQueryResult->setCaption('caption');
+        $this->inlineQueryResult->setReplyMarkup(new ReplyKeyboardMarkup(['1', '2', '3']));
 
-        $expectedJsonResult = json_encode([
-            'type' => 'photo',
-            'id' => 'steelbot123',
-            'photo_file_id' => '123-4'
-        ], JSON_UNESCAPED_UNICODE);
-        $jsonResult = json_encode($inlineResult, JSON_UNESCAPED_UNICODE);
+        $arrayResult = $this->inlineQueryResult->jsonSerialize();
+        $result = json_decode(json_encode($arrayResult), true);
 
-        $this->assertEquals($expectedJsonResult, $jsonResult);
+        $this->assertStringStartsWith('steelbot', $result['id']);
+        $this->assertNotEmpty($result['id']);
+        $this->assertEquals('123-4', $result['photo_file_id']);
+        $this->assertEquals('photo', $result['type']);
+        $this->assertEquals('title', $result['title']);
+        $this->assertArrayHasKey('input_message_content', $result);
+        $this->assertEquals('description', $result['description']);
+        $this->assertEquals('caption', $result['caption']);
+        $this->assertArrayHasKey('reply_markup', $result);
     }
 }

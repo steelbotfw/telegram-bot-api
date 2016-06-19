@@ -3,6 +3,7 @@
 namespace Steelbot\Tests\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultArticle;
+use Steelbot\TelegramBotApi\InputMessageContent\InputTextMessageContent;
 use Steelbot\TelegramBotApi\Method\AnswerInlineQuery;
 
 class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
@@ -35,7 +36,8 @@ class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonSerialize()
     {
-        $result1 = new InlineQueryResultArticle('steelbot123', 'Test article', 'Text');
+        $inputMessageContent = new InputTextMessageContent('Text');
+        $result1 = new InlineQueryResultArticle('steelbot123', 'Test article', $inputMessageContent);
 
         $method = new AnswerInlineQuery(123, [$result1]);
         $method->setSwitchPmText('switchPmText')
@@ -48,7 +50,9 @@ class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
                     'type' => 'article',
                     'id' => 'steelbot123',
                     'title' => 'Test article',
-                    'message_text' => 'Text'
+                    'input_message_content' => [
+                        'message_text' => 'Text'
+                    ]
                 ]
             ],
             'switch_pm_parameter' => 'switchPmParameter',
@@ -56,7 +60,7 @@ class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
         ];
         $json = json_encode($json, JSON_UNESCAPED_UNICODE);
 
-        $this->assertEquals($json, json_encode($method, JSON_UNESCAPED_UNICODE));
+        $this->assertJsonStringEqualsJsonString($json, json_encode($method, JSON_UNESCAPED_UNICODE));
     }
 
     public function testGetHttpMethod()
@@ -97,7 +101,8 @@ class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSetResults()
     {
-        $result1 = new InlineQueryResultArticle('steelbot123', 'Test article', 'Text');
+        $inputMessageContent = new InputTextMessageContent('Text');
+        $result1 = new InlineQueryResultArticle('steelbot123', 'Test article', $inputMessageContent);
 
         $method = new AnswerInlineQuery(123, []);
 

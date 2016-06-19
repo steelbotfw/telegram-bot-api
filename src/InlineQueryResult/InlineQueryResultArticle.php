@@ -3,17 +3,14 @@
 namespace Steelbot\TelegramBotApi\InlineQueryResult;
 
 use Steelbot\TelegramBotApi\Traits\{
-    DescriptionTrait,
-    DisableWebPagePreviewTrait,
-    ParseModeTrait,
-    HideUrlTrait
+    DescriptionTrait, HideUrlTrait, ReplyMarkupTrait, TitleTrait
 };
+use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 
-class InlineQueryResultArticle implements \JsonSerializable
+class InlineQueryResultArticle extends AbstractInlineQueryResult
 {
-    use ParseModeTrait;
-    use DisableWebPagePreviewTrait;
-    use HideUrlTrait;
+    use TitleTrait;
+    use ReplyMarkupTrait;
     use DescriptionTrait;
 
     /**
@@ -22,24 +19,14 @@ class InlineQueryResultArticle implements \JsonSerializable
     protected $type = 'article';
 
     /**
-     * @var
-     */
-    protected $id;
-
-    /**
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $messageText;
-
-    /**
      * @var string|null
      */
     protected $url = null;
+
+    /**
+     * @var bool|null
+     */
+    protected $hideUrl;
 
     /**
      * @var string|null
@@ -59,11 +46,11 @@ class InlineQueryResultArticle implements \JsonSerializable
     /**
      * @param array $data
      */
-    public function __construct($id = null, string $title, string $messageText)
+    public function __construct($id = null, string $title, InputMessageContentInterface $inputMessageContent)
     {
-        $this->id = $id ? $id : uniqid('steelbot', true);
+        parent::__construct($id);
+        $this->setInputMessageContent($inputMessageContent);
         $this->title = $title;
-        $this->messageText = $messageText;
     }
 
     /**
@@ -82,6 +69,26 @@ class InlineQueryResultArticle implements \JsonSerializable
     public function setUrl(string $url = null)
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getHideUrl()
+    {
+        return $this->hideUrl;
+    }
+
+    /**
+     * @param bool|null $hideUrl
+     *
+     * @return self
+     */
+    public function setHideUrl(bool $hideUrl = null)
+    {
+        $this->hideUrl = $hideUrl;
 
         return $this;
     }
@@ -151,20 +158,8 @@ class InlineQueryResultArticle implements \JsonSerializable
      */
     function jsonSerialize()
     {
-        $result = [
-            'type' => $this->type,
-            'id' => $this->id,
-            'title' => $this->title,
-            'message_text' => $this->messageText
-        ];
-
-        if ($this->parseMode !== null) {
-            $result['parse_mode'] = $this->parseMode;
-        }
-
-        if ($this->disableWebPagePreview !== null) {
-            $result['disable_web_page_preview'] = (int)$this->disableWebPagePreview;
-        }
+        $result = parent::jsonSerialize();
+        $result['title'] = $this->title;
 
         if ($this->url !== null) {
             $result['url'] = $this->url;

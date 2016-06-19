@@ -19,9 +19,9 @@ class AbstractInlineQueryResultTest extends \PHPUnit_Framework_TestCase
 
         /** @var AbstractInlineQueryResult $inlineQueryResult */
         $inlineQueryResult = $this->getMockForAbstractClass(AbstractInlineQueryResult::class, [
-            null,
-            $inputMessageContent
+            null
         ]);
+        $inlineQueryResult->setInputMessageContent($inputMessageContent);
 
         $reflection = new \ReflectionClass($inlineQueryResult);
         $reflectionProperty = $reflection->getProperty('type');
@@ -35,11 +35,6 @@ class AbstractInlineQueryResultTest extends \PHPUnit_Framework_TestCase
     public function testGetId()
     {
         $this->assertStringStartsWith('steelbot', $this->inlineQueryResult->getId());
-    }
-
-    public function testGetInputMessageContent()
-    {
-        $this->assertInstanceOf(InputMessageContentInterface::class, $this->inlineQueryResult->getInputMessageContent());
     }
 
     public function testGetType()

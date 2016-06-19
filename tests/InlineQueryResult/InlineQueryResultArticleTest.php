@@ -2,67 +2,87 @@
 
 namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult;
 
-use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultArticle;
+use Steelbot\TelegramBotApi\{
+    InlineQueryResult\InlineQueryResultArticle,
+    Type\InputMessageContentInterface,
+    Type\ReplyKeyboardMarkup
+};
 
 class InlineQueryResultArticleTest extends \PHPUnit_Framework_TestCase
 {
+    const THUMB_URL = 'http://example.com/img.jpg';
+    const URL = 'http://test.com';
+
+    /**
+     * @var InlineQueryResultArticle
+     */
+    protected $inlineQueryResult;
+
+    public function setUp()
+    {
+        $inputMessageContent = $this->getMock(InputMessageContentInterface::class);
+        $this->inlineQueryResult = new InlineQueryResultArticle(null, 'ArticleTitle', $inputMessageContent);
+    }
+
     public function testGetSetThumbUrl()
     {
-        $inlineResult = new InlineQueryResultArticle(null, 'Title', 'Text');
+        $this->assertNull($this->inlineQueryResult->getThumbUrl());
 
-        $this->assertNull($inlineResult->getThumbUrl());
+        $this->inlineQueryResult->setThumbUrl(self::THUMB_URL);
 
-        $url = 'http://example.com/img.jpg';
-        $inlineResult->setThumbUrl($url);
-
-        $this->assertEquals($url, $inlineResult->getThumbUrl());
+        $this->assertEquals(self::THUMB_URL, $this->inlineQueryResult->getThumbUrl());
     }
 
     public function testGetSetThumbWidth()
     {
-        $inlineResult = new InlineQueryResultArticle(null, 'Title', 'Text');
+        $this->assertNull($this->inlineQueryResult->getThumbWidth());
 
-        $this->assertNull($inlineResult->getThumbWidth());
+        $this->inlineQueryResult->setThumbWidth(126);
 
-        $inlineResult->setThumbWidth(126);
-
-        $this->assertEquals(126, $inlineResult->getThumbWidth());
+        $this->assertEquals(126, $this->inlineQueryResult->getThumbWidth());
     }
 
     public function testGetSetThumbHeight()
     {
-        $inlineResult = new InlineQueryResultArticle(null, 'Title', 'Text');
+        $this->assertNull($this->inlineQueryResult->getThumbHeight());
 
-        $this->assertNull($inlineResult->getThumbHeight());
+        $this->inlineQueryResult->setThumbHeight(126);
 
-        $inlineResult->setThumbHeight(126);
-
-        $this->assertEquals(126, $inlineResult->getThumbHeight());
+        $this->assertEquals(126, $this->inlineQueryResult->getThumbHeight());
     }
 
     public function testGetSetUrl()
     {
-        $inlineResult = new InlineQueryResultArticle(null, 'Title', 'Text');
+        $this->assertNull($this->inlineQueryResult->getUrl());
 
-        $this->assertNull($inlineResult->getUrl());
+        $this->inlineQueryResult->setUrl(self::URL);
 
-        $inlineResult->setUrl('http://test.com');
-
-        $this->assertEquals('http://test.com', $inlineResult->getUrl());
+        $this->assertEquals(self::URL, $this->inlineQueryResult->getUrl());
     }
 
     public function testJsonSerialize()
     {
-        $inlineResult = new InlineQueryResultArticle('steelbot123', 'Test article', 'Text');
+        $this->inlineQueryResult->setThumbUrl(self::THUMB_URL);
+        $this->inlineQueryResult->setThumbWidth(126);
+        $this->inlineQueryResult->setThumbHeight(125);
+        $this->inlineQueryResult->setUrl(self::URL);
+        $this->inlineQueryResult->setDescription('description');
+        $this->inlineQueryResult->setReplyMarkup(new ReplyKeyboardMarkup(['1', '2', '3']));
 
-        $expectedJsonResult = json_encode([
-            'type' => 'article',
-            'id' => 'steelbot123',
-            'title' => 'Test article',
-            'message_text' => 'Text'
-        ], JSON_UNESCAPED_UNICODE);
-        $jsonResult = json_encode($inlineResult, JSON_UNESCAPED_UNICODE);
+        $resultArray = $this->inlineQueryResult->jsonSerialize();
 
-        $this->assertEquals($expectedJsonResult, $jsonResult);
+        $result = json_decode(json_encode($resultArray), true);
+
+        $this->assertStringStartsWith('steelbot', $result['id']);
+        $this->assertNotEmpty($result['id']);
+        $this->assertEquals('article', $result['type']);
+        $this->assertEquals('ArticleTitle', $result['title']);
+        $this->assertArrayHasKey('input_message_content', $result);
+        $this->assertEquals(self::THUMB_URL, $result['thumb_url']);
+        $this->assertEquals(126, $result['thumb_width']);
+        $this->assertEquals(125, $result['thumb_height']);
+        $this->assertEquals(self::URL, $result['url']);
+        $this->assertEquals('description', $result['description']);
+        $this->assertArrayHasKey('reply_markup', $result);
     }
 }

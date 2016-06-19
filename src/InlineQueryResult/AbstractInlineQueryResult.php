@@ -2,12 +2,14 @@
 
 namespace Steelbot\TelegramBotApi\InlineQueryResult;
 
+use Steelbot\TelegramBotApi\Traits\InputMessageContentTrait;
 use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 
 abstract class AbstractInlineQueryResult implements \JsonSerializable
 {
     use ReplyMarkupTrait;
+    use InputMessageContentTrait;
 
     /**
      * @var string
@@ -19,15 +21,9 @@ abstract class AbstractInlineQueryResult implements \JsonSerializable
      */
     protected $id;
 
-    /**
-     * @var InputMessageContentInterface|null
-     */
-    protected $inputMessageContent;
-
-    public function __construct(string $id = null, InputMessageContentInterface $inputMessageContent = null)
+    public function __construct(string $id = null)
     {
         $this->id = $id ?? uniqid('steelbot', true);
-        $this->inputMessageContent = $inputMessageContent;
     }
 
     /**
@@ -36,22 +32,6 @@ abstract class AbstractInlineQueryResult implements \JsonSerializable
     public function getId(): string
     {
         return $this->id;
-    }
-
-    /**
-     * @param InputMessageContentInterface|null $inputMessageContent
-     */
-    public function setInputMessageContent(InputMessageContentInterface $inputMessageContent = null)
-    {
-        $this->inputMessageContent = $inputMessageContent;
-    }
-
-    /**
-     * @return InputMessageContentInterface
-     */
-    public function getInputMessageContent(): InputMessageContentInterface
-    {
-        return $this->inputMessageContent;
     }
 
     /**
