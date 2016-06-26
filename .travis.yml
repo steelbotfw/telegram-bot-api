@@ -2,7 +2,7 @@ language: php
 
 php:
   - 7.0
-  - nightly
+#  - nightly
 
 install:
   - composer install --no-interaction --prefer-source
