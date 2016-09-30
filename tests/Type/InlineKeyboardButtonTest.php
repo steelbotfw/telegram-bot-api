@@ -1,6 +1,6 @@
 <?php
 
-namespace Steelbot\Tests\TelegramBotApi\Type\Traits;
+namespace Steelbot\Tests\TelegramBotApi\Type;
 
 use Steelbot\TelegramBotApi\Type\InlineKeyboardButton;
 
@@ -45,9 +45,7 @@ class InlineKeyboardButtonTest extends \PHPUnit_Framework_TestCase
         try {
             $json = json_encode($button);
         } catch (\Exception $e) {
-            $previous = $e->getPrevious();
-
-            if (!$previous instanceof \LogicException) {
+            if (!$e instanceof \LogicException) {
                 $this->fail("Incorrect button configuration must throw LogicException");
             }
         }
