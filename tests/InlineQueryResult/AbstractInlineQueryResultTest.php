@@ -15,7 +15,7 @@ class AbstractInlineQueryResultTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $inputMessageContent = $this->getMock(InputMessageContentInterface::class);
+        $inputMessageContent = $this->createMock(InputMessageContentInterface::class);
 
         /** @var AbstractInlineQueryResult $inlineQueryResult */
         $inlineQueryResult = $this->getMockForAbstractClass(AbstractInlineQueryResult::class, [

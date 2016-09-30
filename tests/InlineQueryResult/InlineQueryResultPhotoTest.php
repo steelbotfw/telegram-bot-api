@@ -64,7 +64,7 @@ class InlineQueryResultPhotoTest extends \PHPUnit_Framework_TestCase
         $this->inlineQueryResult->setDescription('PhotoDescription');
         $this->inlineQueryResult->setPhotoWidth(200);
         $this->inlineQueryResult->setPhotoHeight(100);
-        $inputMessageContentMock = $this->getMock(InputMessageContentInterface::class);
+        $inputMessageContentMock = $this->createMock(InputMessageContentInterface::class);
         $this->inlineQueryResult->setInputMessageContent($inputMessageContentMock);
         $this->inlineQueryResult->setReplyMarkup(new ReplyKeyboardMarkup(['1', '2', '3']));
 

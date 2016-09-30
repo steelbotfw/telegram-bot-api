@@ -1,6 +1,6 @@
 <?php
 
-namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
+namespace Steelbot\Tests\TelegramBotApi\Traits;
 
 use Steelbot\TelegramBotApi\Traits\InputMessageContentTrait;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
@@ -14,7 +14,7 @@ class InputMessageContentTraitTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($mock->getInputMessageContent());
 
-        $inputMessageContentMock = $this->getMock(InputMessageContentInterface::class);
+        $inputMessageContentMock = $this->createMock(InputMessageContentInterface::class);
 
         $mock->setInputMessageContent($inputMessageContentMock);
 

@@ -20,7 +20,7 @@ class InlineQueryResultArticleTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $inputMessageContent = $this->getMock(InputMessageContentInterface::class);
+        $inputMessageContent = $this->createMock(InputMessageContentInterface::class);
         $this->inlineQueryResult = new InlineQueryResultArticle(null, 'ArticleTitle', $inputMessageContent);
     }
 

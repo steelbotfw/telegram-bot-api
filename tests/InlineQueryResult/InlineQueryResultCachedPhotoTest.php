@@ -17,7 +17,7 @@ class InlineQueryResultCachedPhotoTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $inputMessageContent = $this->getMock(InputMessageContentInterface::class);
+        $inputMessageContent = $this->createMock(InputMessageContentInterface::class);
         $this->inlineQueryResult = new InlineQueryResultCachedPhoto(null, '123-4');
         $this->inlineQueryResult->setInputMessageContent($inputMessageContent);
     }

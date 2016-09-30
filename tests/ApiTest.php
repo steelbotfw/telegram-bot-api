@@ -22,7 +22,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->httpClient = $this->getMock(Client::class);
+        $this->httpClient = $this->createMock(Client::class);
     }
 
     public function testCreateWithEmptyClient()
@@ -34,7 +34,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteOk()
     {
-        $method = $this->getMock(AbstractMethod::class);
+        $method = $this->createMock(AbstractMethod::class);
         $method->expects($this->once())->method('getMethodName')->willReturn('/someMethod');
         $method->expects($this->once())->method('getHttpMethod')->willReturn('GET');
         $method->expects($this->once())->method('getParams')->willReturn([
@@ -59,7 +59,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteNotOk()
     {
-        $method = $this->getMock(AbstractMethod::class);
+        $method = $this->createMock(AbstractMethod::class);
         $method->expects($this->once())->method('getMethodName')->willReturn('/someMethod');
         $method->expects($this->once())->method('getHttpMethod')->willReturn('GET');
         $method->expects($this->once())->method('getParams')->willReturn([
@@ -89,7 +89,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteWithJsonBody()
     {
-        $method = $this->getMock(AbstractMethodWithBodyStub::class);
+        $method = $this->createMock(AbstractMethodWithBodyStub::class);
         $method->expects($this->once())->method('getMethodName')->willReturn('/someMethod');
         $method->expects($this->once())->method('getHttpMethod')->willReturn('POST');
         $method->expects($this->once())->method('getParams')->willReturn([
@@ -121,7 +121,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUpHttpClient(string $responseData)
     {
-        $response = $this->getMock(Response::class);
+        $response = $this->createMock(Response::class);
         $response->method('getBody')
             ->willReturn(new ReadableStreamStub($responseData));
 
