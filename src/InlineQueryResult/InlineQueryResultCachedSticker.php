@@ -58,7 +58,7 @@ class InlineQueryResultCachedSticker implements \JsonSerializable
     /**
      * @return array
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         $result = [
             'type' => $this->type,
