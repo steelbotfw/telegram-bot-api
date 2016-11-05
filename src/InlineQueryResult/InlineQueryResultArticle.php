@@ -3,15 +3,22 @@
 namespace Steelbot\TelegramBotApi\InlineQueryResult;
 
 use Steelbot\TelegramBotApi\Traits\{
-    DescriptionTrait, HideUrlTrait, ReplyMarkupTrait, TitleTrait
+    DescriptionTrait,
+    HideUrlTrait,
+    JsonAttributesBuilderTrait,
+    ReplyMarkupTrait,
+    TitleTrait
 };
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 
 class InlineQueryResultArticle extends AbstractInlineQueryResult
 {
     use TitleTrait;
+    use HideUrlTrait;
     use ReplyMarkupTrait;
     use DescriptionTrait;
+
+    use JsonAttributesBuilderTrait;
 
     /**
      * @var string
@@ -22,11 +29,6 @@ class InlineQueryResultArticle extends AbstractInlineQueryResult
      * @var string|null
      */
     protected $url = null;
-
-    /**
-     * @var bool|null
-     */
-    protected $hideUrl;
 
     /**
      * @var string|null
@@ -69,26 +71,6 @@ class InlineQueryResultArticle extends AbstractInlineQueryResult
     public function setUrl(string $url = null)
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function getHideUrl()
-    {
-        return $this->hideUrl;
-    }
-
-    /**
-     * @param bool|null $hideUrl
-     *
-     * @return self
-     */
-    public function setHideUrl(bool $hideUrl = null)
-    {
-        $this->hideUrl = $hideUrl;
 
         return $this;
     }
@@ -156,34 +138,20 @@ class InlineQueryResultArticle extends AbstractInlineQueryResult
     /**
      * @return array
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         $result = parent::jsonSerialize();
         $result['title'] = $this->title;
 
-        if ($this->url !== null) {
-            $result['url'] = $this->url;
-        }
-
-        if ($this->hideUrl !== null) {
-            $result['hide_url'] = (int)$this->hideUrl;
-        }
-
-        if ($this->description !== null) {
-            $result['description'] = $this->description;
-        }
-
-        if ($this->thumbUrl !== null) {
-            $result['thumb_url'] = $this->thumbUrl;
-        }
-
-        if ($this->thumbWidth !== null) {
-            $result['thumb_width'] = $this->thumbWidth;
-        }
-
-        if ($this->thumbHeight !== null) {
-            $result['thumb_height'] = $this->thumbHeight;
-        }
+        $attributes = $this->buildJsonAttributes([
+            'url' => $this->url,
+            'hide_url' => $this->hideUrl,
+            'description' => $this->description,
+            'thumb_url' => $this->thumbUrl,
+            'thumb_width' => $this->thumbWidth,
+            'thumb_height' => $this->thumbHeight
+        ]);
+        $result = array_merge($result, $attributes);
 
         return $result;
     }

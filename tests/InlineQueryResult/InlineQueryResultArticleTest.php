@@ -67,6 +67,7 @@ class InlineQueryResultArticleTest extends \PHPUnit_Framework_TestCase
         $this->inlineQueryResult->setThumbHeight(125);
         $this->inlineQueryResult->setUrl(self::URL);
         $this->inlineQueryResult->setDescription('description');
+        $this->inlineQueryResult->setHideUrl(true);
         $this->inlineQueryResult->setReplyMarkup(new ReplyKeyboardMarkup(['1', '2', '3']));
 
         $resultArray = $this->inlineQueryResult->jsonSerialize();
@@ -83,6 +84,7 @@ class InlineQueryResultArticleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(125, $result['thumb_height']);
         $this->assertEquals(self::URL, $result['url']);
         $this->assertEquals('description', $result['description']);
+        $this->assertEquals(1, $result['hide_url']);
         $this->assertArrayHasKey('reply_markup', $result);
     }
 }
