@@ -41,7 +41,7 @@ class InputTextMessageContent implements InputMessageContentInterface
         return $this;
     }
 
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         $result = [
             'message_text' => $this->messageText
