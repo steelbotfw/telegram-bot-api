@@ -4,10 +4,15 @@
 require dirname(__DIR__).'/vendor/autoload.php';
 
 use Icicle\Loop;
-use Steelbot\TelegramBotApi\Api;
-use Steelbot\TelegramBotApi\Method\SendMessage;
-use Steelbot\TelegramBotApi\Type\Chat;
-use Steelbot\TelegramBotApi\Type\Update;
+use Steelbot\TelegramBotApi\{
+    Api,
+    InlineQueryResult\InlineQueryResultArticle,
+    InputMessageContent\InputContactMessageContent,
+    InputMessageContent\InputLocationMessageContent,
+    InputMessageContent\InputTextMessageContent,
+    InputMessageContent\InputVenueMessageContent,
+    Type\Update
+};
 
 if (!getenv('BOT_TOKEN')) {
     echo "Error: BOT_TOKEN environment variable not found\n";
@@ -27,14 +32,18 @@ $generator = function () {
             if ($update->inlineQuery) {
                 $inlineQuery = $update->inlineQuery;
 
-                for ($results=[]; count($results)<5;) {
-                    $results[] = new \Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultArticle(
-                        null, "IQ title 1", "You entered 1: " . $inlineQuery->query
-                    );
-                    $results[] = new \Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultArticle(
-                        null, "IQ title 2", "You entered 2: " . $inlineQuery->query
-                    );
-                }
+                $results[] = new InlineQueryResultArticle(
+                    null, "Text result", new InputTextMessageContent("You entered 1: " . $inlineQuery->query)
+                );
+                $results[] = new InlineQueryResultArticle(
+                    null, "Location result", new InputLocationMessageContent(55.757, 37,616)
+                );
+                $results[] = new InlineQueryResultArticle(
+                    null, "Venue result", new InputVenueMessageContent(55.757, 37.616, "Venue title", "Venue address")
+                );
+                $results[] = new InlineQueryResultArticle(
+                    null, "Contact result", new InputContactMessageContent('+0123456789', "First Name")
+                );
 
                 $method = new \Steelbot\TelegramBotApi\Method\AnswerInlineQuery($inlineQuery->id, $results);
 
