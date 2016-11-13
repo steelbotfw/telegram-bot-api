@@ -2,14 +2,15 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
 class ForwardMessage extends AbstractMethod
 {
+    use ChatIdRequiredTrait;
     use DisableNotificationTrait;
 
-    protected $chatId;
     protected $fromChatId;
 
     /**
@@ -22,26 +23,6 @@ class ForwardMessage extends AbstractMethod
         $this->chatId = $chatId;
         $this->fromChatId = $fromChatId;
         $this->messageId = $messageId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getChatId()
-    {
-        return $this->chatId;
-    }
-
-    /**
-     * @param mixed $chatId
-     *
-     * @return ForwardMessage
-     */
-    public function setChatId($chatId)
-    {
-        $this->chatId = $chatId;
-
-        return $this;
     }
 
     /**

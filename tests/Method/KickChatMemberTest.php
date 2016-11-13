@@ -49,13 +49,4 @@ class KickChatMemberTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(321, $method->getUserId());
     }
-
-    public function testGetSetChatId()
-    {
-        $method = new KickChatMember(123, 31337);
-
-        $method->setChatId('@chatid');
-
-        $this->assertEquals('@chatid', $method->getChatId());
-    }
 }

@@ -122,13 +122,4 @@ class SendMessageTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("New text", $method->getText());
     }
-
-    public function testGetSetChatId()
-    {
-        $method = new SendMessage(123, "Hello");
-
-        $method->setChatId('@chatid');
-
-        $this->assertEquals('@chatid', $method->getChatId());
-    }
 }

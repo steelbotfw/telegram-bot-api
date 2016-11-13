@@ -146,13 +146,4 @@ class SendAudioTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('Some Title', $method->getTitle());
     }
-
-    public function testGetSetChatId()
-    {
-        $method = new SendAudio(123, '123-4');
-
-        $method->setChatId('@chatid');
-
-        $this->assertEquals('@chatid', $method->getChatId());
-    }
 }

@@ -2,6 +2,8 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
+
 class SendChatAction extends AbstractMethod
 {
     const ACTION_TYPING = 'typing';
@@ -13,10 +15,7 @@ class SendChatAction extends AbstractMethod
     const ACTION_UPLOAD_DOCUMENT = 'upload_document';
     const ACTION_FIND_LOCATION = 'find_location';
 
-    /**
-     * @var int|string
-     */
-    protected $chatId;
+    use ChatIdRequiredTrait;
 
     /**
      * @var string
@@ -27,26 +26,6 @@ class SendChatAction extends AbstractMethod
     {
         $this->chatId = $chatId;
         $this->action = $action;
-    }
-
-    /**
-     * @return int|string
-     */
-    public function getChatId()
-    {
-        return $this->chatId;
-    }
-
-    /**
-     * @param int|string $chatId
-     *
-     * @return SendChatAction
-     */
-    public function setChatId($chatId)
-    {
-        $this->chatId = $chatId;
-
-        return $this;
     }
 
     /**

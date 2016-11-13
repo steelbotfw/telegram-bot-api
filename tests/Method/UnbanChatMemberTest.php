@@ -49,13 +49,4 @@ class UnbanChatMemberTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(321, $method->getUserId());
     }
-
-    public function testGetSetChatId()
-    {
-        $method = new UnbanChatMember(123, 31337);
-
-        $method->setChatId('@chatid');
-
-        $this->assertEquals('@chatid', $method->getChatId());
-    }
 }

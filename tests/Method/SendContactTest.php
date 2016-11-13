@@ -145,13 +145,4 @@ class SendContactTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("Lastman", $method->getLastName());
     }
-
-    public function testGetSetChatId()
-    {
-        $method = new SendContact(123, '+71234567890', "Mr.Who");
-
-        $method->setChatId('@chatid');
-
-        $this->assertEquals('@chatid', $method->getChatId());
-    }
 }

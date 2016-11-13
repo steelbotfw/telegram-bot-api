@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 use Steelbot\TelegramBotApi\Traits\DisableWebPagePreviewTrait;
 use Steelbot\TelegramBotApi\Traits\ParseModeTrait;
@@ -11,39 +12,22 @@ use Steelbot\TelegramBotApi\Type\Message;
 
 class SendMessage extends AbstractMethod implements \JsonSerializable
 {
+    use ChatIdRequiredTrait;
     use ParseModeTrait;
     use DisableWebPagePreviewTrait;
     use ReplyMarkupTrait;
     use DisableNotificationTrait;
     use ReplyToMessageIdTrait;
 
-    protected $chatId;
+    /**
+     * @var string
+     */
     protected $text;
 
     public function __construct($chatId, string $text)
     {
         $this->chatId = $chatId;
         $this->text = $text;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getChatId()
-    {
-        return $this->chatId;
-    }
-
-    /**
-     * @param string|int $chatId
-     *
-     * @return SendMessage
-     */
-    public function setChatId($chatId)
-    {
-        $this->chatId = $chatId;
-
-        return $this;
     }
 
     /**

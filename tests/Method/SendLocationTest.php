@@ -129,13 +129,4 @@ class SendLocationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(48.9, $method->getLongitude());
     }
-
-    public function testGetSetChatId()
-    {
-        $method = new SendLocation(123, 80.635561, 49.910422);
-
-        $method->setChatId('@chatid');
-
-        $this->assertEquals('@chatid', $method->getChatId());
-    }
 }

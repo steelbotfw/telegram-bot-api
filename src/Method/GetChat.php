@@ -2,14 +2,12 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 use Steelbot\TelegramBotApi\Type\Chat;
 
 class GetChat extends AbstractMethod
 {
-    /**
-     * @var string|int
-     */
-    protected $chatId;
+    use ChatIdRequiredTrait;
 
     /**
      * GetChat constructor.

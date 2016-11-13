@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
 use Steelbot\TelegramBotApi\Traits\ReplyToMessageIdTrait;
@@ -9,11 +10,10 @@ use Steelbot\TelegramBotApi\Type\Message;
 
 class SendLocation extends AbstractMethod implements \JsonSerializable
 {
+    use ChatIdRequiredTrait;
     use ReplyMarkupTrait;
     use DisableNotificationTrait;
     use ReplyToMessageIdTrait;
-
-    protected $chatId;
 
     /**
      * @var float
@@ -30,26 +30,6 @@ class SendLocation extends AbstractMethod implements \JsonSerializable
         $this->chatId = $chatId;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
-    }
-
-    /**
-     * @return int|string
-     */
-    public function getChatId()
-    {
-        return $this->chatId;
-    }
-
-    /**
-     * @param string|int $chatId
-     *
-     * @return SendLocation
-     */
-    public function setChatId($chatId)
-    {
-        $this->chatId = $chatId;
-
-        return $this;
     }
 
     /**

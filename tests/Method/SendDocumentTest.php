@@ -130,13 +130,4 @@ class SendDocumentTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('Caption', $method->getCaption());
     }
-
-    public function testGetSetChatId()
-    {
-        $method = new SendDocument(123, '123-doc-4');
-
-        $method->setChatId('@chatid');
-
-        $this->assertEquals('@chatid', $method->getChatId());
-    }
 }

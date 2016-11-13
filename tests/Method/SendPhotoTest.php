@@ -139,13 +139,4 @@ class SendPhotoTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('Caption', $method->getCaption());
     }
-
-    public function testGetSetChatId()
-    {
-        $method = new SendPhoto(123, '123-4');
-
-        $method->setChatId('@chatid');
-
-        $this->assertEquals('@chatid', $method->getChatId());
-    }
 }

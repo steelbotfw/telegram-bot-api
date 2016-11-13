@@ -2,15 +2,12 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 use Steelbot\TelegramBotApi\Type\ChatMember;
-use Steelbot\TelegramBotApi\Type\User;
 
 class GetChatMember extends AbstractMethod
 {
-    /**
-     * @var int|string
-     */
-    protected $chatId;
+    use ChatIdRequiredTrait;
 
     /**
      * @var int
@@ -26,26 +23,6 @@ class GetChatMember extends AbstractMethod
     {
         $this->chatId = $chatId;
         $this->userId = $userId;
-    }
-
-    /**
-     * @return int|string
-     */
-    public function getChatId()
-    {
-        return $this->chatId;
-    }
-
-    /**
-     * @param int|string $chatId
-     *
-     * @return GetChatMembersCount
-     */
-    public function setChatId($chatId)
-    {
-        $this->chatId = $chatId;
-
-        return $this;
     }
 
     /**

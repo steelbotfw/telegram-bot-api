@@ -2,12 +2,11 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
+
 class KickChatMember extends AbstractMethod
 {
-    /**
-     * @var integer|string
-     */
-    protected $chatId;
+    use ChatIdRequiredTrait;
 
     /**
      * @var integer
@@ -18,26 +17,6 @@ class KickChatMember extends AbstractMethod
     {
         $this->chatId = $chatId;
         $this->userId = $userId;
-    }
-
-    /**
-     * @return int|string
-     */
-    public function getChatId()
-    {
-        return $this->chatId;
-    }
-
-    /**
-     * @param string|int $chatId
-     *
-     * @return SendLocation
-     */
-    public function setChatId($chatId)
-    {
-        $this->chatId = $chatId;
-
-        return $this;
     }
 
     /**
