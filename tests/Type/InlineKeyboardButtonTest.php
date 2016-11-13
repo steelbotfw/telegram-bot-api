@@ -40,16 +40,10 @@ class InlineKeyboardButtonTest extends \PHPUnit_Framework_TestCase
 
     public function testOneOptionalFieldMustBePresented()
     {
-        $this->markTestSkipped("Test skipped due to json bug in PHP < 7.1RC3");
-
         $button = new InlineKeyboardButton('button1');
 
-        try {
-            $json = json_encode($button);
-        } catch (\Exception $e) {
-            if (!$e instanceof \LogicException) {
-                $this->fail("Incorrect button configuration must throw LogicException");
-            }
-        }
+        $this->expectException(\LogicException::class);
+
+        json_encode($button);
     }
 }
