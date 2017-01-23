@@ -87,13 +87,15 @@ class SendAudioTest extends \PHPUnit_Framework_TestCase
         $method->setReplyMarkup(new ReplyKeyboardMarkup(['1', '2', '3']))
             ->setDuration(42)
             ->setPerformer('Some Performer')
-            ->setTitle('Some Title');
+            ->setTitle('Some Title')
+            ->setCaption('Caption');
 
         $json = [
             'reply_markup' => ['keyboard' => ['1', '2', '3']],
             'duration' => 42,
             'performer' => 'Some Performer',
-            'title' => 'Some Title'
+            'title' => 'Some Title',
+            'caption' => 'Caption'
         ];
         $json = json_encode($json, JSON_UNESCAPED_UNICODE);
 

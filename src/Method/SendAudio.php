@@ -2,11 +2,15 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
-use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
-use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
-use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
-use Steelbot\TelegramBotApi\Traits\ReplyToMessageIdTrait;
-use Steelbot\TelegramBotApi\Type\Message;
+use Steelbot\TelegramBotApi\{
+    Traits\CaptionTrait,
+    Traits\ChatIdRequiredTrait,
+    Traits\DisableNotificationTrait,
+    Traits\JsonAttributesBuilderTrait,
+    Traits\ReplyMarkupTrait,
+    Traits\ReplyToMessageIdTrait,
+    Type\Message
+};
 
 class SendAudio extends AbstractMethod implements \JsonSerializable
 {
@@ -14,6 +18,8 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
     use DisableNotificationTrait;
     use ReplyToMessageIdTrait;
     use ReplyMarkupTrait;
+    use CaptionTrait;
+    use JsonAttributesBuilderTrait;
 
     /**
      * @var string
@@ -166,25 +172,15 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
     /**
      *
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
-        $data = [];
-
-        if ($this->replyMarkup) {
-            $data['reply_markup'] = $this->replyMarkup;
-        }
-
-        if ($this->duration !== null) {
-            $data['duration'] = $this->duration;
-        }
-
-        if ($this->performer !== null) {
-            $data['performer'] = $this->performer;
-        }
-
-        if ($this->title !== null) {
-            $data['title'] = $this->title;
-        }
+        $data = $this->buildJsonAttributes([
+            'reply_markup' => $this->replyMarkup,
+            'duration'     => $this->duration,
+            'performer'    => $this->performer,
+            'title'        => $this->title,
+            'caption'      => $this->caption
+        ]);
 
         return $data;
     }
