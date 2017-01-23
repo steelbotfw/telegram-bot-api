@@ -173,6 +173,9 @@ class Api
     {
         $uri = new BasicUri($this->baseUrl.$this->token.$pathName);
         foreach ($params as $name => $value) {
+            if (is_bool($value)) {
+                $value = (int)$value;
+            }
             $uri = $uri->withQueryValue($name, $value);
         }
 
