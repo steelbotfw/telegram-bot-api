@@ -43,6 +43,11 @@ class Chat
     public $lastName;
 
     /**
+     * @var bool|null
+     */
+    public $allMembersAreAdministrators;
+
+    /**
      * @param array $data
      */
     public function __construct(array $data)
@@ -53,5 +58,6 @@ class Chat
         $this->username = $data['username'] ?? null;
         $this->firstName = $data['first_name'] ?? null;
         $this->lastName = $data['last_name'] ?? null;
+        $this->allMembersAreAdministrators = $data['all_members_are_administrators'] ?? null;
     }
 }
