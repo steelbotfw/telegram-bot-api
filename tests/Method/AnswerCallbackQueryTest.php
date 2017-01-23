@@ -15,12 +15,15 @@ class AnswerCallbackQueryTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('callback_query_id', $params);
         $this->assertEquals(123, $params['callback_query_id']);
         $this->assertArrayNotHasKey('show_alert', $params);
+        $this->assertArrayNotHasKey('cache_time', $params);
 
         $method->setShowAlert(true);
+        $method->setCacheTime(42);
         $params = $method->getParams();
 
         $this->assertArrayHasKey('show_alert', $params);
         $this->assertEquals(1, $params['show_alert']);
+        $this->assertEquals(42, $params['cache_time']);
     }
 
     public function testBuildResult()
@@ -36,9 +39,11 @@ class AnswerCallbackQueryTest extends \PHPUnit_Framework_TestCase
     {
         $method = new AnswerCallbackQuery(123);
         $method->setText('Callback text');
+        $method->setUrl('http://url');
 
         $json = [
-            'text' => 'Callback text'
+            'text' => 'Callback text',
+            'url' => 'http://url'
         ];
         $json = json_encode($json, JSON_UNESCAPED_UNICODE);
 
@@ -91,5 +96,27 @@ class AnswerCallbackQueryTest extends \PHPUnit_Framework_TestCase
         $method->setShowAlert(true);
 
         $this->assertTrue($method->getShowAlert());
+    }
+
+    public function testGetSetUrl()
+    {
+        $method = new AnswerCallbackQuery(123);
+
+        $this->assertNull($method->getUrl());
+
+        $method->setUrl('http://url');
+
+        $this->assertEquals('http://url', $method->getUrl());
+    }
+
+    public function testGetSetCacheTime()
+    {
+        $method = new AnswerCallbackQuery(123);
+
+        $this->assertNull($method->getCacheTime());
+
+        $method->setCacheTime(42);
+
+        $this->assertEquals(42, $method->getCacheTime());
     }
 }

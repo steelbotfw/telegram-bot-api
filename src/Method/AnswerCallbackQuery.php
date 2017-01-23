@@ -2,8 +2,12 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use Steelbot\TelegramBotApi\Traits\JsonAttributesBuilderTrait;
+
 class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
 {
+    use JsonAttributesBuilderTrait;
+
     /**
      * Unique identifier for the query to be answered.
      *
@@ -26,6 +30,19 @@ class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
      */
     protected $showAlert;
 
+    /**
+     * URL that will be opened by the user's client.
+     *
+     * @var string|null
+     */
+    protected $url;
+
+    /**
+     * The maximum amount of time in seconds that the result of the callback query may be cached client-side.
+     *
+     * @var int|null
+     */
+    protected $cacheTime;
 
     public function __construct(string $callbackQueryId)
     {
@@ -87,6 +104,46 @@ class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
     }
 
     /**
+     * @return null|string
+     */
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param null|string $url
+     *
+     * @return AnswerCallbackQuery
+     */
+    public function setUrl(?string $url): self
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCacheTime(): ?int
+    {
+        return $this->cacheTime;
+    }
+
+    /**
+     * @param int|null $cacheTime
+     *
+     * @return AnswerCallbackQuery
+     */
+    public function setCacheTime(?int $cacheTime): self
+    {
+        $this->cacheTime = $cacheTime;
+
+        return $this;
+    }
+
+    /**
      * Get method name.
      *
      * @return string
@@ -116,9 +173,10 @@ class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
             'callback_query_id' => $this->callbackQueryId,
         ];
 
-        if ($this->showAlert!== null) {
-            $params['show_alert'] = (int)$this->showAlert;
-        }
+        $params = array_merge($params, $this->buildJsonAttributes([
+            'show_alert' => $this->showAlert,
+            'cache_time' => $this->cacheTime
+        ]));
 
         return $params;
     }
@@ -138,9 +196,12 @@ class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
     /**
      * @return array
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
-        $result = [];
+        $result = $this->buildJsonAttributes([
+            'text' => $this->text,
+            'url' => $this->url
+        ]);
 
         if ($this->text !== null) {
             $result['text'] = $this->text;
