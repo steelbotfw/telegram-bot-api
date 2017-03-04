@@ -2,11 +2,15 @@
 
 namespace Steelbot\TelegramBotApi\Type;
 
+use Steelbot\TelegramBotApi\Traits\JsonAttributesBuilderTrait;
+
 /**
  * InlineKeyboardButton
  */
 class InlineKeyboardButton implements \JsonSerializable
 {
+    use JsonAttributesBuilderTrait;
+
     /**
      * Label text on the button.
      *
@@ -37,6 +41,13 @@ class InlineKeyboardButton implements \JsonSerializable
      */
     protected $switchInlineQuery;
 
+    /**
+     * Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in
+     * the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.
+     *
+     * @var string|null
+     */
+    protected $switchInlineQueryCurrentChat;
 
     /**
      * @param string $text
@@ -142,9 +153,29 @@ class InlineKeyboardButton implements \JsonSerializable
     }
 
     /**
+     * @return null|string
+     */
+    public function getSwitchInlineQueryCurrentChat(): ?string
+    {
+        return $this->switchInlineQueryCurrentChat;
+    }
+
+    /**
+     * @param null|string $switchInlineQueryCurrentChat
+     *
+     * @return InlineKeyboardButton
+     */
+    public function setSwitchInlineQueryCurrentChat(?string $switchInlineQueryCurrentChat): self
+    {
+        $this->switchInlineQueryCurrentChat = $switchInlineQueryCurrentChat;
+
+        return $this;
+    }
+
+    /**
      * Specify data which should be serialized to JSON
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         $result = [
             'text' => $this->text
@@ -159,6 +190,10 @@ class InlineKeyboardButton implements \JsonSerializable
         } else {
             throw new \LogicException("InlineKeyboardButton serialize error: url or callback_data or switch_inline_query must be set");
         }
+
+        $result = array_merge($result, $this->buildJsonAttributes([
+            'switch_inline_query_current_chat' => $this->switchInlineQueryCurrentChat
+        ]));
 
         return $result;
     }
