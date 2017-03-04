@@ -104,7 +104,14 @@ class Api
         $body = json_decode($body, true);
 
         if ($body['ok'] === false) {
-            throw new TelegramBotApiException($body['description'], $body['error_code']);
+            $exception = new TelegramBotApiException($body['description'], $body['error_code']);
+
+            if (isset($body['parameters'])) {
+                $parameters = new Type\ResponseParameters($body['parameters']);
+                $exception->setParameters($parameters);
+            }
+
+            throw $exception;
         }
 
         return $method->buildResult($body['result']);
