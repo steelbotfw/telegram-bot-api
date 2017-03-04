@@ -45,4 +45,20 @@ class PhotoSize
         $this->height = $data['height'];
         $this->fileSize = $data['file_size'] ?? null;
     }
+
+    /**
+     * @param array $photoSizeArray
+     *
+     * @return PhotoSize[]|null
+     */
+    public static function createMultiple(?array $photoSizeArray): ?array
+    {
+        if (is_array($photoSizeArray)) {
+            return array_map(function (array $photoSizeData) {
+                return new self($photoSizeData);
+            }, $photoSizeArray);
+        }
+
+        return null;
+    }
 }

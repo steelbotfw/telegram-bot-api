@@ -245,33 +245,30 @@ class Message
         $this->forwardDate = isset($data['forward_date']) ? \DateTimeImmutable::createFromFormat('U', $data['forward_date']) : null;
         $this->replyToMessage = isset($data['reply_to_message']) ? new Message($data['reply_to_message']) : null;
         $this->editDate = isset($data['edit_date']) ? \DateTimeImmutable::createFromFormat('U', $data['edit_date']) : null;
-        $this->entities = isset($data['entities']) ? array_map(function(array $entityData) {
-            return new MessageEntity($entityData);
-        }, $data['entities']) : null;
+        $this->entities = isset($data['entities']) ? MessageEntity::createMultiple($data['entities']) : null;
+
         $this->audio     = isset($data['audio']) ? new Audio($data['audio']) : null;
         $this->document  = isset($data['document']) ? new Document($data['document']) : null;
-        $this->photo     = isset($data['photo']) ? array_map(function(array $photoSizeData) {
-            return new PhotoSize($photoSizeData);
-        }, $data['photo']) : null;
+        $this->photo     = isset($data['photo']) ? PhotoSize::createMultiple($data['photo']) : null;
         $this->sticker   = isset($data['sticker']) ? new Sticker($data['sticker']) : null;
         $this->video     = isset($data['video']) ? new Video($data['video']) : null;
         $this->voice     = isset($data['voice']) ? new Voice($data['voice']) : null;
-        $this->caption = $data['caption'] ?? null;
+        $this->caption   = $data['caption'] ?? null;
         $this->contact   = isset($data['contact']) ? new Contact($data['contact']) : null;
         $this->location  = isset($data['location']) ? new Location($data['location']) : null;
         $this->venue     = isset($data['venue']) ? new Venue($data['venue']) : null;
+
         $this->newChatMember = isset($data['new_chat_member']) ? new User($data['new_chat_member']) : null;
         $this->leftChatMember = isset($data['left_chat_member']) ? new User($data['left_chat_member']) : null;
         $this->newChatTitle = $data['new_chat_title'] ?? null;
-        $this->newChatPhoto = isset($data['new_chat_photo']) ? array_map(function(array $photoSizeData) {
-            return new PhotoSize($photoSizeData);
-        }, $data['new_chat_photo']) : null;
+        $this->newChatPhoto = isset($data['new_chat_photo']) ? PhotoSize::createMultiple($data['new_chat_photo']) : null;
         $this->deleteChatPhoto = isset($data['delete_chat_photo']) ? true : null;
         $this->groupChatCreated = isset($data['group_chat_created']) ? true : null;
         $this->supergroupChatCreated = isset($data['super_group_chat_created']) ? true : null;
         $this->channelChatCreated = isset($data['channel_chat_created']) ? true : null;
         $this->migrateToChatId = $data['migrate_to_chat_id'] ?? null;
         $this->migrateFromChatId = $data['migrate_from_chat_id'] ?? null;
+
         $this->pinnedMessage = isset($data['pinned_message']) ? new Message($data['pinned_message']) : null;
     }
 }

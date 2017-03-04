@@ -75,4 +75,20 @@ class MessageEntity
         $this->url = $data['url'] ?? null;
         $this->user = isset($data['user']) ? new User($data['user']) : null;
     }
+
+    /**
+     * @param array $messageEntityArray
+     *
+     * @return self[]|null
+     */
+    public static function createMultiple(?array $messageEntityArray): ?array
+    {
+        if (is_array($messageEntityArray)) {
+            return array_map(function (array $messageEntityData) {
+                return new self($messageEntityData);
+            }, $messageEntityArray);
+        }
+
+        return null;
+    }
 }
