@@ -2,16 +2,16 @@
 
 namespace Steelbot\Tests\TelegramBotApi\Type\Traits;
 
-use Steelbot\TelegramBotApi\Type\ReplyKeyboardHide;
+use Steelbot\TelegramBotApi\Type\ReplyKeyboardRemove;
 
-class ReplyKeyboardHideTest extends \PHPUnit_Framework_TestCase
+class ReplyKeyboardRemoveTest extends \PHPUnit_Framework_TestCase
 {
     public function testJsonSerialize()
     {
-        $type = new ReplyKeyboardHide();
+        $type = new ReplyKeyboardRemove();
 
         $json = [
-            'hide_keyboard' => true
+            'remove_keyboard' => true
         ];
 
         $this->assertJsonStringEqualsJsonString(
@@ -20,7 +20,7 @@ class ReplyKeyboardHideTest extends \PHPUnit_Framework_TestCase
         );
 
         $json = [
-            'hide_keyboard' => true,
+            'remove_keyboard' => true,
             'selective' => false
         ];
 

@@ -4,13 +4,13 @@ namespace Steelbot\TelegramBotApi\Type;
 use Steelbot\TelegramBotApi\Traits\SelectiveTrait;
 
 /**
- * ReplyKeyboardHide
+ * ReplyKeyboardRemove
  */
-class ReplyKeyboardHide implements ReplyMarkupInterface
+class ReplyKeyboardRemove implements ReplyMarkupInterface
 {
     use SelectiveTrait;
 
-    protected $hideKeyboard = true;
+    protected $removeKeyboard = true;
 
     /**
      * Specify data which should be serialized to JSON
@@ -18,7 +18,7 @@ class ReplyKeyboardHide implements ReplyMarkupInterface
     function jsonSerialize()
     {
         $result = [
-            'hide_keyboard' => $this->hideKeyboard
+            'remove_keyboard' => $this->removeKeyboard
         ];
 
         if ($this->selective !== null) {

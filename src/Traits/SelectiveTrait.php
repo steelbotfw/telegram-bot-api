@@ -25,7 +25,7 @@ trait SelectiveTrait
     /**
      * @param null $selective
      *
-     * @return ReplyKeyboardHide
+     * @return self
      */
     public function setSelective(bool $selective = null)
     {
