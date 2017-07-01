@@ -48,7 +48,7 @@ class WebhookInfo
         $this->pendingUpdateCount = $data['pending_update_count'];
         $this->lastErrorDate = $data['last_error_date'] ?? null;
         $this->lastErrorMessage = $data['last_error_message'] ?? null;
-        $this->maxConnections = $data['max_connection'] ?? null;
+        $this->maxConnections = $data['max_connections'] ?? null;
         $this->allowedUpdates = $data['allowed_updates'] ?? null;
     }
 }
