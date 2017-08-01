@@ -171,7 +171,7 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
         $data = array_merge($data, $this->buildJsonAttributes([
             'certificate' => $this->certificate,
             'max_connections' => $this->maxConnections,
-            'allowed_updated' => $this->allowedUpdates
+            'allowed_updates' => $this->allowedUpdates
         ]));
 
         return $data;
