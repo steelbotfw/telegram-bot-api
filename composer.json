@@ -16,7 +16,7 @@
     "type": "library",
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.1",
+        "php": ">=8.5",
         "ext-mbstring": "*",
 
         "icicleio/icicle": "*",
@@ -24,7 +24,7 @@
         "icicleio/dns": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.7.13"
+        "phpunit/phpunit": "^12.5"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit"
