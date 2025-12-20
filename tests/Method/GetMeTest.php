@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Steelbot\Tests\TelegramBotApi\Method;
 
 use PHPUnit\Framework\TestCase;
-use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Method\GetMe;
+use Steelbot\TelegramBotApi\Method\HttpMethod;
 use Steelbot\TelegramBotApi\Type\User;
 
 class GetMeTest extends TestCase
@@ -22,7 +22,7 @@ class GetMeTest extends TestCase
     {
         $method = new GetMe();
 
-        $this->assertEquals(AbstractMethod::HTTP_GET, $method->getHttpMethod());
+        $this->assertEquals(HttpMethod::GET, $method->getHttpMethod());
     }
 
     public function testGetParams(): void

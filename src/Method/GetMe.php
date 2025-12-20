@@ -11,9 +11,9 @@ class GetMe extends AbstractMethod
         return 'getMe';
     }
 
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_GET;
+        return HttpMethod::GET;
     }
 
     public function getParams(): array
@@ -22,11 +22,9 @@ class GetMe extends AbstractMethod
     }
 
     /**
-     * @param array $result
-     *
-     * @return User
+     * @var array $result
      */
-    public function buildResult($result)
+    public function buildResult($result): User
     {
         return new User($result);
     }
