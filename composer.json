@@ -20,8 +20,8 @@
         "ext-mbstring": "*",
 
         "amphp/http-client": "^5.3.4",
-        "psr/http-client": "@stable",
-        "psr/http-factory-implementation": "@stable",
+        "psr/http-client": "^1.0.0",
+        "psr/http-factory-implementation": "^1.0.0",
         "guzzlehttp/guzzle": "^7.10.0"
     },
     "require-dev": {
