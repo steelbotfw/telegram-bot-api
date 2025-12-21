@@ -3,19 +3,14 @@
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-use Icicle\{
-    Coroutine\Coroutine,
-    Loop
-};
-use Steelbot\TelegramBotApi\{
-    Api,
+use Icicle\{Coroutine\Coroutine, Loop};
+use Steelbot\TelegramBotApi\{Api,
     Method\SendMessage,
+    Type\Basic\Update,
     Type\Chat,
-    Type\Update,
-    Type\ReplyKeyboardMarkup,
+    Type\KeyboardButton,
     Type\ReplyKeyboardHide,
-    Type\KeyboardButton
-};
+    Type\ReplyKeyboardMarkup};
 
 
 if (!getenv('BOT_TOKEN')) {

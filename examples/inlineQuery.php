@@ -4,15 +4,13 @@
 require dirname(__DIR__).'/vendor/autoload.php';
 
 use Icicle\Loop;
-use Steelbot\TelegramBotApi\{
-    Api,
+use Steelbot\TelegramBotApi\{Api,
     InlineQueryResult\InlineQueryResultArticle,
     InputMessageContent\InputContactMessageContent,
     InputMessageContent\InputLocationMessageContent,
     InputMessageContent\InputTextMessageContent,
     InputMessageContent\InputVenueMessageContent,
-    Type\Update
-};
+    Type\Basic\Update};
 
 if (!getenv('BOT_TOKEN')) {
     echo "Error: BOT_TOKEN environment variable not found\n";
