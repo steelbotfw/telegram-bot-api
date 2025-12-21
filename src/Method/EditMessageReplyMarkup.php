@@ -148,7 +148,7 @@ class EditMessageReplyMarkup extends AbstractMethod implements \JsonSerializable
     /**
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = [];
 

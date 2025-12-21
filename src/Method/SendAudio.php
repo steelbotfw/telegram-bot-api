@@ -172,7 +172,7 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
     /**
      *
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = $this->buildJsonAttributes([
             'reply_markup' => $this->replyMarkup,

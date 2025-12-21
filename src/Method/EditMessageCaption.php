@@ -173,7 +173,7 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
     /**
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = [
             'caption' => $this->caption

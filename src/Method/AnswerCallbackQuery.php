@@ -196,7 +196,7 @@ class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
     /**
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $result = $this->buildJsonAttributes([
             'text' => $this->text,

@@ -245,7 +245,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
     /**
      * @return array
      */
-    function jsonSerialize()
+    function jsonSerialize(): array
     {
         $result =  [
             'results' => $this->results

@@ -110,7 +110,7 @@ class KeyboardButton implements \JsonSerializable
     /**
      * Specify data which should be serialized to JSON
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $result = [
             'text' => $this->text

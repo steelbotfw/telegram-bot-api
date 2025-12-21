@@ -15,7 +15,7 @@ class ForceReply implements ReplyMarkupInterface
     /**
      * Specify data which should be serialized to JSON
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $result = [
             'force_reply' => $this->forceReply

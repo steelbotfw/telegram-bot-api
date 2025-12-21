@@ -126,7 +126,7 @@ class SendDocument extends AbstractMethod implements \JsonSerializable
     /**
      *
      */
-    function jsonSerialize()
+    function jsonSerialize(): array
     {
         $data = [];
 

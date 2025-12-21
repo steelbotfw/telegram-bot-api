@@ -7,12 +7,10 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     findUnusedBaselineEntry="false"
     findUnusedCode="false"
+    ensureOverrideAttribute="false"
 >
     <projectFiles>
-        <directory name="src/Enum" />
-        <directory name="src/Exception" />
-        <directory name="src/InlineQueryResult" />
-        <directory name="src/InputMessageContent" />
+        <directory name="src" />
         <ignoreFiles>
             <directory name="vendor" />
         </ignoreFiles>

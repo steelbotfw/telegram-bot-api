@@ -103,7 +103,7 @@ class SendSticker extends AbstractMethod implements \JsonSerializable
     /**
      *
      */
-    function jsonSerialize()
+    function jsonSerialize(): array
     {
         $data = [];
 

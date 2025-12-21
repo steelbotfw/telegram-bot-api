@@ -182,7 +182,7 @@ class EditMessageText extends AbstractMethod implements \JsonSerializable
     /**
      * @return array
      */
-    function jsonSerialize()
+    function jsonSerialize(): array
     {
         $data = [
             'text' => $this->text
