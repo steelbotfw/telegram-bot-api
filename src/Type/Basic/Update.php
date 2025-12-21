@@ -1,5 +1,11 @@
 <?php
-namespace Steelbot\TelegramBotApi\Type;
+namespace Steelbot\TelegramBotApi\Type\Basic;
+
+use Steelbot\TelegramBotApi\Type\CallbackQuery;
+use Steelbot\TelegramBotApi\Type\ChosenInlineResult;
+use Steelbot\TelegramBotApi\Type\InlineQuery;
+use Steelbot\TelegramBotApi\Type\Message;
+use LogicException;
 
 class Update
 {
@@ -59,9 +65,15 @@ class Update
         $this->rawData = $data;
     }
 
-    public function getType()
+    public function getType(): UpdateType
     {
-        return $this->rawData['message']['chat']['type'];
+        return match (true) {
+            $this->message !== null => UpdateType::Message,
+            $this->inlineQuery !== null => UpdateType::InlineQuery,
+            $this->chosenInlineResult !== null => UpdateType::ChosenInlineResult,
+            $this->callbackQuery !== null => UpdateType::CallbackQuery,
+            default => throw new LogicException("Unknown update type"),
+        };
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
-use Steelbot\TelegramBotApi\Type\Update;
+use Steelbot\TelegramBotApi\Type\Basic\Update;
 
 class GetUpdates extends AbstractMethod
 {

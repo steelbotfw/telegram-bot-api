@@ -5,6 +5,7 @@ namespace Steelbot\TelegramBotApi\InlineQueryResult;
 use Steelbot\TelegramBotApi\Traits\{
     CaptionTrait, DescriptionTrait, TitleTrait
 };
+use Override;
 
 class InlineQueryResultPhoto extends AbstractInlineQueryResult
 {
@@ -127,10 +128,8 @@ class InlineQueryResultPhoto extends AbstractInlineQueryResult
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
 

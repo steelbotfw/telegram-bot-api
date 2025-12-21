@@ -4,10 +4,10 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Method\GetUpdates;
+use Steelbot\TelegramBotApi\Type\Basic\Update;
 use Steelbot\TelegramBotApi\Type\Chat;
 use Steelbot\TelegramBotApi\Type\ChosenInlineResult;
 use Steelbot\TelegramBotApi\Type\Message;
-use Steelbot\TelegramBotApi\Type\Update;
 
 class GetUpdatesTest extends \PHPUnit_Framework_TestCase
 {

@@ -8,6 +8,7 @@ use Steelbot\TelegramBotApi\Traits\{
     JsonAttributesBuilderTrait,
     ReplyMarkupTrait
 };
+use Override;
 
 class InlineQueryResultAudio extends AbstractInlineQueryResult
 {
@@ -135,10 +136,9 @@ class InlineQueryResultAudio extends AbstractInlineQueryResult
 
         return $this;
     }
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
         $result = array_merge($result, [

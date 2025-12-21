@@ -13,6 +13,7 @@ use Steelbot\TelegramBotApi\Traits\{
     ReplyToMessageIdTrait,
     TitleTrait
 };
+use Override;
 
 class InlineQueryResultCachedVoice extends AbstractInlineQueryResult
 {
@@ -57,7 +58,8 @@ class InlineQueryResultCachedVoice extends AbstractInlineQueryResult
         return $this;
     }
 
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
         $result['voice_file_id'] = $this->voiceFileId;

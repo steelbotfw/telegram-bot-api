@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace Steelbot\TelegramBotApi;
 
 
+use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
+use Steelbot\TelegramBotApi\Method\AbstractMethod;
+use Steelbot\TelegramBotApi\Type\Basic\Update;
+
 /**
  * Telegram bot API
  *

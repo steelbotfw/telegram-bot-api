@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\InputMessageContent;
 
+use Override;
 use Steelbot\TelegramBotApi\Traits\DisableWebPagePreviewTrait;
 use Steelbot\TelegramBotApi\Traits\ParseModeTrait;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
@@ -41,7 +42,8 @@ class InputTextMessageContent implements InputMessageContentInterface
         return $this;
     }
 
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = [
             'message_text' => $this->messageText

@@ -9,7 +9,10 @@
     findUnusedCode="false"
 >
     <projectFiles>
+        <directory name="src/Enum" />
         <directory name="src/Exception" />
+        <directory name="src/InlineQueryResult" />
+        <directory name="src/InputMessageContent" />
         <ignoreFiles>
             <directory name="vendor" />
         </ignoreFiles>

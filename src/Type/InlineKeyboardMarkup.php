@@ -60,7 +60,7 @@ class InlineKeyboardMarkup implements ReplyMarkupInterface
     /**
      * Specify data which should be serialized to JSON
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
         return [
             'inline_keyboard' => $this->inlineKeyboard

@@ -13,6 +13,7 @@ use Steelbot\TelegramBotApi\Traits\{
     ReplyToMessageIdTrait,
     TitleTrait
 };
+use Override;
 
 class InlineQueryResultCachedGif extends AbstractInlineQueryResult
 {
@@ -57,7 +58,8 @@ class InlineQueryResultCachedGif extends AbstractInlineQueryResult
         return $this;
     }
 
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
         $result['gif_file_id'] = $this->gifFileId;

@@ -3,7 +3,7 @@
 namespace Steelbot\Tests\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Method\SetWebhook;
-use Steelbot\TelegramBotApi\Type\Update;
+use Steelbot\TelegramBotApi\Type\Basic\Update;
 
 class SetWebhookTest extends \PHPUnit_Framework_TestCase
 {

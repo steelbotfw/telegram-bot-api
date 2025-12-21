@@ -12,6 +12,7 @@ use Steelbot\TelegramBotApi\Traits\{
     ReplyMarkupTrait,
     TitleTrait
 };
+use Override;
 
 class InlineQueryResultCachedVideo extends AbstractInlineQueryResult
 {
@@ -60,10 +61,8 @@ class InlineQueryResultCachedVideo extends AbstractInlineQueryResult
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
         $result['video_file_id'] = $this->videoFileId;

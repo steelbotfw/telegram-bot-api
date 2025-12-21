@@ -9,6 +9,7 @@ use Steelbot\TelegramBotApi\Traits\{
     ThumbUrlOptionalTrait,
     ThumbWidthHeightOptionalTrait
 };
+use Override;
 
 class InlineQueryResultContact extends AbstractInlineQueryResult
 {
@@ -109,10 +110,8 @@ class InlineQueryResultContact extends AbstractInlineQueryResult
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
         $result = array_merge($result, [

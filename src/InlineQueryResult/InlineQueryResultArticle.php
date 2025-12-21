@@ -9,6 +9,7 @@ use Steelbot\TelegramBotApi\Traits\{
     ReplyMarkupTrait,
     TitleTrait
 };
+use Override;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 
 class InlineQueryResultArticle extends AbstractInlineQueryResult
@@ -135,10 +136,8 @@ class InlineQueryResultArticle extends AbstractInlineQueryResult
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
         $result['title'] = $this->title;

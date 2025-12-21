@@ -5,6 +5,7 @@ namespace Steelbot\TelegramBotApi\InlineQueryResult;
 use Steelbot\TelegramBotApi\Traits\{
     DescriptionTrait, DisableWebPagePreviewTrait, InputMessageContentTrait, ParseModeTrait, HideUrlTrait, ReplyMarkupTrait
 };
+use Override;
 
 class InlineQueryResultCachedSticker implements \JsonSerializable
 {
@@ -55,10 +56,8 @@ class InlineQueryResultCachedSticker implements \JsonSerializable
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = [
             'type' => $this->type,
