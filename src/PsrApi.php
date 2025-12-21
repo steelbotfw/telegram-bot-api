@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi;
 
-use Amp\Http\Client\HttpClient;
-use Amp\Http\Client\Request;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Method\GetUpdates;
@@ -18,7 +19,7 @@ use UnexpectedValueException;
  *
  * @see https://core.telegram.org/bots/api#available-methods
  */
-class Api
+class PsrApi implements TelegramBotApiInterface
 {
     private const string BASE_URL = 'https://api.telegram.org/bot';
 
@@ -26,7 +27,9 @@ class Api
 
     public function __construct(
         private readonly string $token,
-        private readonly HttpClient $httpClient,
+        private readonly ClientInterface $httpClient,
+        private readonly RequestFactoryInterface $requestFactory,
+        private readonly StreamFactoryInterface $streamFactory,
         private readonly string $baseUrl = self::BASE_URL,
     ) {
         if (empty($token)) {
@@ -45,7 +48,10 @@ class Api
     {
         switch ($method->getHttpMethod()) {
             case HttpMethod::GET:
-                $response = $this->httpClient->request(new Request($this->buildUrl($method), $method->getHttpMethod()->value));
+                $request = $this->requestFactory->createRequest(
+                    $method->getHttpMethod()->value,
+                    $this->buildUrl($method)
+                );
                 break;
 
             case HttpMethod::POST:
@@ -54,22 +60,22 @@ class Api
                 }
 
                 $body = json_encode($method, JSON_THROW_ON_ERROR);
-                $contentLength = mb_strlen($body);
 
-                $request = new Request($this->buildUrl($method), $method->getHttpMethod()->value, $body);
-                $request->setHeaders([
-                    'Content-Type' => 'application/json',
-                    'Content-Length' => $contentLength
-                ]);
-
-                $response = $this->httpClient->request($request);
+                $request = $this->requestFactory->createRequest(
+                    $method->getHttpMethod()->value,
+                    $this->buildUrl($method)
+                );
+                $request = $request
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withBody($this->streamFactory->createStream($body));
                 break;
 
             default:
                 throw new UnexpectedValueException("Unsupported HTTP method {$method->getHttpMethod()->value}");
         }
 
-        $body = json_decode($response->getBody()->buffer(), true, 512, JSON_THROW_ON_ERROR);
+        $response = $this->httpClient->sendRequest($request);
+        $body = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
         if ($body['ok'] === false) {
             $exception = new TelegramBotApiException($body['description'], $body['error_code']);

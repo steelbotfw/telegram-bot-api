@@ -59,6 +59,11 @@ class Update
         $this->rawData = $data;
     }
 
+    public function getType()
+    {
+        return $this->rawData['message']['chat']['type'];
+    }
+
     /**
      * @return array|null
      */
