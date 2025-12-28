@@ -125,9 +125,9 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**

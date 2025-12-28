@@ -24,9 +24,9 @@ class GetChatAdministrators extends AbstractMethod
         return 'getChatAdministrators';
     }
 
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_GET;
+        return HttpMethod::GET;
     }
 
     public function getParams(): array

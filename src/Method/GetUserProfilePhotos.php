@@ -77,9 +77,9 @@ class GetUserProfilePhotos extends AbstractMethod
         return 'getUserProfilePhotos';
     }
 
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_GET;
+        return HttpMethod::GET;
     }
 
     public function getParams(): array
@@ -101,14 +101,11 @@ class GetUserProfilePhotos extends AbstractMethod
      *
      * @return UserProfilePhotos[]
      */
-    public function buildResult($photos)
+    public function buildResult($result)
     {
-        $result = [];
-
-        foreach ($photos as $photoData) {
-            $result[] = new UserProfilePhotos($photoData);
-        }
-
-        return $result;
+        return array_map(
+            static fn ($photoData) => new UserProfilePhotos($photoData),
+            $result
+        );
     }
 }
