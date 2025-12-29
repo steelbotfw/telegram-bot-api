@@ -4,6 +4,9 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 
+/**
+ * @extends AbstractMethod<bool>
+ */
 class KickChatMember extends AbstractMethod
 {
     use ChatIdRequiredTrait;
@@ -80,7 +83,7 @@ class KickChatMember extends AbstractMethod
      *
      * @return bool
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }

@@ -4,6 +4,9 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Type\File;
 
+/**
+ * @extends AbstractMethod<File>
+ */
 class GetFile extends AbstractMethod
 {
     /**

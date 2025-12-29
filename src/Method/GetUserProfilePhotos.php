@@ -6,6 +6,9 @@ use Steelbot\TelegramBotApi\{
     Traits\JsonAttributesBuilderTrait, Traits\UserIdRequiredTrait, Type\UserProfilePhotos
 };
 
+/**
+ * @extends AbstractMethod<UserProfilePhotos[]>
+ */
 class GetUserProfilePhotos extends AbstractMethod
 {
     use UserIdRequiredTrait;
@@ -101,7 +104,7 @@ class GetUserProfilePhotos extends AbstractMethod
      *
      * @return UserProfilePhotos[]
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return array_map(
             static fn ($photoData) => new UserProfilePhotos($photoData),

@@ -4,13 +4,14 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 
-class GetChatMembersCount extends AbstractMethod
+/**
+ * @extends AbstractMethod<int>
+ */
+class GetChatMemberCount extends AbstractMethod
 {
     use ChatIdRequiredTrait;
 
     /**
-     * GetChatMembersCount constructor.
-     *
      * @param int|string $chatId
      */
     public function __construct($chatId)
@@ -20,7 +21,7 @@ class GetChatMembersCount extends AbstractMethod
 
     public function getMethodName(): string
     {
-        return 'getChatMembersCount';
+        return 'getChatMemberCount';
     }
 
     public function getHttpMethod(): HttpMethod
@@ -40,7 +41,7 @@ class GetChatMembersCount extends AbstractMethod
      *
      * @return int
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }

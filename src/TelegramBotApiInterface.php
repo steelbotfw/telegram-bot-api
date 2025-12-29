@@ -18,11 +18,13 @@ interface TelegramBotApiInterface
     /**
      * Execute an API method.
      *
-     * @param AbstractMethod $method
+     * @template T of object
+     * @param AbstractMethod<T> $method
+     * @return T|T[]|bool
      *
      * @throws TelegramBotApiException
      */
-    public function execute(AbstractMethod $method): object|array;
+    public function execute(AbstractMethod $method): object|array|bool|int;
 
     /**
      * @return Update[]

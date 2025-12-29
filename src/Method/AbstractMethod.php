@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Method;
 
+/**
+ * @template T of object|bool|int
+ */
 abstract class AbstractMethod
 {
     const HTTP_GET = 'GET';
@@ -24,11 +27,9 @@ abstract class AbstractMethod
     abstract public function getParams(): array;
 
     /**
-     * Build result type from an array of data.
-     *
      * @param array|bool $result
      *
-     * @return object
+     * @return T|T[]|bool
      */
-    abstract public function buildResult($result);
+    abstract public function buildResult($result): object|array|bool|int;
 }

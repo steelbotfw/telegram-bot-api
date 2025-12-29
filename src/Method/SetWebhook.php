@@ -4,6 +4,9 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Traits\JsonAttributesBuilderTrait;
 
+/**
+ * @extends AbstractMethod<bool>
+ */
 class SetWebhook extends AbstractMethod implements \JsonSerializable
 {
     use JsonAttributesBuilderTrait;
@@ -70,7 +73,7 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
      *
      * @return bool
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Traits;
 
 trait SelectiveTrait
@@ -12,7 +14,7 @@ trait SelectiveTrait
      *
      * @var bool|null
      */
-    protected $selective;
+    protected ?bool $selective;
 
     /**
      * @return null
@@ -27,7 +29,7 @@ trait SelectiveTrait
      *
      * @return self
      */
-    public function setSelective(bool $selective = null)
+    public function setSelective(?bool $selective): static
     {
         $this->selective = $selective;
 

@@ -4,6 +4,9 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Traits\JsonAttributesBuilderTrait;
 
+/**
+ * @extends AbstractMethod<bool>
+ */
 class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
 {
     use JsonAttributesBuilderTrait;
@@ -188,7 +191,7 @@ class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
      *
      * @return bool
      */
-    public function buildResult($result): bool
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }

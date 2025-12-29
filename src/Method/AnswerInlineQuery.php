@@ -2,6 +2,9 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+/**
+ * @extends AbstractMethod<bool>
+ */
 class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
 {
     /**
@@ -237,7 +240,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      *
      * @return bool
      */
-    public function buildResult($result): bool
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }

@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Method;
 
-use Steelbot\TelegramBotApi\Type\User;
+use Steelbot\TelegramBotApi\Type\Basic\GetMeUser;
 
+/**
+ * @extends AbstractMethod<GetMeUser>
+ */
 class GetMe extends AbstractMethod
 {
     public function getMethodName(): string
@@ -24,8 +29,8 @@ class GetMe extends AbstractMethod
     /**
      * @var array $result
      */
-    public function buildResult($result): User
+    public function buildResult($result): GetMeUser
     {
-        return new User($result);
+        return new GetMeUser($result);
     }
 }

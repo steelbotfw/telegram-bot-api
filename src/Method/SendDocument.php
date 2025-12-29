@@ -6,6 +6,9 @@ use Steelbot\TelegramBotApi\{
     Traits\ChatIdRequiredTrait, Traits\DisableNotificationTrait, Traits\ReplyMarkupTrait, Traits\ReplyToMessageIdTrait, Type\Message
 };
 
+/**
+ * @extends AbstractMethod<Message>
+ */
 class SendDocument extends AbstractMethod implements \JsonSerializable
 {
     use ChatIdRequiredTrait;
@@ -118,7 +121,7 @@ class SendDocument extends AbstractMethod implements \JsonSerializable
      *
      * @return object
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return new Message($result);
     }

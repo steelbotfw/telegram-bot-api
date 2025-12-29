@@ -44,7 +44,7 @@ class PsrApi implements TelegramBotApiInterface
      *
      * @throws TelegramBotApiException
      */
-    public function execute(AbstractMethod $method): object|array
+    public function execute(AbstractMethod $method): object|array|bool|int
     {
         switch ($method->getHttpMethod()) {
             case HttpMethod::GET:

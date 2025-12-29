@@ -13,6 +13,9 @@ use Steelbot\TelegramBotApi\{
     Type\Message
 };
 
+/**
+ * @extends AbstractMethod<Message>
+ */
 class SendVoice extends AbstractMethod implements \JsonSerializable
 {
     use ChatIdRequiredTrait;
@@ -101,7 +104,7 @@ class SendVoice extends AbstractMethod implements \JsonSerializable
      *
      * @return object
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return new Message($result);
     }

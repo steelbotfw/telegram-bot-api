@@ -4,6 +4,9 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 
+/**
+ * @extends AbstractMethod<object>
+ */
 class SendChatAction extends AbstractMethod
 {
     const ACTION_TYPING = 'typing';
@@ -88,7 +91,7 @@ class SendChatAction extends AbstractMethod
      *
      * @return object
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }

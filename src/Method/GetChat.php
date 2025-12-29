@@ -5,6 +5,9 @@ namespace Steelbot\TelegramBotApi\Method;
 use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 use Steelbot\TelegramBotApi\Type\Chat;
 
+/**
+ * @extends AbstractMethod<Chat>
+ */
 class GetChat extends AbstractMethod
 {
     use ChatIdRequiredTrait;
@@ -41,7 +44,7 @@ class GetChat extends AbstractMethod
      *
      * @return Chat
      */
-    public function buildResult($result): Chat
+    public function buildResult($result): object|array|bool|int
     {
         return new Chat($result);
     }

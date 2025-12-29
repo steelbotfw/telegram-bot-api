@@ -2,6 +2,8 @@
 
 namespace Steelbot\TelegramBotApi\Type;
 
+use Steelbot\TelegramBotApi\Type\Basic\User;
+
 /**
  * CallbackQuery
  */

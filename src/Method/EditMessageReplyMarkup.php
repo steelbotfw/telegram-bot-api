@@ -7,6 +7,9 @@ use Steelbot\TelegramBotApi\{
     Type\Message
 };
 
+/**
+ * @extends AbstractMethod<Message|bool>
+ */
 class EditMessageReplyMarkup extends AbstractMethod implements \JsonSerializable
 {
     use ReplyMarkupTrait;
@@ -136,7 +139,7 @@ class EditMessageReplyMarkup extends AbstractMethod implements \JsonSerializable
      *
      * @return Message|bool
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         if ($result === true) {
             return true;

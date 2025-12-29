@@ -7,7 +7,7 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 use PHPUnit\Framework\TestCase;
 use Steelbot\TelegramBotApi\Method\GetMe;
 use Steelbot\TelegramBotApi\Method\HttpMethod;
-use Steelbot\TelegramBotApi\Type\User;
+use Steelbot\TelegramBotApi\Type\Basic\User;
 
 class GetMeTest extends TestCase
 {
@@ -37,7 +37,8 @@ class GetMeTest extends TestCase
         $method = new GetMe();
 
         $result = [
-            'id' => 42
+            'id' => 42,
+            'first_name' => 'F'
         ];
         $user = $method->buildResult($result);
 
