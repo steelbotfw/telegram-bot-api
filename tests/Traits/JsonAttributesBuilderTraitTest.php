@@ -33,7 +33,7 @@ class AttributesBuilderExample
     }
 }
 
-class JsonAttributesBuilderTest extends TestCase
+class JsonAttributesBuilderTraitTest extends TestCase
 {
     protected function setUp(): void
     {
