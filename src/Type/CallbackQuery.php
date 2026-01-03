@@ -1,28 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Type;
 
 use Steelbot\TelegramBotApi\Type\Basic\User;
 
-/**
- * CallbackQuery
- */
-class CallbackQuery
+readonly class CallbackQuery
 {
-    /**
-     * Unique identifier for this query.
-     *
-     * @var string
-     */
-    public $id;
+    public string $id;
 
-    public $from;
+    public User $from;
 
-    public $message;
+    public ?Message $message;
 
-    public $inlineMessageId;
+    public ?string $inlineMessageId;
 
-    public $data;
+    public ?string $data;
 
     /**
      * @param array $data
@@ -33,6 +27,6 @@ class CallbackQuery
         $this->from = new User($data['from']);
         $this->message = isset($data['message']) ? new Message($data['message']) : null;
         $this->inlineMessageId = $data['inline_message_id'] ?? null;
-        $this->data = $data['data'];
+        $this->data = $data['data'] ?? null;
     }
 }

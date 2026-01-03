@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Type;
 
+use App\Core\Entity\Domain\TestItem;
 use Steelbot\TelegramBotApi\Traits\SelectiveTrait;
 
 /**
@@ -20,7 +21,7 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
      */
     protected array $keyboard;
 
-    protected ?bool $isPersistent;
+    protected ?bool $isPersistent = null;
 
     /**
      * Requests clients to resize the keyboard vertically for optimal fit
@@ -30,7 +31,7 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
      *
      * @var bool|null
      */
-    protected ?bool $resizeKeyboard;
+    protected ?bool $resizeKeyboard = null;
 
     /**
      * Requests clients to hide the keyboard as soon as it's been used. The keyboard will still
@@ -40,12 +41,12 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
      *
      * @var bool|null
      */
-    protected ?bool $oneTimeKeyboard;
+    protected ?bool $oneTimeKeyboard = null;
 
-    protected ?string $inputFieldPlaceholder;
+    protected ?string $inputFieldPlaceholder = null;
 
     /**
-     * @param string[][]|KeyboardButton[][] $keyboard
+     * @param list<list<string|KeyboardButton>> $keyboard
      */
     public function __construct(array $keyboard)
     {
@@ -71,7 +72,7 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
     }
 
     /**
-     * @param KeyboardButton[] $row
+     * @param array<KeyboardButton|string> $row
      */
     public function addKeyboardRow(array $row = []): static
     {
@@ -139,7 +140,15 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
     public function jsonSerialize(): array
     {
         $result = [
-            'keyboard' => $this->keyboard
+            'keyboard' => array_values(
+                array_map(
+                    static fn (array $row): array => array_map(
+                        static fn (KeyboardButton|string $kb) => is_string($kb) ? $kb : $kb->jsonSerialize(),
+                        $row
+                    ),
+                    $this->keyboard
+                )
+            )
         ];
 
         if ($this->selective !== null) {

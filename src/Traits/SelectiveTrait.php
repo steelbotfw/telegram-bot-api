@@ -14,7 +14,7 @@ trait SelectiveTrait
      *
      * @var bool|null
      */
-    protected ?bool $selective;
+    protected ?bool $selective = null;
 
     /**
      * @return null

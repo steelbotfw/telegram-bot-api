@@ -38,6 +38,7 @@ class GetMeTest extends TestCase
 
         $result = [
             'id' => 42,
+            'is_bot' => false,
             'first_name' => 'F'
         ];
         $user = $method->buildResult($result);

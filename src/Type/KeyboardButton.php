@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Type;
+
+use JsonSerializable;
 
 /**
  * KeyboardButton
@@ -72,7 +76,7 @@ class KeyboardButton implements \JsonSerializable
      *
      * @return KeyboardButton
      */
-    public function setRequestLocation(bool $requestLocation = null): self
+    public function setRequestLocation(?bool $requestLocation = null): self
     {
         $this->requestLocation = $requestLocation;
 
@@ -96,7 +100,7 @@ class KeyboardButton implements \JsonSerializable
      *
      * @return KeyboardButton
      */
-    public function setRequestContact(bool $requestContact = null): self
+    public function setRequestContact(?bool $requestContact = null): self
     {
         $this->requestContact = $requestContact;
 

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Type\Basic;
 
 use Steelbot\TelegramBotApi\Type\CallbackQuery;
@@ -17,39 +20,18 @@ class Update
     const TYPE_CHOSEN_INLINE_RESULT = 'chosen_inline_result';
     const TYPE_CALLBACK_QUERY = 'callback_query';
 
-    /**
-     * @var integer
-     */
-    public $updateId;
+    public int $updateId;
 
-    /**
-     * @var Message
-     */
-    public $message;
+    public ?Message $message;
 
-    /**
-     * @var InlineQuery
-     */
-    public $inlineQuery;
+    public ?InlineQuery $inlineQuery;
 
-    /**
-     * @var ChosenInlineResult
-     */
-    public $chosenInlineResult;
+    public ?ChosenInlineResult $chosenInlineResult;
 
-    /**
-     * @var CallbackQuery|null
-     */
-    public $callbackQuery;
+    public ?CallbackQuery $callbackQuery;
 
-    /**
-     * @var array|null
-     */
-    protected $rawData;
+    protected ?array $rawData;
 
-    /**
-     * @param array $data
-     */
     public function __construct(array $data)
     {
         $this->updateId = $data['update_id'];
@@ -76,10 +58,7 @@ class Update
         };
     }
 
-    /**
-     * @return array|null
-     */
-    public function getRawData()
+    public function getRawData(): ?array
     {
         return $this->rawData;
     }

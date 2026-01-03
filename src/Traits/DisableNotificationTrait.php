@@ -22,7 +22,7 @@ trait DisableNotificationTrait
      *
      * @return self
      */
-    public function setDisableNotification(bool $disableNotification = null)
+    public function setDisableNotification(?bool $disableNotification = null)
     {
         $this->disableNotification = $disableNotification;
 

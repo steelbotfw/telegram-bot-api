@@ -11,43 +11,15 @@ class InlineKeyboardButton implements \JsonSerializable
 {
     use JsonAttributesBuilderTrait;
 
-    /**
-     * Label text on the button.
-     *
-     * @var string
-     */
-    protected $text;
+    protected string $text;
 
-    /**
-     * HTTP url to be opened when button is pressed.
-     *
-     * @var string|null
-     */
-    protected $url;
+    protected ?string $url = null;
 
-    /**
-     * Data to be sent in a callback query to the bot when button is pressed.
-     *
-     * @var string|null
-     */
-    protected $callbackData;
+    protected ?string $callbackData = null;
 
-    /**
-     * If set, pressing the button will prompt the user to select one of their chats,
-     * open that chat and insert the bot‘s username and the specified inline query in
-     * the input field. Can be empty, in which case just the bot’s username will be inserted.
-     *
-     * @var string|null
-     */
-    protected $switchInlineQuery;
+    protected ?string $switchInlineQuery = null;
 
-    /**
-     * Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in
-     * the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.
-     *
-     * @var string|null
-     */
-    protected $switchInlineQueryCurrentChat;
+    protected ?string $switchInlineQueryCurrentChat = null;
 
     /**
      * @param string $text
@@ -85,12 +57,7 @@ class InlineKeyboardButton implements \JsonSerializable
         return $this->url;
     }
 
-    /**
-     * @param null|string $url
-     *
-     * @return InlineKeyboardButton
-     */
-    public function setUrl(string $url = null)
+    public function setUrl(?string $url = null): static
     {
         $this->url = $url;
 
@@ -115,7 +82,7 @@ class InlineKeyboardButton implements \JsonSerializable
      *
      * @return InlineKeyboardButton
      */
-    public function setSwitchInlineQuery(string $switchInlineQuery = null)
+    public function setSwitchInlineQuery(?string $switchInlineQuery = null)
     {
         $this->switchInlineQuery = $switchInlineQuery;
 

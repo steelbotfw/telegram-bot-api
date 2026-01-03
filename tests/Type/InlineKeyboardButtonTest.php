@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\Tests\TelegramBotApi\Type;
 
+use PHPUnit\Framework\TestCase;
 use Steelbot\TelegramBotApi\Type\InlineKeyboardButton;
 
-class InlineKeyboardButtonTest extends \PHPUnit_Framework_TestCase
+class InlineKeyboardButtonTest extends TestCase
 {
     public function testJsonSerialize()
     {

@@ -73,6 +73,8 @@ class SendMessage extends AbstractMethod implements JsonSerializable
 
     /**
      * Get parameters for HTTP query.
+     *
+     * @return array<string|int>
      */
     public function getParams(): array
     {
@@ -81,7 +83,7 @@ class SendMessage extends AbstractMethod implements JsonSerializable
         ];
 
         if ($this->parseMode) {
-            $params['parse_mode'] = $this->parseMode;
+            $params['parse_mode'] = $this->parseMode->value;
         }
 
         if ($this->disableWebPagePreview) {
@@ -118,7 +120,11 @@ class SendMessage extends AbstractMethod implements JsonSerializable
         ];
 
         if ($this->replyMarkup) {
-            $data['reply_markup'] = $this->replyMarkup;
+            $data['reply_markup'] = $this->replyMarkup->jsonSerialize();
+        }
+
+        if ($this->parseMode) {
+            $data['parse_mode'] = $this->parseMode->value;
         }
 
         return $data;

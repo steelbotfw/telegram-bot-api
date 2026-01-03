@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\Enum\ParseMode;
 
 trait ParseModeTrait
 {
-    protected ?ParseMode $parseMode;
+    protected ?ParseMode $parseMode = null;
 
     public function getParseMode(): ?ParseMode
     {

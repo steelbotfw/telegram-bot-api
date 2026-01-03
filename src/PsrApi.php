@@ -40,7 +40,10 @@ class PsrApi implements TelegramBotApiInterface
     /**
      * Execute an API method.
      *
-     * @param AbstractMethod $method
+     * @template T
+     * @param AbstractMethod<T> $method
+     *
+     * @return T
      *
      * @throws TelegramBotApiException
      */
@@ -59,7 +62,7 @@ class PsrApi implements TelegramBotApiInterface
                     throw new UnexpectedValueException("Method must implement JsonSerializable interface.");
                 }
 
-                $body = json_encode($method, JSON_THROW_ON_ERROR);
+                $body = json_encode($method, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
 
                 $request = $this->requestFactory->createRequest(
                     $method->getHttpMethod()->value,

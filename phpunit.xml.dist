@@ -2,7 +2,11 @@
 <phpunit bootstrap="./vendor/autoload.php" colors="true" cacheDirectory=".phpunit.cache">
   <testsuites>
     <testsuite name="Steelbot Telegram Bot API">
-      <file>./tests/Method/GetMeTest.php</file>
+      <!--<directory>tests/InlineQueryResult</directory> -->
+      <!--<directory>tests/InputMessageContent</directory> -->
+      <directory>tests/Method</directory>
+      <!--<directory>tests/Traits</directory>-->
+      <directory>tests/Type</directory>
     </testsuite>
   </testsuites>
   <source>

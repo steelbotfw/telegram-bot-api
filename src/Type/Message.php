@@ -1,17 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Type;
 
 use Steelbot\TelegramBotApi\Type\Basic\User;
+use DateTimeImmutable;
 
 class Message
 {
-    /**
-     * Unique message identifier.
-     *
-     * @var integer
-     */
-    public $messageId;
+    public int $messageId;
 
     /**
      * Sender, can be empty for messages sent to channels.
@@ -20,26 +18,11 @@ class Message
      */
     public $from;
 
-    /**
-     * Date the message was sent in Unix time.
-     *
-     * @var \DateTimeImmutable
-     */
-    public $date;
+    public DateTimeImmutable $date;
 
-    /**
-     * Conversation the message belongs to.
-     *
-     * @var Chat
-     */
-    public $chat;
+    public Chat $chat;
 
-    /**
-     * For text messages, the actual UTF-8 text of the message, 0-4096 characters.
-     *
-     * @var string|null
-     */
-    public $text;
+    public ?string $text;
 
     /**
      * For forwarded messages, sender of the original message.
@@ -240,7 +223,7 @@ class Message
         $this->messageId = $data['message_id'];
         $this->from      = isset($data['from']) ? new User($data['from']) : null;
         $this->chat      = new Chat($data['chat']);
-        $this->date      = \DateTimeImmutable::createFromFormat('U', $data['date']);
+        $this->date      = new DateTimeImmutable('@' . $data['date']);
         $this->text      = $data['text'] ?? null;
         $this->forwardFrom = isset($data['forward_from']) ? new User($data['forward_from']) : null;
         $this->forwardFromChat = isset($data['forward_from_chat']) ? new Chat($data['forward_from_chat']) : null;

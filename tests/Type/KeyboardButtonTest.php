@@ -1,10 +1,13 @@
 <?php
 
-namespace Steelbot\Tests\TelegramBotApi\Type\Traits;
+declare(strict_types=1);
 
+namespace Steelbot\Tests\TelegramBotApi\Type;
+
+use PHPUnit\Framework\TestCase;
 use Steelbot\TelegramBotApi\Type\KeyboardButton;
 
-class KeyboardButtonTest extends \PHPUnit_Framework_TestCase
+class KeyboardButtonTest extends TestCase
 {
     public function testGetSetText()
     {
@@ -54,7 +57,7 @@ class KeyboardButtonTest extends \PHPUnit_Framework_TestCase
 
         $expectedJson = json_encode([
             'text' => 'Text one',
-            'request_location' => 1
+            'request_location' => true
         ]);
 
         $this->assertJsonStringEqualsJsonString($expectedJson, json_encode($button));
