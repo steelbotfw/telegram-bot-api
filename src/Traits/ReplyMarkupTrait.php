@@ -15,7 +15,10 @@ trait ReplyMarkupTrait
         return $this->replyMarkup;
     }
 
-    public function setReplyMarkup(?ReplyMarkupInterface $replyMarkup = null): static
+    /**
+     * @return $this
+     */
+    public function setReplyMarkup(?ReplyMarkupInterface $replyMarkup = null)
     {
         $this->replyMarkup = $replyMarkup;
 
