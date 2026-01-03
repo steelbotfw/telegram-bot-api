@@ -18,9 +18,9 @@ interface TelegramBotApiInterface
     /**
      * Execute an API method.
      *
-     * @template T of object
+     * @template T of object|array|bool|int
      * @param AbstractMethod<T> $method
-     * @return T|T[]|bool
+     * @return T
      *
      * @throws TelegramBotApiException
      */

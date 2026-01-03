@@ -1,55 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Method;
 
+use JsonSerializable;
 use Steelbot\TelegramBotApi\Traits\JsonAttributesBuilderTrait;
 
 /**
  * @extends AbstractMethod<bool>
  */
-class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
+class AnswerCallbackQuery extends AbstractMethod implements JsonSerializable
 {
     use JsonAttributesBuilderTrait;
 
-    /**
-     * Unique identifier for the query to be answered.
-     *
-     * @var string
-     */
-    protected $callbackQueryId;
+    protected ?string $text = null;
 
-    /**
-     * Text of the notification. If not specified, nothing will be shown to the user.
-     *
-     * @var string|null
-     */
-    protected $text;
+    protected ?bool $showAlert = null;
 
-    /**
-     * If true, an alert will be shown by the client instead of a notification at the
-     * top of the chat screen. Defaults to false.
-     *
-     * @var boolean|null
-     */
-    protected $showAlert;
+    protected ?string $url = null;
 
-    /**
-     * URL that will be opened by the user's client.
-     *
-     * @var string|null
-     */
-    protected $url;
+    protected ?int $cacheTime = null;
 
-    /**
-     * The maximum amount of time in seconds that the result of the callback query may be cached client-side.
-     *
-     * @var int|null
-     */
-    protected $cacheTime;
-
-    public function __construct(string $callbackQueryId)
-    {
-        $this->callbackQueryId = $callbackQueryId;
+    public function __construct(
+        protected string $callbackQueryId
+    ) {
     }
 
     /**
@@ -81,7 +56,7 @@ class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
     /**
      * @param null|string $text
      */
-    public function setText(string $text = null): self
+    public function setText(?string $text = null): self
     {
         $this->text = $text;
 
@@ -99,7 +74,7 @@ class AnswerCallbackQuery extends AbstractMethod implements \JsonSerializable
     /**
      * @param bool|null $showAlert
      */
-    public function setShowAlert(bool $showAlert = null): self
+    public function setShowAlert(?bool $showAlert = null): self
     {
         $this->showAlert = $showAlert;
 

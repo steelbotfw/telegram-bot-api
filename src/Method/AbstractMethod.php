@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Steelbot\TelegramBotApi\Method;
 
 /**
- * @template T of object|bool|int
+ * @template T of object|array|bool|int
  */
 abstract class AbstractMethod
 {
@@ -29,7 +29,7 @@ abstract class AbstractMethod
     /**
      * @param array|bool $result
      *
-     * @return T|T[]|bool
+     * @return T
      */
     abstract public function buildResult($result): object|array|bool|int;
 }
