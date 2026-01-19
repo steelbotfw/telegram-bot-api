@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Type;
 
-use App\Core\Entity\Domain\TestItem;
 use Steelbot\TelegramBotApi\Traits\SelectiveTrait;
 
 /**
@@ -15,42 +14,15 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
     use SelectiveTrait;
 
     /**
-     * Array of button rows, each represented by an Array of KeyboardButton objects.
-     *
-     * @var KeyboardButton[][]
-     */
-    protected array $keyboard;
-
-    protected ?bool $isPersistent = null;
-
-    /**
-     * Requests clients to resize the keyboard vertically for optimal fit
-     * (e.g., make the keyboard smaller if there are just two rows of buttons).
-     * Defaults to false, in which case the custom keyboard is always of the same height
-     * as the app's standard keyboard.
-     *
-     * @var bool|null
-     */
-    protected ?bool $resizeKeyboard = null;
-
-    /**
-     * Requests clients to hide the keyboard as soon as it's been used. The keyboard will still
-     * be available, but clients will automatically display the usual letter-keyboard in the
-     * chat – the user can press a special button in the input field to see the custom keyboard
-     * again. Defaults to false.
-     *
-     * @var bool|null
-     */
-    protected ?bool $oneTimeKeyboard = null;
-
-    protected ?string $inputFieldPlaceholder = null;
-
-    /**
      * @param list<list<string|KeyboardButton>> $keyboard
      */
-    public function __construct(array $keyboard)
-    {
-        $this->keyboard = $keyboard;
+    public function __construct(
+        private array $keyboard,
+        private ?bool $isPersistent = null,
+        private ?bool $resizeKeyboard = null,
+        private ?bool $oneTimeKeyboard = null,
+        private ?string $inputFieldPlaceholder = null
+    ) {
     }
 
     /**

@@ -24,7 +24,7 @@ class SendMessage extends AbstractMethod implements JsonSerializable
     use ReplyToMessageIdTrait;
 
     public function __construct(
-        $chatId,
+        string|int $chatId,
         private string $text
     ) {
         $this->chatId = $chatId;

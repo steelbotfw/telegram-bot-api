@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\Tests\TelegramBotApi\Traits;
 
 use PHPUnit\Framework\TestCase;
@@ -9,22 +11,13 @@ class AttributesBuilderExample
 {
     use JsonAttributesBuilderTrait;
 
-    /**
-     * @var string
-     */
-    protected $property1 = 'value1';
+    protected string $property1 = 'value1';
 
-    /**
-     * @var string
-     */
-    protected $property2 = 'value2';
+    protected string $property2 = 'value2';
 
-    /**
-     * @var int
-     */
-    protected $property3;
+    protected int $property3;
 
-    public function buildAttributes()
+    public function buildAttributes(): array
     {
         return $this->buildJsonAttributes([
             'property_one' => $this->property1,
@@ -35,12 +28,7 @@ class AttributesBuilderExample
 
 class JsonAttributesBuilderTraitTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $this->markTestSkipped('Need to refactor tests');
-    }
-
-    public function testBuildJsonAttributesSuccess()
+    public function testBuildJsonAttributesSuccess(): void
     {
         $object = new AttributesBuilderExample();
 

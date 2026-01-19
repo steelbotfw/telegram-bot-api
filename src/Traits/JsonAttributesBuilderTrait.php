@@ -1,14 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Traits;
 
 trait JsonAttributesBuilderTrait
 {
-    /**
-     * @var string|null
-     */
-    protected $caption = null;
-
     /**
      * @param array $map
      *
@@ -16,14 +13,6 @@ trait JsonAttributesBuilderTrait
      */
     protected function buildJsonAttributes(array $map): array
     {
-        $result = [];
-
-        foreach ($map as $jsonKey => $value) {
-            if ($value !== null) {
-                $result[$jsonKey] = $value;
-            }
-        }
-
-        return $result;
+        return array_filter($map, static fn (mixed $value) => $value !== null);
     }
 }

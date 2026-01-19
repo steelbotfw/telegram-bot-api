@@ -24,7 +24,7 @@ abstract class AbstractMethod
     /**
      * Get parameters for HTTP query.
      */
-    abstract public function getParams(): array;
+    abstract public function getParams(): ?array;
 
     /**
      * @param array|bool $result
