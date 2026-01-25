@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Type;
 
 /**
@@ -8,18 +10,10 @@ namespace Steelbot\TelegramBotApi\Type;
 class InlineKeyboardMarkup implements ReplyMarkupInterface
 {
     /**
-     * Array of button rows, each represented by an Array of InlineKeyboardButton objects.
-     *
-     * @var InlineKeyboardButton[][]
+     * @param list<list<InlineKeyboardButton>|null> $inlineKeyboard
      */
-    protected $inlineKeyboard;
-
-    /**
-     * @param string $text
-     */
-    public function __construct(array $keyboard)
+    public function __construct(private array $inlineKeyboard)
     {
-        $this->inlineKeyboard = $keyboard;
     }
 
     /**
@@ -57,13 +51,10 @@ class InlineKeyboardMarkup implements ReplyMarkupInterface
         return $this;
     }
 
-    /**
-     * Specify data which should be serialized to JSON
-     */
     public function jsonSerialize(): array
     {
         return [
-            'inline_keyboard' => $this->inlineKeyboard
+            'inline_keyboard' => array_filter($this->inlineKeyboard, static fn (?array $row) => $row !== null)
         ];
     }
 }

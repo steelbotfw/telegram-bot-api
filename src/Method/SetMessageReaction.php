@@ -21,7 +21,7 @@ class SetMessageReaction extends AbstractMethod implements \JsonSerializable
     private array|Emoji|null $reaction = null;
 
     /**
-     * @param ReactionTypeInterface[] $reaction
+     * @param ReactionTypeInterface[]|Emoji|null $reaction
      */
     public function __construct(
         int|string $chatId,

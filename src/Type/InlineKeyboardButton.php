@@ -1,32 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Type;
 
 use Steelbot\TelegramBotApi\Traits\JsonAttributesBuilderTrait;
 
-/**
- * InlineKeyboardButton
- */
 class InlineKeyboardButton implements \JsonSerializable
 {
     use JsonAttributesBuilderTrait;
 
-    protected string $text;
-
-    protected ?string $url = null;
-
-    protected ?string $callbackData = null;
-
-    protected ?string $switchInlineQuery = null;
-
-    protected ?string $switchInlineQueryCurrentChat = null;
-
     /**
      * @param string $text
      */
-    public function __construct(string $text)
-    {
-        $this->text = $text;
+    public function __construct(
+        private string $text,
+        private ?string $url = null,
+        private ?string $callbackData = null,
+        private ?string $switchInlineQuery = null,
+        private ?string $switchInlineQueryCurrentChat = null,
+    ) {
     }
 
     /**
