@@ -113,7 +113,7 @@ class PsrApi implements TelegramBotApiInterface
 
     private function buildUrl(AbstractMethod $method): string
     {
-        if ($method->getParams() !== []) {
+        if (!empty($method->getParams())) {
             $url = sprintf(
                 '%s%s/%s?%s',
                 $this->baseUrl,

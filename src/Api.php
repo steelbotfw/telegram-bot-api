@@ -59,7 +59,7 @@ class Api
                 $request = new Request($this->buildUrl($method), $method->getHttpMethod()->value, $body);
                 $request->setHeaders([
                     'Content-Type' => 'application/json',
-                    'Content-Length' => $contentLength
+                    'Content-Length' => (string)$contentLength
                 ]);
 
                 $response = $this->httpClient->request($request);

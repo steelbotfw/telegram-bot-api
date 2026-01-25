@@ -12,14 +12,6 @@ use LogicException;
 
 class Update
 {
-    const TYPE_MESSAGE = 'message';
-    const TYPE_EDITED_MESSAGE = 'edited_message';
-    const TYPE_CHANNEL_POST = 'channel_post';
-    const TYPE_EDITED_CHANNEL_POST = 'edited_channel_post';
-    const TYPE_INLINE_QUERY = 'inline_query';
-    const TYPE_CHOSEN_INLINE_RESULT = 'chosen_inline_result';
-    const TYPE_CALLBACK_QUERY = 'callback_query';
-
     public int $updateId;
 
     public ?Message $message;
@@ -30,7 +22,7 @@ class Update
 
     public ?CallbackQuery $callbackQuery;
 
-    protected ?array $rawData;
+    protected array $rawData;
 
     public function __construct(array $data)
     {
@@ -58,7 +50,7 @@ class Update
         };
     }
 
-    public function getRawData(): ?array
+    public function getRawData(): array
     {
         return $this->rawData;
     }

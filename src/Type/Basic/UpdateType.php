@@ -10,6 +10,7 @@ enum UpdateType: string
     case EditedMessage = 'edited_message';
     case ChannelPost = 'channel_post';
     case EditedChannelPost = 'edited_channel_post';
+    case MessageReaction = 'message_reaction';
     case InlineQuery = 'inline_query';
     case ChosenInlineResult = 'chosen_inline_result';
     case CallbackQuery = 'callback_query';

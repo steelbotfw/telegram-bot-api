@@ -13,10 +13,10 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
 {
     use SelectiveTrait;
 
-    /**
-     * @param list<list<string|KeyboardButton>> $keyboard
-     */
     public function __construct(
+        /**
+         * @var list<list<string|KeyboardButton>> $keyboard
+         */
         private array $keyboard,
         private ?bool $isPersistent = null,
         private ?bool $resizeKeyboard = null,
@@ -25,17 +25,11 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
     ) {
     }
 
-    /**
-     * @return KeyboardButton[][]
-     */
     public function getKeyboard(): array
     {
         return $this->keyboard;
     }
 
-    /**
-     * @param KeyboardButton[][] $keyboard
-     */
     public function setKeyboard(array $keyboard): static
     {
         $this->keyboard = $keyboard;

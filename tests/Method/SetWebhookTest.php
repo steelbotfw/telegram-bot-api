@@ -5,6 +5,7 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 use PHPUnit\Framework\TestCase;
 use Steelbot\TelegramBotApi\Method\SetWebhook;
 use Steelbot\TelegramBotApi\Type\Basic\Update;
+use Steelbot\TelegramBotApi\Type\Basic\UpdateType;
 
 class SetWebhookTest extends TestCase
 {
@@ -86,12 +87,12 @@ class SetWebhookTest extends TestCase
         $this->assertNull($method->getAllowedUpdates());
 
         $method->setAllowedUpdates([
-            Update::TYPE_MESSAGE,
-            Update::TYPE_INLINE_QUERY
+            UpdateType::Message,
+            UpdateType::InlineQuery
         ]);
 
         $this->assertCount(2, $method->getAllowedUpdates());
-        $this->assertContains(Update::TYPE_MESSAGE, $method->getAllowedUpdates());
-        $this->assertContains(Update::TYPE_INLINE_QUERY, $method->getAllowedUpdates());
+        $this->assertContains(UpdateType::Message, $method->getAllowedUpdates());
+        $this->assertContains(UpdateType::InlineQuery, $method->getAllowedUpdates());
     }
 }

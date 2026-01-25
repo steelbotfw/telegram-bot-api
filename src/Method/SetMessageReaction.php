@@ -39,7 +39,7 @@ class SetMessageReaction extends AbstractMethod implements \JsonSerializable
 
     public function getMethodName(): string
     {
-        return 'sendMessageReaction';
+        return 'setMessageReaction';
     }
 
     public function getHttpMethod(): HttpMethod

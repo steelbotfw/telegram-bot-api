@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Traits\JsonAttributesBuilderTrait;
+use Steelbot\TelegramBotApi\Type\Basic\UpdateType;
+use JsonSerializable;
 
 /**
  * @extends AbstractMethod<bool>
  */
-class SetWebhook extends AbstractMethod implements \JsonSerializable
+class SetWebhook extends AbstractMethod implements JsonSerializable
 {
     use JsonAttributesBuilderTrait;
 
@@ -28,9 +32,9 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
     protected $maxConnections;
 
     /**
-     * @var string[]|null
+     * @var UpdateType[]|null
      */
-    protected $allowedUpdates;
+    protected ?array $allowedUpdates;
 
     public function __construct(string $url)
     {
@@ -147,11 +151,11 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
     }
 
     /**
-     * @param null|\string[] $allowedUpdates
+     * @param null|UpdateType[] $allowedUpdates
      *
      * @return SetWebhook
      */
-    public function setAllowedUpdates($allowedUpdates): self
+    public function setAllowedUpdates(array $allowedUpdates): self
     {
         $this->allowedUpdates = $allowedUpdates;
 
@@ -171,12 +175,13 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
             'url' => $this->url
         ];
 
-        $data = array_merge($data, $this->buildJsonAttributes([
+        return array_merge($data, $this->buildJsonAttributes([
             'certificate' => $this->certificate,
             'max_connections' => $this->maxConnections,
-            'allowed_updates' => $this->allowedUpdates
+            'allowed_updates' => array_map(
+                static fn (UpdateType $ut) => $ut->value,
+                $this->allowedUpdates ?? []
+            )
         ]));
-
-        return $data;
     }
 }
