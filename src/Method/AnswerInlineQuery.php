@@ -121,7 +121,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      *
      * @return AnswerInlineQuery
      */
-    public function setCacheTime(int $cacheTime = null)
+    public function setCacheTime(?int $cacheTime = null)
     {
         $this->cacheTime = $cacheTime;
 
@@ -161,7 +161,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      *
      * @return self
      */
-    public function setSwitchPmText(string $switchPmText = null)
+    public function setSwitchPmText(?string $switchPmText = null)
     {
         $this->switchPmText = $switchPmText;
 
@@ -181,7 +181,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      *
      * @return self
      */
-    public function setSwitchPmParameter(string $switchPmParameter = null)
+    public function setSwitchPmParameter(?string $switchPmParameter = null)
     {
         $this->switchPmParameter = $switchPmParameter;
 

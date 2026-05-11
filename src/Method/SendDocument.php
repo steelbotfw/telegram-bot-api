@@ -65,7 +65,7 @@ class SendDocument extends AbstractMethod implements \JsonSerializable
      *
      * @return $this
      */
-    public function setCaption(string $caption = null): self
+    public function setCaption(?string $caption = null): self
     {
         $this->caption = $caption;
 

@@ -69,7 +69,7 @@ class InlineQueryResultArticle extends AbstractInlineQueryResult
      *
      * @return InlineQueryResultArticle
      */
-    public function setUrl(string $url = null)
+    public function setUrl(?string $url = null)
     {
         $this->url = $url;
 
@@ -89,7 +89,7 @@ class InlineQueryResultArticle extends AbstractInlineQueryResult
      *
      * @return InlineQueryResultArticle
      */
-    public function setThumbUrl(string $thumbUrl = null)
+    public function setThumbUrl(?string $thumbUrl = null)
     {
         $this->thumbUrl = $thumbUrl;
 
@@ -109,7 +109,7 @@ class InlineQueryResultArticle extends AbstractInlineQueryResult
      *
      * @return InlineQueryResultArticle
      */
-    public function setThumbWidth(int $thumbWidth = null)
+    public function setThumbWidth(?int $thumbWidth = null)
     {
         $this->thumbWidth = $thumbWidth;
 
@@ -129,7 +129,7 @@ class InlineQueryResultArticle extends AbstractInlineQueryResult
      *
      * @return InlineQueryResultArticle
      */
-    public function setThumbHeight(int $thumbHeight = null)
+    public function setThumbHeight(?int $thumbHeight = null)
     {
         $this->thumbHeight = $thumbHeight;
 

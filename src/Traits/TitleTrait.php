@@ -22,7 +22,7 @@ trait TitleTrait
      *
      * @return $this
      */
-    public function setTitle(string $title = null): self
+    public function setTitle(?string $title = null): self
     {
         $this->title = $title;
 

@@ -71,7 +71,7 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
      *
      * @return SendAudio
      */
-    public function setDuration(int $duration = null): self
+    public function setDuration(?int $duration = null): self
     {
         $this->duration = $duration;
 
@@ -91,7 +91,7 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
      *
      * @return SendAudio
      */
-    public function setPerformer(string $performer = null)
+    public function setPerformer(?string $performer = null)
     {
         $this->performer = $performer;
 
@@ -111,7 +111,7 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
      *
      * @return SendAudio
      */
-    public function setTitle(string $title = null)
+    public function setTitle(?string $title = null)
     {
         $this->title = $title;
 

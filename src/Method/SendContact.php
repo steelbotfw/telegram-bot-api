@@ -93,7 +93,7 @@ class SendContact extends AbstractMethod implements \JsonSerializable
      *
      * @return SendContact
      */
-    public function setLastName(string $lastName = null)
+    public function setLastName(?string $lastName = null)
     {
         $this->lastName = $lastName;
 

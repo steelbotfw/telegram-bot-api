@@ -67,7 +67,7 @@ class SendPhoto extends AbstractMethod implements \JsonSerializable
      *
      * @return SendPhoto
      */
-    public function setCaption(string $caption = null): self
+    public function setCaption(?string $caption = null): self
     {
         $this->caption = $caption;
 

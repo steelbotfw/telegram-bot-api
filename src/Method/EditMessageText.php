@@ -76,7 +76,7 @@ class EditMessageText extends AbstractMethod implements \JsonSerializable
      *
      * @return $this
      */
-    public function setMessageId(int $messageId = null): self
+    public function setMessageId(?int $messageId = null): self
     {
         $this->messageId = $messageId;
 
@@ -96,7 +96,7 @@ class EditMessageText extends AbstractMethod implements \JsonSerializable
      *
      * @return self
      */
-    public function setInlineMessageId(int $inlineMessageId = null): self
+    public function setInlineMessageId(?int $inlineMessageId = null): self
     {
         $this->inlineMessageId = $inlineMessageId;
 

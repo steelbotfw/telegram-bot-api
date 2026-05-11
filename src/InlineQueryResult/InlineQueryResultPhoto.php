@@ -101,7 +101,7 @@ class InlineQueryResultPhoto extends AbstractInlineQueryResult
      *
      * @return InlineQueryResultPhoto
      */
-    public function setPhotoWidth(int $photoWidth = null)
+    public function setPhotoWidth(?int $photoWidth = null)
     {
         $this->photoWidth = $photoWidth;
 
@@ -121,7 +121,7 @@ class InlineQueryResultPhoto extends AbstractInlineQueryResult
      *
      * @return InlineQueryResultPhoto
      */
-    public function setPhotoHeight(int $photoHeight = null)
+    public function setPhotoHeight(?int $photoHeight = null)
     {
         $this->photoHeight = $photoHeight;
 

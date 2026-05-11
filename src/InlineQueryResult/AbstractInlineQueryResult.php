@@ -22,7 +22,7 @@ abstract class AbstractInlineQueryResult implements \JsonSerializable
      */
     protected $id;
 
-    public function __construct(string $id = null)
+    public function __construct(?string $id = null)
     {
         $this->id = $id ?? uniqid('steelbot', true);
     }

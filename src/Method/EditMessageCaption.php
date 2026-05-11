@@ -67,7 +67,7 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
      *
      * @return $this
      */
-    public function setMessageId(int $messageId = null): self
+    public function setMessageId(?int $messageId = null): self
     {
         $this->messageId = $messageId;
 
@@ -87,7 +87,7 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
      *
      * @return self
      */
-    public function setInlineMessageId(int $inlineMessageId = null): self
+    public function setInlineMessageId(?int $inlineMessageId = null): self
     {
         $this->inlineMessageId = $inlineMessageId;
 
@@ -107,7 +107,7 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
      *
      * @return self
      */
-    public function setCaption(string $caption = null): self
+    public function setCaption(?string $caption = null): self
     {
         $this->caption = $caption;
 
