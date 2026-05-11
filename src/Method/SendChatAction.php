@@ -2,12 +2,13 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use JsonSerializable;
 use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 
 /**
  * @extends AbstractMethod<object>
  */
-class SendChatAction extends AbstractMethod
+class SendChatAction extends AbstractMethod implements JsonSerializable
 {
     const ACTION_TYPING = 'typing';
     const ACTION_UPLOAD_PHOTO = 'upload_photo';
@@ -80,7 +81,13 @@ class SendChatAction extends AbstractMethod
     {
         return [
             'chat_id' => $this->chatId,
-            'action' => $this->action
+        ];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'action' => $this->action,
         ];
     }
 
