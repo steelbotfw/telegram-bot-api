@@ -14,6 +14,8 @@ class Video
      */
     public $fileId;
 
+    public ?string $fileUniqueId;
+
     /**
      * Video width as defined by sender.
      *
@@ -42,6 +44,8 @@ class Video
      */
     public $thumb;
 
+    public ?PhotoSize $thumbnail;
+
     /**
      * MIME type of the file as defined by sender.
      *
@@ -62,13 +66,35 @@ class Video
     public function __construct(array $data)
     {
         $this->fileId = $data['file_id'];
+        $this->fileUniqueId = $data['file_unique_id'] ?? null;
         $this->width = $data['width'];
         $this->height = $data['height'];
         $this->duration = $data['duration'];
-        $this->thumb    = isset($data['thumb']) ? array_map(function(array $photoSizeData) {
-            return new PhotoSize($photoSizeData);
-        }, $data['thumb']) : null;
+        $this->thumb = $this->parseThumb($data['thumb'] ?? null);
+        $this->thumbnail = isset($data['thumbnail']) ? new PhotoSize($data['thumbnail']) : ($this->thumb[0] ?? null);
         $this->mimeType = $data['mime_type'] ?? null;
         $this->fileSize = $data['file_size'] ?? null;
+    }
+
+    /**
+     * @return PhotoSize[]|null
+     */
+    private function parseThumb($thumb): ?array
+    {
+        if ($thumb === null) {
+            return null;
+        }
+
+        if (isset($thumb['file_id'])) {
+            return [new PhotoSize($thumb)];
+        }
+
+        if (is_array($thumb)) {
+            return array_map(function (array $photoSizeData) {
+                return new PhotoSize($photoSizeData);
+            }, $thumb);
+        }
+
+        return null;
     }
 }

@@ -67,6 +67,8 @@ class Message
      */
     public $entities;
 
+    public ?Animation $animation;
+
     /**
      * Message is an audio file, information about the file.
      *
@@ -232,6 +234,7 @@ class Message
         $this->editDate = isset($data['edit_date']) ? \DateTimeImmutable::createFromFormat('U', $data['edit_date']) : null;
         $this->entities = isset($data['entities']) ? MessageEntity::createMultiple($data['entities']) : null;
 
+        $this->animation = isset($data['animation']) ? new Animation($data['animation']) : null;
         $this->audio     = isset($data['audio']) ? new Audio($data['audio']) : null;
         $this->document  = isset($data['document']) ? new Document($data['document']) : null;
         $this->photo     = isset($data['photo']) ? PhotoSize::createMultiple($data['photo']) : null;
