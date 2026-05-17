@@ -43,33 +43,7 @@ class Api
      */
     public function execute(AbstractMethod $method): object|array|bool|int
     {
-        switch ($method->getHttpMethod()) {
-            case HttpMethod::GET:
-                $response = $this->httpClient->request(new Request($this->buildUrl($method), $method->getHttpMethod()->value));
-                break;
-
-            case HttpMethod::POST:
-                if (!$method instanceof \JsonSerializable) {
-                    throw new UnexpectedValueException("Method must implement JsonSerializable interface.");
-                }
-
-                $body = json_encode($method, JSON_THROW_ON_ERROR);
-                $contentLength = mb_strlen($body);
-
-                $request = new Request($this->buildUrl($method), $method->getHttpMethod()->value, $body);
-                $request->setHeaders([
-                    'Content-Type' => 'application/json',
-                    'Content-Length' => (string)$contentLength
-                ]);
-
-                $response = $this->httpClient->request($request);
-                break;
-
-            default:
-                throw new UnexpectedValueException("Unsupported HTTP method {$method->getHttpMethod()->value}");
-        }
-
-        $body = json_decode($response->getBody()->buffer(), true, 512, JSON_THROW_ON_ERROR);
+        $body = json_decode($this->executeRaw($method), true, 512, JSON_THROW_ON_ERROR);
 
         if ($body['ok'] === false) {
             $exception = new TelegramBotApiException($body['description'], $body['error_code']);
@@ -83,6 +57,16 @@ class Api
         }
 
         return $method->buildResult($body['result']);
+    }
+
+    /**
+     * Execute an API method and return raw response body without JSON parsing.
+     */
+    public function executeRaw(AbstractMethod $method): string
+    {
+        $response = $this->httpClient->request($this->buildRequest($method));
+
+        return $response->getBody()->buffer();
     }
 
     /**
@@ -117,5 +101,30 @@ class Api
         }
 
         return $url;
+    }
+
+    private function buildRequest(AbstractMethod $method): Request
+    {
+        switch ($method->getHttpMethod()) {
+            case HttpMethod::GET:
+                return new Request($this->buildUrl($method), $method->getHttpMethod()->value);
+
+            case HttpMethod::POST:
+                if (!$method instanceof \JsonSerializable) {
+                    throw new UnexpectedValueException("Method must implement JsonSerializable interface.");
+                }
+
+                $body = json_encode($method, JSON_THROW_ON_ERROR);
+                $request = new Request($this->buildUrl($method), $method->getHttpMethod()->value, $body);
+                $request->setHeaders([
+                    'Content-Type' => 'application/json',
+                    'Content-Length' => (string) mb_strlen($body),
+                ]);
+
+                return $request;
+
+            default:
+                throw new UnexpectedValueException("Unsupported HTTP method {$method->getHttpMethod()->value}");
+        }
     }
 }

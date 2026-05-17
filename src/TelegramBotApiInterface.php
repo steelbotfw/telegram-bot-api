@@ -27,6 +27,11 @@ interface TelegramBotApiInterface
     public function execute(AbstractMethod $method): object|array|bool|int;
 
     /**
+     * Execute an API method and return raw response body without JSON parsing.
+     */
+    public function executeRaw(AbstractMethod $method): string;
+
+    /**
      * @return Update[]
      */
     public function getUpdates(?int $lastUpdateId = null, int $limit = 5, int $timeout = 30): array;

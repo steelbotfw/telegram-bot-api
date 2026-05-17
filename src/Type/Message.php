@@ -16,7 +16,7 @@ class Message
      *
      * @var User|null
      */
-    public $from;
+    public ?User $from;
 
     public DateTimeImmutable $date;
 
@@ -29,21 +29,21 @@ class Message
      *
      * @var User|null
      */
-    public $forwardFrom;
+    public ?User $forwardFrom;
 
     /**
      * For messages forwarded from a channel, information about the original channel.
      *
      * @var Chat|null
      */
-    public $forwardFromChat;
+    public ?Chat $forwardFromChat;
 
     /**
      * For forwarded messages, date the original message was sent in Unix time.
      *
      * @var \DateTimeImmutable|null
      */
-    public $forwardDate;
+    public ?DateTimeImmutable $forwardDate;
 
     /**
      * For replies, the original message. Note that the Message object in this field will not contain further
@@ -219,6 +219,8 @@ class Message
 
     /**
      * @param array $data
+     *
+     * @throws \DateMalformedStringException|\Steelbot\TelegramBotApi\Exception\TelegramBotApiException
      */
     public function __construct(array $data)
     {
@@ -229,9 +231,11 @@ class Message
         $this->text      = $data['text'] ?? null;
         $this->forwardFrom = isset($data['forward_from']) ? new User($data['forward_from']) : null;
         $this->forwardFromChat = isset($data['forward_from_chat']) ? new Chat($data['forward_from_chat']) : null;
-        $this->forwardDate = isset($data['forward_date']) ? \DateTimeImmutable::createFromFormat('U', $data['forward_date']) : null;
+        $this->forwardDate = isset($data['forward_date']) ?
+            new DateTimeImmutable('@' . $data['forward_date']) :
+            null;
         $this->replyToMessage = isset($data['reply_to_message']) ? new Message($data['reply_to_message']) : null;
-        $this->editDate = isset($data['edit_date']) ? \DateTimeImmutable::createFromFormat('U', $data['edit_date']) : null;
+        $this->editDate = isset($data['edit_date']) ? new DateTimeImmutable('@' . $data['edit_date']) : null;
         $this->entities = isset($data['entities']) ? MessageEntity::createMultiple($data['entities']) : null;
 
         $this->animation = isset($data['animation']) ? new Animation($data['animation']) : null;

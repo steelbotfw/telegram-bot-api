@@ -6,6 +6,7 @@ namespace Steelbot\TelegramBotApi;
 
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 use Steelbot\TelegramBotApi\Method\AbstractMethod;
@@ -49,36 +50,7 @@ class PsrApi implements TelegramBotApiInterface
      */
     public function execute(AbstractMethod $method): object|array|bool|int
     {
-        switch ($method->getHttpMethod()) {
-            case HttpMethod::GET:
-                $request = $this->requestFactory->createRequest(
-                    $method->getHttpMethod()->value,
-                    $this->buildUrl($method)
-                );
-                break;
-
-            case HttpMethod::POST:
-                if (!$method instanceof \JsonSerializable) {
-                    throw new UnexpectedValueException("Method must implement JsonSerializable interface.");
-                }
-
-                $body = json_encode($method, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
-
-                $request = $this->requestFactory->createRequest(
-                    $method->getHttpMethod()->value,
-                    $this->buildUrl($method)
-                );
-                $request = $request
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withBody($this->streamFactory->createStream($body));
-                break;
-
-            default:
-                throw new UnexpectedValueException("Unsupported HTTP method {$method->getHttpMethod()->value}");
-        }
-
-        $response = $this->httpClient->sendRequest($request);
-        $body = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+        $body = json_decode($this->executeRaw($method), true, 512, JSON_THROW_ON_ERROR);
 
         if ($body['ok'] === false) {
             $exception = new TelegramBotApiException($body['description'], $body['error_code']);
@@ -92,6 +64,16 @@ class PsrApi implements TelegramBotApiInterface
         }
 
         return $method->buildResult($body['result']);
+    }
+
+    /**
+     * Execute an API method and return raw response body without JSON parsing.
+     */
+    public function executeRaw(AbstractMethod $method): string
+    {
+        $response = $this->httpClient->sendRequest($this->buildRequest($method));
+
+        return $response->getBody()->getContents();
     }
 
     /**
@@ -126,5 +108,31 @@ class PsrApi implements TelegramBotApiInterface
         }
 
         return $url;
+    }
+
+    private function buildRequest(AbstractMethod $method): RequestInterface
+    {
+        switch ($method->getHttpMethod()) {
+            case HttpMethod::GET:
+                return $this->requestFactory->createRequest(
+                    $method->getHttpMethod()->value,
+                    $this->buildUrl($method)
+                );
+
+            case HttpMethod::POST:
+                if (!$method instanceof \JsonSerializable) {
+                    throw new UnexpectedValueException("Method must implement JsonSerializable interface.");
+                }
+
+                $body = json_encode($method, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
+
+                return $this->requestFactory
+                    ->createRequest($method->getHttpMethod()->value, $this->buildUrl($method))
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withBody($this->streamFactory->createStream($body));
+
+            default:
+                throw new UnexpectedValueException("Unsupported HTTP method {$method->getHttpMethod()->value}");
+        }
     }
 }
