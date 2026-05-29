@@ -16,15 +16,20 @@
     "type": "library",
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.1",
+        "php": ">=8.5",
         "ext-mbstring": "*",
 
-        "icicleio/icicle": "*",
-        "icicleio/http": "*",
-        "icicleio/dns": "*"
+        "amphp/http-client": "^5.3.4",
+        "psr/http-client": "^1.0.0",
+        "psr/http-factory-implementation": "^1.0.0",
+        "guzzlehttp/guzzle": "^7.10.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.7.13"
+        "ext-dom": "*",
+        "phpunit/phpunit": "^12.5",
+        "vimeo/psalm": "^7.0@dev",
+        "symfony/dom-crawler": "^8.1",
+        "symfony/css-selector": "^8.1"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit"
@@ -36,7 +41,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Steelbot\\Tests\\TelegramBotApi\\": "tests"
+            "Steelbot\\Tests\\TelegramBotApi\\": "tests",
+            "Steelbot\\TelegramBotApiDev\\": "dev"
         }
     }
 }

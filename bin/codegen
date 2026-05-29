@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Steelbot\TelegramBotApiDev\CodeGenerator\Parser\HtmlParser;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$filename = isset($argv[1]) ?
+    realpath($argv[1]) :
+    'https://core.telegram.org/bots/api';
+
+printf("Loading HTML from %s ...\n", $filename);
+
+$html = file_get_contents($filename);
+
+printf("Loaded %d bytes\n", strlen($html));
+
+$parser = new HtmlParser();
+
+printf("Parsing HTML ...\n");
+$parser->parse($html);
+
+printf("Done.\n");
