@@ -41,8 +41,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Steelbot\\Tests\\TelegramBotApi\\": "tests",
-            "Steelbot\\TelegramBotApiDev\\": "dev"
+            "Steelbot\\TelegramBotApi\\Tests\\": "tests",
+            "Steelbot\\TelegramBotApi\\Tools\\": "tools"
         }
     }
 }

@@ -3,7 +3,7 @@
 
 declare(strict_types=1);
 
-use Steelbot\TelegramBotApiDev\CodeGenerator\Parser\HtmlParser;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser\HtmlParser;
 
 require __DIR__ . '/../vendor/autoload.php';
 
