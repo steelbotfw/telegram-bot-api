@@ -1,40 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\Tests\TelegramBotApi\Method;
 
-use Steelbot\TelegramBotApi\Method\AbstractMethod;
+use PHPUnit\Framework\TestCase;
 use Steelbot\TelegramBotApi\Method\GetMe;
-use Steelbot\TelegramBotApi\Type\User;
+use Steelbot\TelegramBotApi\Method\HttpMethod;
+use Steelbot\TelegramBotApi\Type\Basic\User;
 
-class GetMeTest extends \PHPUnit_Framework_TestCase
+class GetMeTest extends TestCase
 {
-    public function testGetMethodName()
+    public function testGetMethodName(): void
     {
         $method = new GetMe();
 
         $this->assertEquals('getMe', $method->getMethodName());
     }
 
-    public function testGetHttpMethod()
+    public function testGetHttpMethod(): void
     {
         $method = new GetMe();
 
-        $this->assertEquals(AbstractMethod::HTTP_GET, $method->getHttpMethod());
+        $this->assertEquals(HttpMethod::GET, $method->getHttpMethod());
     }
 
-    public function testGetParams()
+    public function testGetParams(): void
     {
         $method = new GetMe();
 
         $this->assertEquals([], $method->getParams());
     }
 
-    public function testBuildResult()
+    public function testBuildResult(): void
     {
         $method = new GetMe();
 
         $result = [
-            'id' => 42
+            'id' => 42,
+            'is_bot' => false,
+            'first_name' => 'F'
         ];
         $user = $method->buildResult($result);
 

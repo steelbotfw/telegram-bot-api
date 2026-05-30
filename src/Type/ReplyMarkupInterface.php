@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Type;
 
-/**
- * ReplyMarkupInterface
- */
-interface ReplyMarkupInterface extends \JsonSerializable
+use JsonSerializable;
+
+interface ReplyMarkupInterface extends JsonSerializable
 {
 
 }

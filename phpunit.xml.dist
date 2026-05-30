@@ -1,13 +1,17 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<phpunit bootstrap="./vendor/autoload.php" colors="true">
-    <testsuites>
-        <testsuite name="Steelbot Telegram Bot API">
-            <directory>./tests</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist>
-            <directory suffix=".php">./src/</directory>
-        </whitelist>
-    </filter>
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit bootstrap="./vendor/autoload.php" colors="true" cacheDirectory=".phpunit.cache">
+  <testsuites>
+    <testsuite name="Steelbot Telegram Bot API">
+      <!--<directory>tests/InlineQueryResult</directory> -->
+      <!--<directory>tests/InputMessageContent</directory> -->
+      <directory>tests/Method</directory>
+      <directory>tests/Traits</directory>
+      <directory>tests/Type</directory>
+    </testsuite>
+  </testsuites>
+  <source>
+    <include>
+      <directory suffix=".php">./src/</directory>
+    </include>
+  </source>
 </phpunit>

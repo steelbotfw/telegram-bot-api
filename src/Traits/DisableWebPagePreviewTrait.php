@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Traits;
 
 trait DisableWebPagePreviewTrait
 {
-    /**
-     * @var bool
-     */
-    protected $disableWebPagePreview = null;
+    protected ?bool $disableWebPagePreview = null;
 
     /**
      * @return bool|null
@@ -22,7 +21,7 @@ trait DisableWebPagePreviewTrait
      *
      * @return $this
      */
-    public function setDisableWebPagePreview(bool $disableWebPagePreview = null): self
+    public function setDisableWebPagePreview(?bool $disableWebPagePreview = null): self
     {
         $this->disableWebPagePreview = $disableWebPagePreview;
 

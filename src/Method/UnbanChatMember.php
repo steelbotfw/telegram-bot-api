@@ -4,6 +4,9 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 
+/**
+ * @extends AbstractMethod<bool>
+ */
 class UnbanChatMember extends AbstractMethod
 {
     use ChatIdRequiredTrait;
@@ -53,9 +56,9 @@ class UnbanChatMember extends AbstractMethod
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -80,7 +83,7 @@ class UnbanChatMember extends AbstractMethod
      *
      * @return bool
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }

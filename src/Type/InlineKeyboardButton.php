@@ -1,60 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Type;
 
 use Steelbot\TelegramBotApi\Traits\JsonAttributesBuilderTrait;
 
-/**
- * InlineKeyboardButton
- */
 class InlineKeyboardButton implements \JsonSerializable
 {
     use JsonAttributesBuilderTrait;
 
     /**
-     * Label text on the button.
-     *
-     * @var string
-     */
-    protected $text;
-
-    /**
-     * HTTP url to be opened when button is pressed.
-     *
-     * @var string|null
-     */
-    protected $url;
-
-    /**
-     * Data to be sent in a callback query to the bot when button is pressed.
-     *
-     * @var string|null
-     */
-    protected $callbackData;
-
-    /**
-     * If set, pressing the button will prompt the user to select one of their chats,
-     * open that chat and insert the bot‘s username and the specified inline query in
-     * the input field. Can be empty, in which case just the bot’s username will be inserted.
-     *
-     * @var string|null
-     */
-    protected $switchInlineQuery;
-
-    /**
-     * Optional. If set, pressing the button will insert the bot‘s username and the specified inline query in
-     * the current chat's input field. Can be empty, in which case only the bot’s username will be inserted.
-     *
-     * @var string|null
-     */
-    protected $switchInlineQueryCurrentChat;
-
-    /**
      * @param string $text
      */
-    public function __construct(string $text)
-    {
-        $this->text = $text;
+    public function __construct(
+        private string $text,
+        private ?string $url = null,
+        private ?string $callbackData = null,
+        private ?string $switchInlineQuery = null,
+        private ?string $switchInlineQueryCurrentChat = null,
+    ) {
     }
 
     /**
@@ -85,12 +50,7 @@ class InlineKeyboardButton implements \JsonSerializable
         return $this->url;
     }
 
-    /**
-     * @param null|string $url
-     *
-     * @return InlineKeyboardButton
-     */
-    public function setUrl(string $url = null)
+    public function setUrl(?string $url = null): static
     {
         $this->url = $url;
 
@@ -115,7 +75,7 @@ class InlineKeyboardButton implements \JsonSerializable
      *
      * @return InlineKeyboardButton
      */
-    public function setSwitchInlineQuery(string $switchInlineQuery = null)
+    public function setSwitchInlineQuery(?string $switchInlineQuery = null)
     {
         $this->switchInlineQuery = $switchInlineQuery;
 
@@ -175,7 +135,7 @@ class InlineKeyboardButton implements \JsonSerializable
     /**
      * Specify data which should be serialized to JSON
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $result = [
             'text' => $this->text

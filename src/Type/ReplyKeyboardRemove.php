@@ -15,7 +15,7 @@ class ReplyKeyboardRemove implements ReplyMarkupInterface
     /**
      * Specify data which should be serialized to JSON
      */
-    function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $result = [
             'remove_keyboard' => $this->removeKeyboard

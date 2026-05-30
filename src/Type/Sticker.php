@@ -14,6 +14,10 @@ class Sticker
      */
     public $fileId;
 
+    public ?string $fileUniqueId;
+
+    public ?string $type;
+
     /**
      * Sticker width.
      *
@@ -28,6 +32,10 @@ class Sticker
      */
     public $height;
 
+    public bool $isAnimated;
+
+    public bool $isVideo;
+
     /**
      * Sticker thumbnail in .webp or .jpg format.
      *
@@ -35,10 +43,16 @@ class Sticker
      */
     public $thumb;
 
+    public ?PhotoSize $thumbnail;
+
     /**
      * @var string|null
      */
     public $emoji;
+
+    public ?string $setName;
+
+    public ?string $customEmojiId;
 
     /**
      * File size.
@@ -53,10 +67,17 @@ class Sticker
     public function __construct(array $data)
     {
         $this->fileId = $data['file_id'];
+        $this->fileUniqueId = $data['file_unique_id'] ?? null;
+        $this->type = $data['type'] ?? null;
         $this->width = $data['width'];
         $this->height = $data['height'];
+        $this->isAnimated = $data['is_animated'] ?? false;
+        $this->isVideo = $data['is_video'] ?? false;
         $this->thumb = isset($data['thumb']) ? new PhotoSize($data['thumb']) : null;
+        $this->thumbnail = isset($data['thumbnail']) ? new PhotoSize($data['thumbnail']) : $this->thumb;
         $this->emoji = $data['emoji'] ?? null;
+        $this->setName = $data['set_name'] ?? null;
+        $this->customEmojiId = $data['custom_emoji_id'] ?? null;
         $this->fileSize = $data['file_size'] ?? null;
     }
 }

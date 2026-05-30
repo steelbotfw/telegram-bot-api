@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\InlineQueryResult;
 
+use Override;
 use Steelbot\TelegramBotApi\{
     Traits\CaptionTrait,
     Traits\TitleRequiredTrait,
@@ -85,10 +86,8 @@ class InlineQueryResultVoice extends AbstractInlineQueryResult
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
         $result = array_merge($result, [

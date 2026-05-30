@@ -1,12 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\Tests\TelegramBotApi\Method;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+use Steelbot\TelegramBotApi\Enum\ParseMode;
+use Steelbot\TelegramBotApi\Method\HttpMethod;
 use Steelbot\TelegramBotApi\Method\SendMessage;
-use Steelbot\TelegramBotApi\ParseMode;
 use Steelbot\TelegramBotApi\Type\Message;
+use Steelbot\TelegramBotApi\Type\ReplyKeyboardMarkup;
 
-class SendMessageTest extends \PHPUnit_Framework_TestCase
+#[CoversClass(SendMessage::class)]
+class SendMessageTest extends TestCase
 {
     public function testGetParams()
     {
@@ -14,7 +22,7 @@ class SendMessageTest extends \PHPUnit_Framework_TestCase
         $method->setDisableWebPagePreview(true)
                ->setDisableNotification(true)
                ->setReplyToMessageId(321)
-               ->setParseMode(ParseMode::MARKDOWN);
+               ->setParseMode(ParseMode::Markdown);
 
         $params = $method->getParams();
 
@@ -25,13 +33,11 @@ class SendMessageTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('reply_to_message_id', $params);
         $this->assertEquals(321, $params['reply_to_message_id']);
         $this->assertArrayHasKey('parse_mode', $params);
-        $this->assertEquals(ParseMode::MARKDOWN, $params['parse_mode']);
+        $this->assertEquals('Markdown', $params['parse_mode']);
     }
 
-    /**
-     * @dataProvider buildResultDataProvider
-     */
-    public function testBuildResult($data)
+    #[DataProvider('buildResultDataProvider')]
+    public function testBuildResult($data): void
     {
         $method = new SendMessage($data['chat']['id'], $data['text']);
 
@@ -44,67 +50,76 @@ class SendMessageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['text'], $message->text);
     }
 
-    public function buildResultDataProvider()
+    public static function buildResultDataProvider(): array
     {
-        $data = [
-            'message_id' => 4757,
-            'from' => [
-                'id' => 987654320,
-                'first_name' => 'Steel Bot',
-                'username' => 'SteelbotBot'
-            ],
-
-            'chat' => [
-                'id' => 987654321,
-                'first_name' => 'Mister',
-                'last_name' => 'Botman',
-                'username' => 'mrbotman',
-                'type' => 'private'
-            ],
-
-            'date' => 1456600086,
-            'text' => 'Hello there!'
-        ];
-
-        $data2 = [
-            'message_id' => 4757,
-            'from' => [
-                'id' => 987654320,
-                'username' => 'SteelbotBot'
-            ],
-
-            'chat' => [
-                'id' => 987654321,
-                'type' => 'private'
-            ],
-
-            'date' => 1456600086,
-            'text' => 'Hello there!'
-        ];
-
         return [
-            [$data],
-            [$data2]
+            'data1' => [
+                [
+                    'message_id' => 4757,
+                    'from' => [
+                        'id' => 987654320,
+                        'is_bot' => false,
+                        'first_name' => 'Steel Bot',
+                        'username' => 'SteelbotBot'
+                    ],
+
+                    'chat' => [
+                        'id' => 987654321,
+                        'first_name' => 'Mister',
+                        'last_name' => 'Botman',
+                        'username' => 'mrbotman',
+                        'type' => 'private'
+                    ],
+
+                    'date' => 1456600086,
+                    'text' => 'Hello there!'
+                ]
+            ],
+            'data2' => [
+                [
+                    'message_id' => 4757,
+                    'from' => [
+                        'id' => 987654320,
+                        'is_bot' => false,
+                        'first_name' => 'Steel Bot',
+                    ],
+
+                    'chat' => [
+                        'id' => 987654321,
+                        'type' => 'private'
+                    ],
+
+                    'date' => 1456600086,
+                    'text' => 'Hello there!'
+                ]
+            ],
         ];
     }
 
-    public function testJsonSerialize()
+    public function testJsonSerialize_Always_SerializesObject(): void
     {
         $method = new SendMessage(123, "Hello");
+        $r = new ReplyKeyboardMarkup([]);
+        $r->addKeyboardButton('adawd');
+        $method->setReplyMarkup($r);
 
-        $json = [
-            'text' => "Hello"
+        $serialized = [
+            'text' => "Hello",
+            'reply_markup' => [
+                'keyboard' => [
+                    ['adawd']
+                ]
+            ]
         ];
-        $json = json_encode($json, JSON_UNESCAPED_UNICODE);
 
-        $this->assertEquals($json, json_encode($method, JSON_UNESCAPED_UNICODE));
+        $this->assertSame($serialized, $method->jsonSerialize());
     }
 
     public function testGetHttpMethod()
     {
         $method = new SendMessage(123, "Hello");
 
-        $this->assertEquals(SendMessage::HTTP_POST, $method->getHttpMethod());
+        $this->assertEquals(HttpMethod::POST, $method->getHttpMethod());
     }
 
     public function testGetMethodName()

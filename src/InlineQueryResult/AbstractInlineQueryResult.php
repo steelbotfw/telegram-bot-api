@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\InlineQueryResult;
 
+use Override;
 use Steelbot\TelegramBotApi\Traits\InputMessageContentTrait;
 use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
@@ -21,7 +22,7 @@ abstract class AbstractInlineQueryResult implements \JsonSerializable
      */
     protected $id;
 
-    public function __construct(string $id = null)
+    public function __construct(?string $id = null)
     {
         $this->id = $id ?? uniqid('steelbot', true);
     }
@@ -42,7 +43,8 @@ abstract class AbstractInlineQueryResult implements \JsonSerializable
         return $this->type;
     }
 
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = [
             'type' => $this->type,

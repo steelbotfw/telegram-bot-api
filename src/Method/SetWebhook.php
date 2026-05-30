@@ -1,37 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Method;
 
+use JsonSerializable;
 use Steelbot\TelegramBotApi\Traits\JsonAttributesBuilderTrait;
+use Steelbot\TelegramBotApi\Type\Basic\UpdateType;
 
-class SetWebhook extends AbstractMethod implements \JsonSerializable
+/**
+ * @extends AbstractMethod<bool>
+ */
+class SetWebhook extends AbstractMethod implements JsonSerializable
 {
     use JsonAttributesBuilderTrait;
 
     /**
-     * @var string
+     * @param list<UpdateType|string>|null $allowedUpdates
      */
-    protected $url;
-
-    /**
-     * @todo
-     * @var
-     */
-    protected $certificate;
-
-    /**
-     * @var int|null
-     */
-    protected $maxConnections;
-
-    /**
-     * @var string[]|null
-     */
-    protected $allowedUpdates;
-
-    public function __construct(string $url)
-    {
-        $this->url = $url;
+    public function __construct(
+        protected string $url,
+        protected mixed $certificate = null,
+        protected ?string $ipAddress = null,
+        protected ?int $maxConnections = null,
+        protected ?array $allowedUpdates = null,
+        protected ?bool $dropPendingUpdates = null,
+        protected ?string $secretToken = null,
+    ) {
     }
 
     /**
@@ -48,9 +43,9 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -70,7 +65,7 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
      *
      * @return bool
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }
@@ -115,6 +110,18 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
         return $this;
     }
 
+    public function getIpAddress(): ?string
+    {
+        return $this->ipAddress;
+    }
+
+    public function setIpAddress(?string $ipAddress): self
+    {
+        $this->ipAddress = $ipAddress;
+
+        return $this;
+    }
+
     /**
      * @return int|null
      */
@@ -136,7 +143,7 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
     }
 
     /**
-     * @return null|\string[]
+     * @return list<UpdateType|string>|null
      */
     public function getAllowedUpdates(): ?array
     {
@@ -144,13 +151,37 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
     }
 
     /**
-     * @param null|\string[] $allowedUpdates
+     * @param list<UpdateType|string>|null $allowedUpdates
      *
      * @return SetWebhook
      */
-    public function setAllowedUpdates($allowedUpdates): self
+    public function setAllowedUpdates(?array $allowedUpdates): self
     {
         $this->allowedUpdates = $allowedUpdates;
+
+        return $this;
+    }
+
+    public function getDropPendingUpdates(): ?bool
+    {
+        return $this->dropPendingUpdates;
+    }
+
+    public function setDropPendingUpdates(?bool $dropPendingUpdates): self
+    {
+        $this->dropPendingUpdates = $dropPendingUpdates;
+
+        return $this;
+    }
+
+    public function getSecretToken(): ?string
+    {
+        return $this->secretToken;
+    }
+
+    public function setSecretToken(?string $secretToken): self
+    {
+        $this->secretToken = $secretToken;
 
         return $this;
     }
@@ -162,18 +193,36 @@ class SetWebhook extends AbstractMethod implements \JsonSerializable
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = [
             'url' => $this->url
         ];
 
-        $data = array_merge($data, $this->buildJsonAttributes([
+        return array_merge($data, $this->buildJsonAttributes([
             'certificate' => $this->certificate,
+            'ip_address' => $this->ipAddress,
             'max_connections' => $this->maxConnections,
-            'allowed_updates' => $this->allowedUpdates
+            'allowed_updates' => $this->buildAllowedUpdates(),
+            'drop_pending_updates' => $this->dropPendingUpdates,
+            'secret_token' => $this->secretToken,
         ]));
+    }
 
-        return $data;
+    /**
+     * @return list<string>|null
+     */
+    private function buildAllowedUpdates(): ?array
+    {
+        if ($this->allowedUpdates === null) {
+            return null;
+        }
+
+        return array_map(
+            static fn (UpdateType|string $updateType): string => $updateType instanceof UpdateType
+                ? $updateType->value
+                : $updateType,
+            $this->allowedUpdates,
+        );
     }
 }

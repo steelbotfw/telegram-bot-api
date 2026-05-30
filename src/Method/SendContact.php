@@ -8,6 +8,9 @@ use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
 use Steelbot\TelegramBotApi\Traits\ReplyToMessageIdTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
+/**
+ * @extends AbstractMethod<Message>
+ */
 class SendContact extends AbstractMethod implements \JsonSerializable
 {
     use ChatIdRequiredTrait;
@@ -90,7 +93,7 @@ class SendContact extends AbstractMethod implements \JsonSerializable
      *
      * @return SendContact
      */
-    public function setLastName(string $lastName = null)
+    public function setLastName(?string $lastName = null)
     {
         $this->lastName = $lastName;
 
@@ -111,9 +114,9 @@ class SendContact extends AbstractMethod implements \JsonSerializable
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -151,7 +154,7 @@ class SendContact extends AbstractMethod implements \JsonSerializable
      *
      * @return object
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return new Message($result);
     }
@@ -163,7 +166,7 @@ class SendContact extends AbstractMethod implements \JsonSerializable
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    function jsonSerialize()
+    function jsonSerialize(): array
     {
         $data = [];
 

@@ -26,7 +26,7 @@ trait InputMessageContentTrait
      *
      * @return self
      */
-    public function setInputMessageContent(InputMessageContentInterface $inputMessageContent = null)
+    public function setInputMessageContent(?InputMessageContentInterface $inputMessageContent = null)
     {
         $this->inputMessageContent = $inputMessageContent;
 

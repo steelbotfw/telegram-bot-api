@@ -4,6 +4,9 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Type\File;
 
+/**
+ * @extends AbstractMethod<File>
+ */
 class GetFile extends AbstractMethod
 {
     /**
@@ -47,9 +50,9 @@ class GetFile extends AbstractMethod
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_GET;
+        return HttpMethod::GET;
     }
 
     /**

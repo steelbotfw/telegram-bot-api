@@ -9,6 +9,9 @@ use Steelbot\TelegramBotApi\{
     Type\Message
 };
 
+/**
+ * @extends AbstractMethod<Message>
+ */
 class EditMessageText extends AbstractMethod implements \JsonSerializable
 {
     use DisableWebPagePreviewTrait;
@@ -73,7 +76,7 @@ class EditMessageText extends AbstractMethod implements \JsonSerializable
      *
      * @return $this
      */
-    public function setMessageId(int $messageId = null): self
+    public function setMessageId(?int $messageId = null): self
     {
         $this->messageId = $messageId;
 
@@ -93,7 +96,7 @@ class EditMessageText extends AbstractMethod implements \JsonSerializable
      *
      * @return self
      */
-    public function setInlineMessageId(int $inlineMessageId = null): self
+    public function setInlineMessageId(?int $inlineMessageId = null): self
     {
         $this->inlineMessageId = $inlineMessageId;
 
@@ -134,9 +137,9 @@ class EditMessageText extends AbstractMethod implements \JsonSerializable
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -170,7 +173,7 @@ class EditMessageText extends AbstractMethod implements \JsonSerializable
      *
      * @return Message|bool
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         if ($result === true) {
             return true;
@@ -182,7 +185,7 @@ class EditMessageText extends AbstractMethod implements \JsonSerializable
     /**
      * @return array
      */
-    function jsonSerialize()
+    function jsonSerialize(): array
     {
         $data = [
             'text' => $this->text

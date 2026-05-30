@@ -4,6 +4,9 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Type\WebhookInfo;
 
+/**
+ * @extends AbstractMethod<WebhookInfo>
+ */
 class GetWebhookInfo extends AbstractMethod
 {
     public function getMethodName(): string
@@ -11,9 +14,9 @@ class GetWebhookInfo extends AbstractMethod
         return 'getWebhookInfo';
     }
 
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_GET;
+        return HttpMethod::GET;
     }
 
     public function getParams(): array
@@ -26,7 +29,7 @@ class GetWebhookInfo extends AbstractMethod
      *
      * @return WebhookInfo
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return new WebhookInfo($result);
     }

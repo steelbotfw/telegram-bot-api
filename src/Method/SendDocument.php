@@ -6,6 +6,9 @@ use Steelbot\TelegramBotApi\{
     Traits\ChatIdRequiredTrait, Traits\DisableNotificationTrait, Traits\ReplyMarkupTrait, Traits\ReplyToMessageIdTrait, Type\Message
 };
 
+/**
+ * @extends AbstractMethod<Message>
+ */
 class SendDocument extends AbstractMethod implements \JsonSerializable
 {
     use ChatIdRequiredTrait;
@@ -62,7 +65,7 @@ class SendDocument extends AbstractMethod implements \JsonSerializable
      *
      * @return $this
      */
-    public function setCaption(string $caption = null): self
+    public function setCaption(?string $caption = null): self
     {
         $this->caption = $caption;
 
@@ -83,9 +86,9 @@ class SendDocument extends AbstractMethod implements \JsonSerializable
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -118,7 +121,7 @@ class SendDocument extends AbstractMethod implements \JsonSerializable
      *
      * @return object
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return new Message($result);
     }
@@ -126,7 +129,7 @@ class SendDocument extends AbstractMethod implements \JsonSerializable
     /**
      *
      */
-    function jsonSerialize()
+    function jsonSerialize(): array
     {
         $data = [];
 

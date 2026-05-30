@@ -22,7 +22,7 @@ trait CaptionTrait
      *
      * @return $this
      */
-    public function setCaption(string $caption = null): self
+    public function setCaption(?string $caption = null): self
     {
         $this->caption = $caption;
 

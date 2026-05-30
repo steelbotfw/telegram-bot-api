@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\InlineQueryResult;
 
+use Override;
 use Steelbot\TelegramBotApi\{
     Traits\LatLonRequiredTrait,
     Traits\ThumbUrlOptionalTrait,
@@ -91,10 +92,8 @@ class InlineQueryResultVenue extends AbstractInlineQueryResult
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
         $result = array_merge($result, [

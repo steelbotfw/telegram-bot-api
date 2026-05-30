@@ -1,10 +1,13 @@
 <?php
 
-namespace Steelbot\Tests\TelegramBotApi\Type\Traits;
+declare(strict_types=1);
 
+namespace Steelbot\Tests\TelegramBotApi\Type;
+
+use PHPUnit\Framework\TestCase;
 use Steelbot\TelegramBotApi\Type\ForceReply;
 
-class ForceReplyTest extends \PHPUnit_Framework_TestCase
+class ForceReplyTest extends TestCase
 {
     public function testJsonSerialize()
     {

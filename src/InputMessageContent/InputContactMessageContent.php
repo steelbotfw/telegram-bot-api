@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\InputMessageContent;
 
+use Override;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 
 class InputContactMessageContent implements InputMessageContentInterface
@@ -93,10 +94,8 @@ class InputContactMessageContent implements InputMessageContentInterface
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = [
             'phone_number' => $this->phoneNumber,

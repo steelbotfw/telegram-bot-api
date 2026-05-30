@@ -1,10 +1,14 @@
 <?php
 
-namespace Steelbot\Tests\TelegramBotApi\Type\Traits;
+declare(strict_types=1);
 
+namespace Steelbot\Tests\TelegramBotApi\Type;
+
+use PHPUnit\Framework\TestCase;
+use Steelbot\TelegramBotApi\Type\KeyboardButton;
 use Steelbot\TelegramBotApi\Type\ReplyKeyboardMarkup;
 
-class ReplyKeyboardMarkupTest extends \PHPUnit_Framework_TestCase
+class ReplyKeyboardMarkupTest extends TestCase
 {
     public function testGetSetKeyboard()
     {
@@ -29,7 +33,21 @@ class ReplyKeyboardMarkupTest extends \PHPUnit_Framework_TestCase
         ], $markup->getKeyboard());
     }
 
-    public function testAddKeyboardButton()
+    public function testAddKeyboardButton_EmptyKeyboard_AddsButton(): void
+    {
+        $markup = new ReplyKeyboardMarkup([[]]);
+
+        $markup->addKeyboardButton('1');
+
+        $this->assertEquals(
+            [
+                'keyboard' => [['1']],
+            ],
+            $markup->jsonSerialize()
+        );
+    }
+
+    public function testAddKeyboardButton(): void
     {
         $markup = new ReplyKeyboardMarkup([['1', '2', '3']]);
 
@@ -62,23 +80,23 @@ class ReplyKeyboardMarkupTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($markup->getResizeKeyboard());
     }
 
-    public function testJsonSerialize()
+    public function testJsonSerialize_Always_SerializesObject(): void
     {
-        $markup = new ReplyKeyboardMarkup(['1', '2', '3']);
-
-        $expectedJson = json_encode([
-            'keyboard' => ['1', '2', '3']
+        $markup = new ReplyKeyboardMarkup([
+            ['1'],
+            [new KeyboardButton('2'),'3']
         ]);
-
-        $this->assertJsonStringEqualsJsonString($expectedJson, json_encode($markup));
-
         $markup->setSelective(true);
 
-        $expectedJson = json_encode([
-            'keyboard' => ['1', '2', '3'],
-            'selective' => 1
-        ]);
-
-        $this->assertJsonStringEqualsJsonString($expectedJson, json_encode($markup));
+        $this->assertSame(
+            [
+                'keyboard' => [
+                    ['1'],
+                    [['text' => '2'], '3']
+                ],
+                'selective' => true,
+            ],
+            $markup->jsonSerialize()
+        );
     }
 }

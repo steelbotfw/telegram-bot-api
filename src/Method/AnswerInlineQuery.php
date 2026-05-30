@@ -2,6 +2,9 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+/**
+ * @extends AbstractMethod<bool>
+ */
 class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
 {
     /**
@@ -118,7 +121,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      *
      * @return AnswerInlineQuery
      */
-    public function setCacheTime(int $cacheTime = null)
+    public function setCacheTime(?int $cacheTime = null)
     {
         $this->cacheTime = $cacheTime;
 
@@ -158,7 +161,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      *
      * @return self
      */
-    public function setSwitchPmText(string $switchPmText = null)
+    public function setSwitchPmText(?string $switchPmText = null)
     {
         $this->switchPmText = $switchPmText;
 
@@ -178,7 +181,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      *
      * @return self
      */
-    public function setSwitchPmParameter(string $switchPmParameter = null)
+    public function setSwitchPmParameter(?string $switchPmParameter = null)
     {
         $this->switchPmParameter = $switchPmParameter;
 
@@ -199,9 +202,9 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -237,7 +240,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      *
      * @return bool
      */
-    public function buildResult($result): bool
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }
@@ -245,7 +248,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
     /**
      * @return array
      */
-    function jsonSerialize()
+    function jsonSerialize(): array
     {
         $result =  [
             'results' => $this->results

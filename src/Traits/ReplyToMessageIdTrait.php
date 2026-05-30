@@ -24,7 +24,7 @@ trait ReplyToMessageIdTrait
      *
      * @return self
      */
-    public function setReplyToMessageId(int $replyToMessageId = null)
+    public function setReplyToMessageId(?int $replyToMessageId = null)
     {
         $this->replyToMessageId = $replyToMessageId;
 

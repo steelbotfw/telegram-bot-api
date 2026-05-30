@@ -1,6 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Type;
+
 use Steelbot\TelegramBotApi\Traits\SelectiveTrait;
 
 /**
@@ -10,57 +13,24 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
 {
     use SelectiveTrait;
 
-    /**
-     * Array of button rows, each represented by an Array of KeyboardButton objects.
-     *
-     * @var KeyboardButton[][]
-     */
-    protected $keyboard;
-
-    /**
-     * Requests clients to resize the keyboard vertically for optimal fit
-     * (e.g., make the keyboard smaller if there are just two rows of buttons).
-     * Defaults to false, in which case the custom keyboard is always of the same height
-     * as the app's standard keyboard.
-     *
-     * @var bool|null
-     */
-    protected $resizeKeyboard;
-
-    /**
-     * Requests clients to hide the keyboard as soon as it's been used. The keyboard will still
-     * be available, but clients will automatically display the usual letter-keyboard in the
-     * chat – the user can press a special button in the input field to see the custom keyboard
-     * again. Defaults to false.
-     *
-     * @var bool|null
-     */
-    protected $oneTimeKeyboard;
-
-    /**
-     * ReplyKeyboardMarkup constructor.
-     *
-     * @param string[][]|KeyboardButton[][] $keyboard
-     */
-    public function __construct(array $keyboard)
-    {
-        $this->keyboard = $keyboard;
+    public function __construct(
+        /**
+         * @var list<list<string|KeyboardButton>> $keyboard
+         */
+        private array $keyboard,
+        private ?bool $isPersistent = null,
+        private ?bool $resizeKeyboard = null,
+        private ?bool $oneTimeKeyboard = null,
+        private ?string $inputFieldPlaceholder = null
+    ) {
     }
 
-    /**
-     * @return KeyboardButton[][]
-     */
-    public function getKeyboard()
+    public function getKeyboard(): array
     {
         return $this->keyboard;
     }
 
-    /**
-     * @param KeyboardButton[][] $keyboard
-     *
-     * @return ReplyKeyboardMarkup
-     */
-    public function setKeyboard(array $keyboard)
+    public function setKeyboard(array $keyboard): static
     {
         $this->keyboard = $keyboard;
 
@@ -68,81 +38,83 @@ class ReplyKeyboardMarkup implements ReplyMarkupInterface
     }
 
     /**
-     * @param KeyboardButton[] $row
-     *
-     * @return ReplyKeyboardMarkup
+     * @param array<KeyboardButton|string> $row
      */
-    public function addKeyboardRow(array $row = []): self
+    public function addKeyboardRow(array $row = []): static
     {
         $this->keyboard[] = $row;
 
         return $this;
     }
 
-    /**
-     * @param string|KeyboardButton $button
-     *
-     * @return ReplyKeyboardMarkup
-     */
-    public function addKeyboardButton($button): self
+    public function addKeyboardButton(string|KeyboardButton $button): static
     {
-        if (!(is_string($button) || ($button instanceof KeyboardButton))) {
-            throw new \DomainException("Button should be a string or a KeyboardButton instance");
-        }
-
         $lastRowIndex = max(count($this->keyboard) - 1, 0);
         $this->keyboard[$lastRowIndex][] = $button;
 
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function getOneTimeKeyboard()
+    public function getOneTimeKeyboard(): ?bool
     {
         return $this->oneTimeKeyboard;
     }
 
-    /**
-     * @param bool|null $oneTimeKeyboard
-     *
-     * @return ReplyKeyboardMarkup
-     */
-    public function setOneTimeKeyboard(bool $oneTimeKeyboard = null): self
+    public function setOneTimeKeyboard(?bool $oneTimeKeyboard): static
     {
         $this->oneTimeKeyboard = $oneTimeKeyboard;
 
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function getResizeKeyboard()
+    public function getResizeKeyboard(): ?bool
     {
         return $this->resizeKeyboard;
     }
 
-    /**
-     * @param bool|null $resizeKeyboard
-     *
-     * @return ReplyKeyboardMarkup
-     */
-    public function setResizeKeyboard(bool $resizeKeyboard = null): self
+    public function setResizeKeyboard(?bool $resizeKeyboard): static
     {
         $this->resizeKeyboard = $resizeKeyboard;
 
         return $this;
     }
 
-    /**
-     * Specify data which should be serialized to JSON
-     */
-    function jsonSerialize()
+    public function getIsPersistent(): ?bool
+    {
+        return $this->isPersistent;
+    }
+
+    public function setIsPersistent(?bool $isPersistent): ReplyKeyboardMarkup
+    {
+        $this->isPersistent = $isPersistent;
+
+        return $this;
+    }
+
+    public function getInputFieldPlaceholder(): ?string
+    {
+        return $this->inputFieldPlaceholder;
+    }
+
+    public function setInputFieldPlaceholder(?string $inputFieldPlaceholder): ReplyKeyboardMarkup
+    {
+        $this->inputFieldPlaceholder = $inputFieldPlaceholder;
+
+        return $this;
+    }
+
+    public function jsonSerialize(): array
     {
         $result = [
-            'keyboard' => $this->keyboard
+            'keyboard' => array_values(
+                array_map(
+                    static fn (array $row): array => array_map(
+                        static fn (KeyboardButton|string $kb) => is_string($kb) ? $kb : $kb->jsonSerialize(),
+                        $row
+                    ),
+                    $this->keyboard
+                )
+            )
         ];
 
         if ($this->selective !== null) {

@@ -1,10 +1,13 @@
 <?php
 
-namespace Steelbot\Tests\TelegramBotApi\Type\Traits;
+declare(strict_types = 1);
 
+namespace Steelbot\Tests\TelegramBotApi\Type;
+
+use PHPUnit\Framework\TestCase;
 use Steelbot\TelegramBotApi\Type\ReplyKeyboardRemove;
 
-class ReplyKeyboardRemoveTest extends \PHPUnit_Framework_TestCase
+class ReplyKeyboardRemoveTest extends TestCase
 {
     public function testJsonSerialize()
     {

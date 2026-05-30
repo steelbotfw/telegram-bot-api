@@ -11,6 +11,9 @@ use Steelbot\TelegramBotApi\Traits\ReplyToMessageIdTrait;
 use Steelbot\TelegramBotApi\Traits\TitleRequiredTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
+/**
+ * @extends AbstractMethod<Message>
+ */
 class SendVenue extends AbstractMethod implements \JsonSerializable
 {
     use ChatIdRequiredTrait;
@@ -104,9 +107,9 @@ class SendVenue extends AbstractMethod implements \JsonSerializable
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -139,7 +142,7 @@ class SendVenue extends AbstractMethod implements \JsonSerializable
      *
      * @return object
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return new Message($result);
     }
@@ -151,7 +154,7 @@ class SendVenue extends AbstractMethod implements \JsonSerializable
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = [
             'title' => $this->title,

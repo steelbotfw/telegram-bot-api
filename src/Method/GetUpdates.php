@@ -2,8 +2,11 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
-use Steelbot\TelegramBotApi\Type\Update;
+use Steelbot\TelegramBotApi\Type\Basic\Update;
 
+/**
+ * @extends AbstractMethod<Update[]>
+ */
 class GetUpdates extends AbstractMethod
 {
     /**
@@ -105,9 +108,9 @@ class GetUpdates extends AbstractMethod
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_GET;
+        return HttpMethod::GET;
     }
 
     /**
@@ -131,7 +134,7 @@ class GetUpdates extends AbstractMethod
      *
      * @return Update[]
      */
-    public function buildResult($result)
+    public function buildResult($result): array
     {
         $updates = [];
 

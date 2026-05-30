@@ -2,6 +2,9 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+/**
+ * @extends AbstractMethod<bool>
+ */
 class DeleteWebhook extends AbstractMethod
 {
     public function getMethodName(): string
@@ -9,9 +12,9 @@ class DeleteWebhook extends AbstractMethod
         return 'deleteWebhook';
     }
 
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     public function getParams(): array
@@ -21,10 +24,8 @@ class DeleteWebhook extends AbstractMethod
 
     /**
      * @param bool $result
-     *
-     * @return bool
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }

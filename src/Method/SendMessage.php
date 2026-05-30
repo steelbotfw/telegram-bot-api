@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\Method;
 
+use JsonSerializable;
 use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 use Steelbot\TelegramBotApi\Traits\DisableWebPagePreviewTrait;
@@ -10,7 +11,10 @@ use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
 use Steelbot\TelegramBotApi\Traits\ReplyToMessageIdTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
-class SendMessage extends AbstractMethod implements \JsonSerializable
+/**
+ * @extends AbstractMethod<Message>
+ */
+class SendMessage extends AbstractMethod implements JsonSerializable
 {
     use ChatIdRequiredTrait;
     use ParseModeTrait;
@@ -19,35 +23,37 @@ class SendMessage extends AbstractMethod implements \JsonSerializable
     use DisableNotificationTrait;
     use ReplyToMessageIdTrait;
 
-    /**
-     * @var string
-     */
-    protected $text;
+    public function __construct(
+        string|int $chatId,
+        private string $text
+    ) {
+        $this->chatId = $chatId;
+    }
 
-    public function __construct($chatId, string $text)
+    /**
+     * @param mixed $chatId
+     */
+    public function setChatId($chatId): void
     {
         $this->chatId = $chatId;
-        $this->text = $text;
     }
 
     /**
      * @return mixed
      */
-    public function getText()
+    public function getChatId()
+    {
+        return $this->chatId;
+    }
+
+    public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * @param mixed $text
-     *
-     * @return SendMessage
-     */
-    public function setText($text)
+    public function setText(string $text): void
     {
         $this->text = $text;
-
-        return $this;
     }
 
     /**
@@ -60,19 +66,15 @@ class SendMessage extends AbstractMethod implements \JsonSerializable
         return 'sendMessage';
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
      * Get parameters for HTTP query.
      *
-     * @return mixed
+     * @return array<string|int>
      */
     public function getParams(): array
     {
@@ -81,7 +83,7 @@ class SendMessage extends AbstractMethod implements \JsonSerializable
         ];
 
         if ($this->parseMode) {
-            $params['parse_mode'] = $this->parseMode;
+            $params['parse_mode'] = $this->parseMode->value;
         }
 
         if ($this->disableWebPagePreview) {
@@ -106,26 +108,23 @@ class SendMessage extends AbstractMethod implements \JsonSerializable
      *
      * @return object
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return new Message($result);
     }
 
-    /**
-     * Specify data which should be serialized to JSON
-     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = [
             'text' => $this->text
         ];
 
         if ($this->replyMarkup) {
-            $data['reply_markup'] = $this->replyMarkup;
+            $data['reply_markup'] = $this->replyMarkup->jsonSerialize();
+        }
+
+        if ($this->parseMode) {
+            $data['parse_mode'] = $this->parseMode->value;
         }
 
         return $data;

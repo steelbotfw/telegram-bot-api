@@ -6,6 +6,9 @@ use Steelbot\TelegramBotApi\{
     Traits\JsonAttributesBuilderTrait, Traits\UserIdRequiredTrait, Type\UserProfilePhotos
 };
 
+/**
+ * @extends AbstractMethod<UserProfilePhotos[]>
+ */
 class GetUserProfilePhotos extends AbstractMethod
 {
     use UserIdRequiredTrait;
@@ -77,9 +80,9 @@ class GetUserProfilePhotos extends AbstractMethod
         return 'getUserProfilePhotos';
     }
 
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_GET;
+        return HttpMethod::GET;
     }
 
     public function getParams(): array
@@ -101,14 +104,11 @@ class GetUserProfilePhotos extends AbstractMethod
      *
      * @return UserProfilePhotos[]
      */
-    public function buildResult($photos)
+    public function buildResult($result): object|array|bool|int
     {
-        $result = [];
-
-        foreach ($photos as $photoData) {
-            $result[] = new UserProfilePhotos($photoData);
-        }
-
-        return $result;
+        return array_map(
+            static fn ($photoData) => new UserProfilePhotos($photoData),
+            $result
+        );
     }
 }

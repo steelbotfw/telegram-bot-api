@@ -4,13 +4,14 @@ namespace Steelbot\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 
+/**
+ * @extends AbstractMethod<bool>
+ */
 class LeaveChat extends AbstractMethod
 {
     use ChatIdRequiredTrait;
 
     /**
-     * GetChatMembersCount constructor.
-     *
      * @param int|string $chatId
      */
     public function __construct($chatId)
@@ -23,9 +24,9 @@ class LeaveChat extends AbstractMethod
         return 'leaveChat';
     }
 
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     public function getParams(): array
@@ -40,7 +41,7 @@ class LeaveChat extends AbstractMethod
      *
      * @return bool
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return $result;
     }

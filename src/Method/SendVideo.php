@@ -13,6 +13,9 @@ use Steelbot\TelegramBotApi\{
     Type\Message
 };
 
+/**
+ * @extends AbstractMethod<Message>
+ */
 class SendVideo extends AbstractMethod implements \JsonSerializable
 {
     use ChatIdRequiredTrait;
@@ -118,9 +121,9 @@ class SendVideo extends AbstractMethod implements \JsonSerializable
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -153,7 +156,7 @@ class SendVideo extends AbstractMethod implements \JsonSerializable
      *
      * @return object
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return new Message($result);
     }
@@ -161,7 +164,7 @@ class SendVideo extends AbstractMethod implements \JsonSerializable
     /**
      *
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = $this->buildJsonAttributes([
             'reply_markup' => $this->replyMarkup,

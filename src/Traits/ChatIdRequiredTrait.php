@@ -1,28 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Steelbot\TelegramBotApi\Traits;
 
 trait ChatIdRequiredTrait
 {
-    /**
-     * @var string|int
-     */
-    protected $chatId;
+    protected string|int $chatId;
 
-    /**
-     * @return int|string
-     */
-    public function getChatId()
+    public function getChatId(): int|string
     {
         return $this->chatId;
     }
 
-    /**
-     * @param int|string $chatId
-     *
-     * @return $this
-     */
-    public function setChatId($chatId): self
+    public function setChatId(int|string $chatId): static
     {
         $this->chatId = $chatId;
 

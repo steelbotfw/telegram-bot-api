@@ -7,6 +7,9 @@ use Steelbot\TelegramBotApi\{
     Type\Message
 };
 
+/**
+ * @extends AbstractMethod<Message|bool>
+ */
 class EditMessageCaption extends AbstractMethod implements \JsonSerializable
 {
     use ReplyMarkupTrait;
@@ -64,7 +67,7 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
      *
      * @return $this
      */
-    public function setMessageId(int $messageId = null): self
+    public function setMessageId(?int $messageId = null): self
     {
         $this->messageId = $messageId;
 
@@ -84,7 +87,7 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
      *
      * @return self
      */
-    public function setInlineMessageId(int $inlineMessageId = null): self
+    public function setInlineMessageId(?int $inlineMessageId = null): self
     {
         $this->inlineMessageId = $inlineMessageId;
 
@@ -104,7 +107,7 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
      *
      * @return self
      */
-    public function setCaption(string $caption = null): self
+    public function setCaption(?string $caption = null): self
     {
         $this->caption = $caption;
 
@@ -125,9 +128,9 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -161,7 +164,7 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
      *
      * @return Message|bool
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         if ($result === true) {
             return true;
@@ -173,7 +176,7 @@ class EditMessageCaption extends AbstractMethod implements \JsonSerializable
     /**
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = [
             'caption' => $this->caption

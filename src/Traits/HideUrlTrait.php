@@ -22,7 +22,7 @@ trait HideUrlTrait
      *
      * @return $this
      */
-    public function setHideUrl(bool $hideUrl = null): self
+    public function setHideUrl(?bool $hideUrl = null): self
     {
         $this->hideUrl = $hideUrl;
 

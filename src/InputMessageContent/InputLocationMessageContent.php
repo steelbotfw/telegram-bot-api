@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi\InputMessageContent;
 
+use Override;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 
 class InputLocationMessageContent implements InputMessageContentInterface
@@ -62,7 +63,8 @@ class InputLocationMessageContent implements InputMessageContentInterface
         return $this;
     }
 
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = [
             'latitude' => $this->latitude,

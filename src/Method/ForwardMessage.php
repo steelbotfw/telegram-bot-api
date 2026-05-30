@@ -6,6 +6,9 @@ use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 use Steelbot\TelegramBotApi\Type\Message;
 
+/**
+ * @extends AbstractMethod<Message>
+ */
 class ForwardMessage extends AbstractMethod
 {
     use ChatIdRequiredTrait;
@@ -79,9 +82,9 @@ class ForwardMessage extends AbstractMethod
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -111,7 +114,7 @@ class ForwardMessage extends AbstractMethod
      *
      * @return object
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return new Message($result);
     }

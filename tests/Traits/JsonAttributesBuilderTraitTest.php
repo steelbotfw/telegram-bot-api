@@ -1,29 +1,23 @@
 <?php
 
-namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult\Traits;
+declare(strict_types=1);
 
+namespace Steelbot\Tests\TelegramBotApi\Traits;
+
+use PHPUnit\Framework\TestCase;
 use Steelbot\TelegramBotApi\Traits\JsonAttributesBuilderTrait;
 
 class AttributesBuilderExample
 {
     use JsonAttributesBuilderTrait;
 
-    /**
-     * @var string
-     */
-    protected $property1 = 'value1';
+    protected string $property1 = 'value1';
 
-    /**
-     * @var string
-     */
-    protected $property2 = 'value2';
+    protected string $property2 = 'value2';
 
-    /**
-     * @var int
-     */
-    protected $property3;
+    protected int $property3;
 
-    public function buildAttributes()
+    public function buildAttributes(): array
     {
         return $this->buildJsonAttributes([
             'property_one' => $this->property1,
@@ -32,9 +26,9 @@ class AttributesBuilderExample
     }
 }
 
-class JsonAttributesBuilderTest extends \PHPUnit_Framework_TestCase
+class JsonAttributesBuilderTraitTest extends TestCase
 {
-    public function testBuildJsonAttributesSuccess()
+    public function testBuildJsonAttributesSuccess(): void
     {
         $object = new AttributesBuilderExample();
 

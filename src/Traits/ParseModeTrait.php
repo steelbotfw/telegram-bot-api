@@ -2,27 +2,18 @@
 
 namespace Steelbot\TelegramBotApi\Traits;
 
+use Steelbot\TelegramBotApi\Enum\ParseMode;
+
 trait ParseModeTrait
 {
-    /**
-     * @var string|null
-     */
-    protected $parseMode;
+    protected ?ParseMode $parseMode = null;
 
-    /**
-     * @return null|string
-     */
-    public function getParseMode()
+    public function getParseMode(): ?ParseMode
     {
         return $this->parseMode;
     }
 
-    /**
-     * @param null|string $parseMode
-     *
-     * @return $this
-     */
-    public function setParseMode(string $parseMode = null): self
+    public function setParseMode(?ParseMode $parseMode = null): static
     {
         $this->parseMode = $parseMode;
 

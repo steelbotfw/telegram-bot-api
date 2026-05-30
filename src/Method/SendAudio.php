@@ -12,6 +12,9 @@ use Steelbot\TelegramBotApi\{
     Type\Message
 };
 
+/**
+ * @extends AbstractMethod<Message>
+ */
 class SendAudio extends AbstractMethod implements \JsonSerializable
 {
     use ChatIdRequiredTrait;
@@ -68,7 +71,7 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
      *
      * @return SendAudio
      */
-    public function setDuration(int $duration = null): self
+    public function setDuration(?int $duration = null): self
     {
         $this->duration = $duration;
 
@@ -88,7 +91,7 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
      *
      * @return SendAudio
      */
-    public function setPerformer(string $performer = null)
+    public function setPerformer(?string $performer = null)
     {
         $this->performer = $performer;
 
@@ -108,7 +111,7 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
      *
      * @return SendAudio
      */
-    public function setTitle(string $title = null)
+    public function setTitle(?string $title = null)
     {
         $this->title = $title;
 
@@ -129,9 +132,9 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
      *
      * @return string
      */
-    public function getHttpMethod(): string
+    public function getHttpMethod(): HttpMethod
     {
-        return self::HTTP_POST;
+        return HttpMethod::POST;
     }
 
     /**
@@ -164,7 +167,7 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
      *
      * @return object
      */
-    public function buildResult($result)
+    public function buildResult($result): object|array|bool|int
     {
         return new Message($result);
     }
@@ -172,7 +175,7 @@ class SendAudio extends AbstractMethod implements \JsonSerializable
     /**
      *
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = $this->buildJsonAttributes([
             'reply_markup' => $this->replyMarkup,

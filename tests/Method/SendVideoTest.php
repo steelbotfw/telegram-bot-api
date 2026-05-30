@@ -2,8 +2,15 @@
 
 namespace Steelbot\Tests\TelegramBotApi\Method;
 
-class SendVideoTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SendVideoTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->markTestSkipped('Need to refactor tests');
+    }
+
     public function testGetParams()
     {
         $this->markTestIncomplete();

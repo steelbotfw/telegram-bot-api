@@ -5,6 +5,7 @@ namespace Steelbot\TelegramBotApi\InlineQueryResult;
 use Steelbot\TelegramBotApi\Traits\{
     CaptionTrait, DescriptionTrait, DisableWebPagePreviewTrait, InputMessageContentTrait, ParseModeTrait, HideUrlTrait, ReplyMarkupTrait, TitleTrait
 };
+use Override;
 
 class InlineQueryResultCachedDocument extends AbstractInlineQueryResult
 {
@@ -53,10 +54,8 @@ class InlineQueryResultCachedDocument extends AbstractInlineQueryResult
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
         $result['document_file_id'] = $this->documentFileId;

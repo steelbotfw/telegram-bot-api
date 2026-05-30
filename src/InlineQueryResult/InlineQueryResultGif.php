@@ -5,6 +5,7 @@ namespace Steelbot\TelegramBotApi\InlineQueryResult;
 use Steelbot\TelegramBotApi\Traits\{
     CaptionTrait, InputMessageContentTrait, JsonAttributesBuilderTrait, ReplyMarkupTrait, TitleTrait
 };
+use Override;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 
 class InlineQueryResultGif extends AbstractInlineQueryResult
@@ -137,10 +138,8 @@ class InlineQueryResultGif extends AbstractInlineQueryResult
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    #[Override]
+    public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
         $result = array_merge($result, [
