@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser;
 
-use DOMElement;
+use Dom\Element;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeFieldDefinition;
-use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * @internal
@@ -19,13 +18,13 @@ readonly class TypeParser
     ) {
     }
 
-    public function parse(DOMElement $h4Node, array $nodes): TypeDefinition
+    public function parse(Element $h4Node, array $nodes): TypeDefinition
     {
         $typeDefinition = new TypeDefinition($this->parserHelper->fetchSectionItemId($h4Node));
 
         foreach ($nodes as $node) {
             if ($this->parserHelper->isTableNode($node)) {
-                /** @var DOMElement $node */
+                /** @var Element $node */
                 return $this->parseTable($node, $typeDefinition);
             }
         }
@@ -33,39 +32,50 @@ readonly class TypeParser
         return $typeDefinition;
     }
 
-    private function assertTableHeaderIsValid(DOMElement $table): void
+    private function assertTableHeaderIsValid(Element $table): void
     {
-        $crawler = new Crawler($table);
-
-        $headerValues = array_map(
-            fn (string $text) => trim($text),
-            $crawler->filter('thead tr')->eq(0)->filter('th')->extract(['_text']),
-        );
+        $headerValues = [];
+        foreach ($table->querySelectorAll('thead tr:first-child th') as $th) {
+            $headerValues[] = trim($th->textContent);
+        }
 
         assert($headerValues === ['Field', 'Type', 'Description']);
     }
 
-    private function parseTable(DOMelement $table, TypeDefinition $typeDefinition): TypeDefinition
+    private function parseTable(Element $table, TypeDefinition $typeDefinition): TypeDefinition
     {
         $this->assertTableHeaderIsValid($table);
 
-        $crawler = new Crawler($table);
-        $crawler->filter('tbody tr')->each(function (Crawler $tr) use ($typeDefinition) {
-            $tds = $tr->filter('td');
+        foreach ($table->querySelectorAll('tbody tr') as $tr) {
+            if (!$tr instanceof Element) {
+                continue;
+            }
+
+            $tds = $tr->querySelectorAll('td');
+            assert($tds->count() === 3);
+
+            $nameNode = $tds->item(0);
+            $typeNode = $tds->item(1);
+            $descriptionNode = $tds->item(2);
+            assert($nameNode instanceof Element);
+            assert($typeNode instanceof Element);
+            assert($descriptionNode instanceof Element);
 
             $typeDefinition->addField(
                 new TypeFieldDefinition(
-                    $tds->eq(0)->text(''),
-                    $this->parserHelper->parseValueType($tds->eq(1)),
-                    $tds->eq(2)->text(),
-                    $this->detectIsOptional($tds->eq(2)),
+                    $nameNode->textContent,
+                    $this->parserHelper->parseValueType($typeNode),
+                    $descriptionNode->textContent,
+                    $this->detectIsOptional($descriptionNode),
                 )
             );
-        });
+        }
+
+        return $typeDefinition;
     }
 
-    private function detectIsOptional(Crawler $td): bool
+    private function detectIsOptional(Element $td): bool
     {
-
+        return str_starts_with(trim($td->textContent), 'Optional.');
     }
 }

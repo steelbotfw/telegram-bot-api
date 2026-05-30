@@ -20,7 +20,9 @@ class ParserHelperTest extends TestCase
     {
         $parserHelper = new ParserHelper();
 
-        $tdNode = HtmlDocument::createFromString("<table><tr>{$html}</tr></table>")->querySelector('td');
+        $tdNode = HtmlDocument::createFromString(
+            "<!doctype html><html><body><table><tr>{$html}</tr></table></body></html>"
+        )->querySelector('td');
 
         $this->assertSame(
             $expected,

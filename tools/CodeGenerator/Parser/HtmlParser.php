@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser;
 
-use DOMElement;
-use DOMNode;
+use Dom\Element;
+use Dom\HTMLDocument;
+use Dom\Node;
+use Dom\Text;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\BotApiDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\MethodDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
-use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * @internal
@@ -42,32 +43,32 @@ class HtmlParser
 
     public function parse(string $html): BotApiDefinition
     {
-        $crawler = new Crawler($html);
+        $document = HTMLDocument::createFromString($html, LIBXML_NOERROR);
 
         $botApiDefinition = new BotApiDefinition();
 
-        $crawler->filter('h3')->each(function (Crawler $h3Node): void {
-            if (!in_array($h3Node->text(), self::SECTIONS, true)) {
-                printf("Skipping section:\"%s\"\n", $h3Node->text());
-
-                return;
-            }
-            printf("  Parsing section: \"%s\"\n", self::normalizeText($h3Node->text()));
-
-            $node = $h3Node->getNode(0);
-            if ($node === null) {
-                return;
+        foreach ($document->querySelectorAll('h3') as $h3Node) {
+            if (!$h3Node instanceof Element) {
+                continue;
             }
 
-            $contentNode = $node->nextSibling;
+            $sectionTitle = self::normalizeText($h3Node->textContent);
+            if (!in_array($sectionTitle, self::SECTIONS, true)) {
+                printf("Skipping section:\"%s\"\n", $sectionTitle);
+
+                continue;
+            }
+            printf("  Parsing section: \"%s\"\n", $sectionTitle);
+
+            $contentNode = $h3Node->nextSibling;
             $sectionsNodes = [];
             while ($contentNode !== null && $this->parserHelper->isH3Node($contentNode) === false) {
                 $sectionsNodes[] = $contentNode;
 
                 $contentNode = $contentNode->nextSibling;
             }
-            $this->parseSection($h3Node->text(), $sectionsNodes);
-        });
+            $botApiDefinition->addSection($this->parseSection($sectionTitle, $sectionsNodes));
+        }
 
         return $botApiDefinition;
     }
@@ -79,7 +80,7 @@ class HtmlParser
 
     /**
      * @param string $title
-     * @param DOMNode[]  $nodes
+     * @param Node[]  $nodes
      *
      * @return SectionDefinition
      */
@@ -90,7 +91,7 @@ class HtmlParser
 
         $itemNodes = [];
         foreach ($nodes as $node) {
-            if ($node instanceof \DOMText) { // just spaces between tags
+            if ($node instanceof Text) { // just spaces between tags
                 assert(trim($node->wholeText) === '');
                 continue;
             }
@@ -108,11 +109,15 @@ class HtmlParser
             $itemNodes[] = $node;
         }
 
+        if (count($itemNodes) > 0) {
+            $section->addItem($this->parseSectionItem($itemNodes));
+        }
+
         return $section;
     }
 
     /**
-     * @param DOMNode[] $nodes
+     * @param Node[] $nodes
      *
      * @return TypeDefinition|MethodDefinition
      */
@@ -123,7 +128,7 @@ class HtmlParser
             var_dump($h4Node);
             throw new \LogicException(sprintf('Node %s must have a H4 tag', $h4Node::class));
         }
-        /** @var DOMElement $h4Node */
+        /** @var Element $h4Node */
 
         foreach ($nodes as $node) {
             printf("    Section item: %s\n", $node->nodeName);
@@ -140,22 +145,16 @@ class HtmlParser
         };
     }
 
-    private function domNodeToString(DOMNode $node): string
+    private function domNodeToString(Node $node): string
     {
         $result = get_class($node).': ';
 
-        switch (get_class($node)) {
-            case \DOMText::class:
-                $result .= '"' . $node->textContent . '"';
-                break;
-
-            case DOMElement::class:
-                $result .= $node->tagName;
-                break;
-
-            default:
-                $result .= '(unknown)';
-                break;
+        if ($node instanceof Text) {
+            $result .= '"' . $node->textContent . '"';
+        } elseif ($node instanceof Element) {
+            $result .= $node->tagName;
+        } else {
+            $result .= '(unknown)';
         }
 
         return $result;

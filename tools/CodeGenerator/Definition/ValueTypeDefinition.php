@@ -9,7 +9,7 @@ class ValueTypeDefinition
     /**
      * @var string[]
      */
-    private array $types;
+    private array $types = [];
 
     public function addType(string $type, bool $isArray): void
     {

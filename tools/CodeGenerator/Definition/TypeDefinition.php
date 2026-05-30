@@ -6,7 +6,7 @@ namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition;
 
 class TypeDefinition
 {
-    private array $fields;
+    private array $fields = [];
 
     public function __construct(
         public readonly string $id,
