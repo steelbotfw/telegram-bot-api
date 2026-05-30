@@ -103,7 +103,7 @@ class HtmlParser
             }
 
             if ($this->parserHelper->isH4Node($node) && count($itemNodes) > 0) {
-                $section->addItem($this->parseSectionItem($itemNodes));
+                $section->addItem($this->parseSectionItem($itemNodes, $section));
                 $itemNodes = [];
             }
 
@@ -112,7 +112,7 @@ class HtmlParser
         }
 
         if (count($itemNodes) > 0) {
-            $section->addItem($this->parseSectionItem($itemNodes));
+            $section->addItem($this->parseSectionItem($itemNodes, $section));
         }
 
         return $section;
@@ -123,8 +123,10 @@ class HtmlParser
      *
      * @return TypeDefinition|MethodDefinition
      */
-    private function parseSectionItem(array $nodes): TypeDefinition|MethodDefinition
-    {
+    private function parseSectionItem(
+        array $nodes,
+        SectionDefinition $sectionDefinition
+    ): TypeDefinition|MethodDefinition {
         $h4Node = array_shift($nodes);
         if (!$this->parserHelper->isH4Node($h4Node)) {
             var_dump($h4Node);
@@ -142,8 +144,8 @@ class HtmlParser
             |> ctype_upper(...);
 
         return match ($isFirstUpper) {
-            true => $this->typeParser->parse($h4Node, $nodes),
-            false => $this->methodParser->parse($h4Node, $nodes),
+            true => $this->typeParser->parse($h4Node, $nodes, $sectionDefinition),
+            false => $this->methodParser->parse($h4Node, $nodes, $sectionDefinition),
         };
     }
 

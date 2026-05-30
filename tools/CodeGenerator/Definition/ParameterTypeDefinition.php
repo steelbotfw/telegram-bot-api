@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition;
 
-class ValueTypeDefinition
+class ParameterTypeDefinition
 {
     /**
      * @var string[]

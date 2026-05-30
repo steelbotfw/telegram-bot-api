@@ -6,7 +6,7 @@ namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser;
 
 use Dom\Element;
 use Dom\Node;
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ValueTypeDefinition;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterTypeDefinition;
 
 /**
  * @internal
@@ -54,11 +54,11 @@ class ParserHelper
         return $node instanceof Element && strtolower($node->tagName) === 'td';
     }
 
-    public function parseValueType(Element $tdNode): ValueTypeDefinition
+    public function parseValueType(Element $tdNode): ParameterTypeDefinition
     {
         assert($this->isTdNode($tdNode));
 
-        $vtd = new ValueTypeDefinition();
+        $vtd = new ParameterTypeDefinition();
 
         $valueText = preg_replace('/\s+/', ' ', trim($tdNode->textContent)) ?? '';
         $isArray = str_starts_with($valueText, 'Array of');

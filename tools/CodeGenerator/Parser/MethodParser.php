@@ -6,6 +6,7 @@ namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser;
 
 use Dom\Element;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\MethodDefinition;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
 
 /**
  * @internal
@@ -17,8 +18,12 @@ class MethodParser
     ) {
     }
 
-    public function parse(Element $h4node, array $nodes): MethodDefinition
+    public function parse(Element $h4node, array $nodes, SectionDefinition $sectionDefinition): MethodDefinition
     {
-        return new MethodDefinition($this->parserHelper->fetchSectionItemId($h4node));
+        return new MethodDefinition(
+            trim($h4node->textContent),
+            $this->parserHelper->fetchSectionItemId($h4node),
+            $sectionDefinition,
+        );
     }
 }

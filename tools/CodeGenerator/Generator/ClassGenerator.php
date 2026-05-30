@@ -5,46 +5,150 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator;
 
+use Composer\Autoload\ClassLoader;
+use LanguageServerProtocol\DiagnosticRelatedInformation;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\Printer;
+use Nette\PhpGenerator\PsrPrinter;
+use RuntimeException;
+use SplFileInfo;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\BotApiDefinition;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\MethodDefinition;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterDefinition;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
 
-class ClassGenerator
+readonly class ClassGenerator
 {
-    public function generate(BotApiDefinition $botApiDefinition, string $srcPath): void
+    private Printer $printer;
+
+    public function __construct(
+        private string $baseDir
+    ) {
+        $this->printer = new PsrPrinter();
+        $this->printer->indentation = '    ';
+    }
+
+    public function generate(BotApiDefinition $botApiDefinition): void
     {
         foreach ($botApiDefinition->getSections() as $section) {
+            printf("Generating classes for section %s\n", $section->getTitle());
             foreach ($section->getItems() as $item) {
                 if ($item instanceof TypeDefinition) {
-                    $printer = new Printer();
-                    $printer->indentation = '    ';
-
-                    $file = $this->generateType($item, $srcPath);
-
-                    // todo
-                    echo $printer->printFile($file);
+                    $this->generateApiType($item);
+                } elseif ($item instanceof MethodDefinition) {
+                    $this->generateApiMethod($item);
+                } else {
+                    throw new \LogicException("Unknown item: " . $item::class);
                 }
             }
         }
     }
 
-    private function generateType(TypeDefinition $typeDefinition, string $srcPath): PhpFile
+    private function generateApiType(TypeDefinition $typeDefinition): string
     {
-        $file = new PhpFile();
-        $class = $file->setStrictTypes(true)->addClass($typeDefinition->name);
+        $classDir = $this->buildDir('Type', $this->sectionToDir($typeDefinition->owner));
 
-        $class->setReadOnly(true);
+        $file = new PhpFile()->setStrictTypes();
+        $namespace = $file->addNamespace($this->getNamespaceByDirectory($classDir));
+        $class = $namespace->addClass($typeDefinition->name)
+            ->setReadOnly();
 
         $constructor = $class->addMethod('__construct');
 
         foreach ($typeDefinition->getFields() as $field) {
+            //$parameterNamespace = $this->getParameterNamespace($fiel, $botApiDefinition);
+           // $parameterClass =
             $constructor->addPromotedParameter($this->snakeToCamel($field->name))
                 ->setNullable($field->isOptional)
-                ->setPublic();
+                ->setType('string');
+                //->setType($field->)
+                //->setPublic();
         }
 
-        return $file;
+        $filename = $classDir . DIRECTORY_SEPARATOR . $typeDefinition->name . '.php';
+        $this->saveFile($file, $filename);
+
+        return $filename;
+    }
+
+    private function generateApiMethod(MethodDefinition $methodDefinition): string
+    {
+        $classDir = $this->buildDir('Method', $this->sectionToDir($methodDefinition->owner));
+
+        $file = new PhpFile()->setStrictTypes();
+        $namespace = $file->addNamespace($this->getNamespaceByDirectory($classDir));
+        $class = $namespace->addClass(mb_ucfirst($methodDefinition->name))
+            ->setReadOnly();
+
+        $filename = $classDir . DIRECTORY_SEPARATOR . mb_ucfirst($methodDefinition->name) . '.php';
+        $this->saveFile($file, $filename);
+
+        return $filename;
+    }
+
+    private function generateParameterNamespace(
+        ParameterDefinition $parameterDefinition,
+        BotApiDefinition $botApiDefinition
+    ): string {
+
+    }
+
+    private function saveFile(PhpFile $file, string $filename): void
+    {
+        $fileInfo = new SplFileInfo($filename);
+
+        $fileObject = $fileInfo->openFile('w');
+        $fileObject->fwrite($this->printer->printFile($file));
+    }
+
+    private function getNamespaceByDirectory(string $directory): ?string
+    {
+        $targetDir = realpath($directory);
+        if (!$targetDir)  {
+            throw new RuntimeException('Target directory not found: ' . $directory);
+        }
+
+        $prefixes = array_values(ClassLoader::getRegisteredLoaders())[0]?->getPrefixesPsr4() ??
+            throw new RuntimeException('Class loader for target directory not found');
+
+        foreach ($prefixes as $namespace => $dirs) {
+            foreach ($dirs as $dir) {
+                $dir = realpath($dir);
+                if (str_starts_with($targetDir, $dir)) {
+                    $relativePath = substr($targetDir, strlen($dir)+1);
+                    $subNamespace = str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
+
+                    return rtrim($namespace . $subNamespace, '\\');
+                }
+            }
+        }
+
+        throw new RuntimeException("Can't determine namesapce for directory $targetDir");
+    }
+
+    private function itemToFilename(TypeDefinition|MethodDefinition $itemDefinition): string
+    {
+        $itemDirMap = [
+            TypeDefinition::class => 'Type',
+            MethodDefinition::class => 'Method',
+        ];
+        $classDir = $this->baseDir .
+            DIRECTORY_SEPARATOR .
+            $this->sectionToDir($itemDefinition->owner) .
+            DIRECTORY_SEPARATOR .
+            $itemDirMap[$itemDefinition::class];
+
+        return $classDir . DIRECTORY_SEPARATOR . $itemDefinition->name . '.php';
+    }
+
+    private function sectionToDir(SectionDefinition $sectionDefinition): string
+    {
+        return match ($sectionDefinition->getTitle()) {
+            'Getting updates' => 'Update',
+
+            default => throw new RuntimeException("Unknown section: {$sectionDefinition->getTitle()}"),
+        };
     }
 
     private function snakeToCamel($string)
@@ -54,5 +158,23 @@ class ClassGenerator
                 |> (static fn($x) => ucwords($x, '_'))
                 |> (static fn($x) => str_replace('_', '', $x))
                 |> lcfirst(...);
+    }
+
+    private function buildDir(string ...$subdirectories): string
+    {
+        $dir = $this->baseDir . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $subdirectories);
+        $fileInfo = new SplFileInfo($dir);
+        if ($fileInfo->isFile()) {
+            throw new RuntimeException("$dir is a file, not directory");
+        }
+
+        if (!$fileInfo->isDir()) {
+            $dirname = $fileInfo->getPathname();
+            if (!mkdir($dirname, 0755, true) && !is_dir($dirname)) {
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $dirname));
+            }
+        }
+
+        return $dir;
     }
 }

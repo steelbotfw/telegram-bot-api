@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser;
 
 use Dom\Element;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeFieldDefinition;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterDefinition;
 
 /**
  * @internal
@@ -18,11 +19,12 @@ readonly class TypeParser
     ) {
     }
 
-    public function parse(Element $h4Node, array $nodes): TypeDefinition
+    public function parse(Element $h4Node, array $nodes, SectionDefinition $sectionDefinition): TypeDefinition
     {
         $typeDefinition = new TypeDefinition(
-            $h4Node->textContent,
-            $this->parserHelper->fetchSectionItemId($h4Node)
+            trim($h4Node->textContent),
+            $this->parserHelper->fetchSectionItemId($h4Node),
+            $sectionDefinition
         );
 
         foreach ($nodes as $node) {
@@ -65,11 +67,12 @@ readonly class TypeParser
             assert($descriptionNode instanceof Element);
 
             $typeDefinition->addField(
-                new TypeFieldDefinition(
+                new ParameterDefinition(
                     $nameNode->textContent,
                     $this->parserHelper->parseValueType($typeNode),
                     $descriptionNode->textContent,
                     $this->detectIsOptional($descriptionNode),
+                    $typeDefinition,
                 )
             );
         }

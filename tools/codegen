@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\ClassGenerator;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser\HtmlParser;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -22,7 +23,7 @@ $parser = new HtmlParser();
 printf("Parsing HTML ...\n");
 $botApiDefinition = $parser->parse($html);
 
-$generator = new \Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\ClassGenerator();
-$generator->generate($botApiDefinition, dirname(__DIR__) . '/src');
+$generator = new ClassGenerator(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src');
+$generator->generate($botApiDefinition);
 
 printf("Done.\n");

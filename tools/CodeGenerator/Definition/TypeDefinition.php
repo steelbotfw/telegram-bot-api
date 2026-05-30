@@ -7,17 +7,18 @@ namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition;
 class TypeDefinition
 {
     /**
-     * @var TypeFieldDefinition[]
+     * @var ParameterDefinition[]
      */
     private array $fields = [];
 
     public function __construct(
         public readonly string $name,
         public readonly string $id,
+        public readonly SectionDefinition $owner,
     ) {
     }
 
-    public function addField(TypeFieldDefinition $typeFieldDefinition): void
+    public function addField(ParameterDefinition $typeFieldDefinition): void
     {
         $this->fields[] = $typeFieldDefinition;
     }

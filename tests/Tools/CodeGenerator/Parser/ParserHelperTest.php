@@ -6,7 +6,7 @@ namespace Steelbot\TelegramBotApi\Tests\Tools\CodeGenerator\Parser;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ValueTypeDefinition;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterTypeDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser\ParserHelper;
 use Dom\HTMLDocument;
 
@@ -48,7 +48,7 @@ class ParserHelperTest extends TestCase
         ];
     }
 
-    private function exportValueType(ValueTypeDefinition $valueTypeDefinition): array
+    private function exportValueType(ParameterTypeDefinition $valueTypeDefinition): array
     {
         return [
             'types' => $valueTypeDefinition->getTypes(),
