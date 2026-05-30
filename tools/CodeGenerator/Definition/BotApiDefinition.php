@@ -6,6 +6,9 @@ namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition;
 
 class BotApiDefinition
 {
+    /**
+     * @var SectionDefinition[]
+     */
     private array $sections = [];
 
     public function addSection(SectionDefinition $section): void

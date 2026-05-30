@@ -20,6 +20,7 @@ class HtmlParser
 {
     private const array SECTIONS = [
       'Getting updates',
+        /* TODO
       'Available types',
       'Available methods',
       'Updating messages',
@@ -28,6 +29,7 @@ class HtmlParser
       'Payments',
       'Telegram Passport',
       'Games',
+        */
     ];
 
     private readonly TypeParser $typeParser;

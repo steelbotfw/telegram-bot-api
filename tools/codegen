@@ -20,6 +20,9 @@ printf("Loaded %d bytes\n", strlen($html));
 $parser = new HtmlParser();
 
 printf("Parsing HTML ...\n");
-$parser->parse($html);
+$botApiDefinition = $parser->parse($html);
+
+$generator = new \Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\ClassGenerator();
+$generator->generate($botApiDefinition, dirname(__DIR__) . '/src');
 
 printf("Done.\n");

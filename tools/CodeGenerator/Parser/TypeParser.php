@@ -20,7 +20,10 @@ readonly class TypeParser
 
     public function parse(Element $h4Node, array $nodes): TypeDefinition
     {
-        $typeDefinition = new TypeDefinition($this->parserHelper->fetchSectionItemId($h4Node));
+        $typeDefinition = new TypeDefinition(
+            $h4Node->textContent,
+            $this->parserHelper->fetchSectionItemId($h4Node)
+        );
 
         foreach ($nodes as $node) {
             if ($this->parserHelper->isTableNode($node)) {
