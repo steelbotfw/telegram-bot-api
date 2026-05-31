@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition;
 
+/**
+ * @psalm-external-mutation-free
+ */
 class TypeDefinition
 {
     /**
@@ -11,6 +14,9 @@ class TypeDefinition
      */
     private array $fields = [];
 
+    /**
+     * @psalm-mutation-free
+     */
     public function __construct(
         public readonly string $name,
         public readonly string $id,
@@ -18,6 +24,9 @@ class TypeDefinition
     ) {
     }
 
+    /**
+     * @psalm-external-mutation-free
+     */
     public function addField(ParameterDefinition $typeFieldDefinition): void
     {
         $this->fields[] = $typeFieldDefinition;

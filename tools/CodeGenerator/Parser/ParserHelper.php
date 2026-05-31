@@ -24,31 +24,49 @@ class ParserHelper
 
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function isPNode(Node $node): bool
     {
         return $node instanceof Element && strtolower($node->tagName) === 'p';
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function isH3Node(Node $node): bool
     {
         return $node instanceof Element && strtolower($node->tagName) === 'h3';
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function isH4Node(Node $node): bool
     {
         return $node instanceof Element && strtolower($node->tagName) === 'h4';
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function isBlockquoteNode(Node $node): bool
     {
         return $node instanceof Element && strtolower($node->tagName) === 'blockquote';
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function isTableNode(Node $node): bool
     {
         return $node instanceof Element && strtolower($node->tagName) === 'table';
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function isTdNode(Node $node): bool
     {
         return $node instanceof Element && strtolower($node->tagName) === 'td';

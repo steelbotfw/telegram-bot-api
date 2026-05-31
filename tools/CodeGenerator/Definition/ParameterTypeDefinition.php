@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition;
 
+/**
+ * @psalm-external-mutation-free
+ */
 class ParameterTypeDefinition
 {
     /**
@@ -19,6 +22,9 @@ class ParameterTypeDefinition
      */
     private array $types = [];
 
+    /**
+     * @psalm-external-mutation-free
+     */
     public function addType(string $type, bool $isArray): void
     {
         $this->types[] = trim($type) . ($isArray ? '[]' : '');

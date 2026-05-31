@@ -35,6 +35,9 @@ class HtmlParser
     private readonly TypeParser $typeParser;
     private readonly MethodParser $methodParser;
 
+    /**
+     * @psalm-mutation-free
+     */
     public function __construct(
 
         private readonly ParserHelper $parserHelper = new ParserHelper(),
@@ -75,6 +78,9 @@ class HtmlParser
         return $botApiDefinition;
     }
 
+    /**
+     * @psalm-pure
+     */
     private static function normalizeText(string $text): string
     {
         return preg_replace('/\s+/', ' ', trim($text)) ?? '';
@@ -149,6 +155,9 @@ class HtmlParser
         };
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     private function domNodeToString(Node $node): string
     {
         $result = get_class($node).': ';

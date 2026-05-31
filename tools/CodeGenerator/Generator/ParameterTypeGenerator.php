@@ -13,6 +13,9 @@ use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterDefinition;
 
 readonly class ParameterTypeGenerator
 {
+    /**
+     * @psalm-mutation-free
+     */
     public function __construct(
         private TelegramTypeResolver $telegramTypeResolver
     ) {
@@ -58,6 +61,9 @@ readonly class ParameterTypeGenerator
         $namespace->addUse($import);
     }
 
+    /**
+     * @psalm-pure
+     */
     private function snakeToCamel(string $string): string
     {
         return $string

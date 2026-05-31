@@ -112,6 +112,9 @@ readonly class BotApiGenerator
         throw new RuntimeException("Can't determine namesapce for directory $targetDir");
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     private function sectionToDir(SectionDefinition $sectionDefinition): string
     {
         return match ($sectionDefinition->getTitle()) {

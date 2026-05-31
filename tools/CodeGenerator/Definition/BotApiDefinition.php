@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition;
 
+/**
+ * @psalm-external-mutation-free
+ */
 class BotApiDefinition
 {
     /**
@@ -16,6 +19,9 @@ class BotApiDefinition
      */
     private array $itemMap = [];
 
+    /**
+     * @psalm-external-mutation-free
+     */
     public function addSection(SectionDefinition $section): void
     {
         $this->sections[] = $section;
@@ -34,11 +40,17 @@ class BotApiDefinition
         return $this->sections;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function getItem(string $id): TypeDefinition|MethodDefinition
     {
         return $this->itemMap[$id];
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function hasItem(string $id): bool
     {
         return isset($this->itemMap[$id]);

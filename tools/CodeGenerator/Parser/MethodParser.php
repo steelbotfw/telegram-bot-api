@@ -13,6 +13,9 @@ use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
  */
 class MethodParser
 {
+    /**
+     * @psalm-mutation-free
+     */
     public function __construct(
         private readonly ParserHelper $parserHelper
     ) {

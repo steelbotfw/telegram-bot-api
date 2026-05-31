@@ -20,6 +20,8 @@ readonly class TelegramTypeResolver
 
     /**
      * @param callable(TypeDefinition): class-string $typeFqcnResolver
+     *
+     * @psalm-mutation-free
      */
     public function __construct(
         private BotApiDefinition $botApiDefinition,
@@ -104,6 +106,9 @@ readonly class TelegramTypeResolver
         );
     }
 
+    /**
+     * @psalm-pure
+     */
     private function resolveScalarType(string $telegramTypeName): string
     {
         return match ($telegramTypeName) {
@@ -118,6 +123,8 @@ readonly class TelegramTypeResolver
 
     /**
      * @return array{0: string, 1: int}
+     *
+     * @psalm-pure
      */
     private function parseArrayType(string $telegramTypeName): array
     {
@@ -132,6 +139,9 @@ readonly class TelegramTypeResolver
         return [trim($telegramTypeName), $arrayDepth];
     }
 
+    /**
+     * @psalm-pure
+     */
     private function wrapArrayPhpDocType(string $typeName, int $arrayDepth): string
     {
         for ($i = 0; $i < $arrayDepth; $i++) {
@@ -141,6 +151,9 @@ readonly class TelegramTypeResolver
         return $typeName;
     }
 
+    /**
+     * @psalm-pure
+     */
     private function extractShortClassName(string $fqcn): string
     {
         $lastNamespaceSeparatorPosition = strrpos($fqcn, '\\');

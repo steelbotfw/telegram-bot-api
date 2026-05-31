@@ -14,6 +14,9 @@ use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterDefinition;
  */
 readonly class TypeParser
 {
+    /**
+     * @psalm-mutation-free
+     */
     public function __construct(
         private ParserHelper $parserHelper
     ) {
@@ -80,6 +83,9 @@ readonly class TypeParser
         return $typeDefinition;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     private function detectIsOptional(Element $td): bool
     {
         return str_starts_with(trim($td->textContent), 'Optional.');
