@@ -2,9 +2,10 @@
 
 namespace Steelbot\TelegramBotApi\Exception;
 
+use Exception;
 use Steelbot\TelegramBotApi\Type\ResponseParameters;
 
-class TelegramBotApiException extends \Exception
+class TelegramBotApiException extends Exception
 {
     /**
      * @var ResponseParameters|null

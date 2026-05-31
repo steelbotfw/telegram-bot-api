@@ -2,6 +2,7 @@
 
 namespace Steelbot\Tests\TelegramBotApi\Stub;
 
+use Generator;
 use Icicle\Stream\ReadableStream;
 
 class ReadableStreamStub implements ReadableStream
@@ -18,7 +19,7 @@ class ReadableStreamStub implements ReadableStream
         $this->data = $data;
     }
 
-    public function read(int $length = 0, string $byte = null, float $timeout = 0): \Generator
+    public function read(int $length = 0, string $byte = null, float $timeout = 0): Generator
     {
         $this->isReadable = false;
 

@@ -5,16 +5,14 @@ namespace Steelbot\Tests\TelegramBotApi;
 use Icicle\Coroutine\Coroutine;
 use Icicle\Http\Client\Client;
 use Icicle\Http\Message\Response;
+use PHPUnit_Framework_TestCase;
 use Steelbot\TelegramBotApi\Api;
+use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 use Steelbot\TelegramBotApi\Method\AbstractMethod;
-use Steelbot\TelegramBotApi\Method\ForwardMessage;
-use Steelbot\TelegramBotApi\Method\GetMe;
-use Steelbot\TelegramBotApi\Method\SendMessage;
 use Steelbot\Tests\TelegramBotApi\Stub\AbstractMethodWithBodyStub;
 use Steelbot\Tests\TelegramBotApi\Stub\ReadableStreamStub;
-use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 
-class ApiTest extends \PHPUnit_Framework_TestCase
+class ApiTest extends PHPUnit_Framework_TestCase
 {
     protected $httpClient;
 
@@ -127,7 +125,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->will($this->returnCallback(function() use ($response) {
+            ->will($this->returnCallback(function () use ($response) {
                 return yield $response;
             }));
     }

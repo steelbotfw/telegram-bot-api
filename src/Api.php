@@ -2,6 +2,7 @@
 
 namespace Steelbot\TelegramBotApi;
 
+use Generator;
 use Icicle\Http\{
     Client\Client,
     Message\Response
@@ -9,10 +10,11 @@ use Icicle\Http\{
 use Icicle\Http\Message\BasicUri;
 use Icicle\Stream\MemoryStream;
 use Icicle\Stream\ReadableStream;
+use JsonSerializable;
+use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
 use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Method\GetUpdates;
-use Steelbot\TelegramBotApi\Type;
-use Steelbot\TelegramBotApi\Exception\TelegramBotApiException;
+use UnexpectedValueException;
 
 /**
  * Telegram bot API
@@ -32,7 +34,7 @@ class Api
     protected $token;
 
     /**
-     * @var \Icicle\Http\Client\Client
+     * @var Client
      */
     protected $httpClient;
 
@@ -47,7 +49,7 @@ class Api
     public function __construct(string $token, Client $httpClient = null)
     {
         if (!$token) {
-            throw new \UnexpectedValueException("Telegram token must be set.");
+            throw new UnexpectedValueException("Telegram token must be set.");
         }
         $this->token = $token;
 
@@ -58,7 +60,7 @@ class Api
     }
 
     /**
-     * @return \Icicle\Http\Client\Client
+     * @return Client
      */
     public function getHttpClient(): Client
     {
@@ -70,18 +72,18 @@ class Api
      *
      * @param AbstractMethod $method
      *
-     * @return \Generator
+     * @return Generator
      * @throws TelegramBotApiException
      * @resolve object
      */
-    public function execute(AbstractMethod $method): \Generator
+    public function execute(AbstractMethod $method): Generator
     {
         switch ($method->getHttpMethod()) {
             case $method::HTTP_GET:
                 $response = yield from $this->get('/'.$method->getMethodName(), $method->getParams());
                 break;
             case $method::HTTP_POST:
-                if ($method instanceof \JsonSerializable) {
+                if ($method instanceof JsonSerializable) {
                     $body = json_encode($method);
 
                     $bodyStream = new MemoryStream(0, $body);
@@ -122,10 +124,10 @@ class Api
      * @param int $limit
      * @param int $timeout
      *
-     * @return \Generator
+     * @return Generator
      * @resolve Update[]
      */
-    public function getUpdates($lastUpdateId = null, int $limit = 5, int $timeout = 30) : \Generator
+    public function getUpdates($lastUpdateId = null, int $limit = 5, int $timeout = 30): Generator
     {
         if ($lastUpdateId !== null) {
             $this->lastUpdateId = $lastUpdateId;
@@ -143,9 +145,9 @@ class Api
      * @param string $url
      * @param array $params
      *
-     * @return \Generator
+     * @return Generator
      */
-    protected function get(string $pathName, array $params = [], $headers = []): \Generator
+    protected function get(string $pathName, array $params = [], $headers = []): Generator
     {
         $url = $this->buildUrl($pathName, $params);
 
@@ -160,7 +162,7 @@ class Api
      *
      * @yield Generator
      */
-    protected function post(string $pathName, array $params = [], $headers = [], ReadableStream $body = null): \Generator
+    protected function post(string $pathName, array $params = [], $headers = [], ReadableStream $body = null): Generator
     {
         $url = $this->buildUrl($pathName, $params);
 
@@ -192,11 +194,11 @@ class Api
     /**
      * @param Response $response
      *
-     * @return \Generator
+     * @return Generator
      *
      * @resolve string
      */
-    protected function getResponseBody(Response $response): \Generator
+    protected function getResponseBody(Response $response): Generator
     {
         $data = '';
         $stream = $response->getBody();
