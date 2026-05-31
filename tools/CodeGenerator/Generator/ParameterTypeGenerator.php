@@ -11,6 +11,7 @@ use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\Type;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterDefinition;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterTypeDefinition;
 
 readonly class ParameterTypeGenerator
 {
@@ -26,7 +27,7 @@ readonly class ParameterTypeGenerator
         ClassType $class,
         ParameterDefinition $parameterDefinition,
     ): void {
-        $resolvedType = $this->telegramTypeResolver->resolve($parameterDefinition->typeDefinition);
+        $resolvedType = $this->resolve($parameterDefinition);
 
         foreach ($resolvedType->imports as $import) {
             $this->addImport($class, $import);
@@ -47,6 +48,22 @@ readonly class ParameterTypeGenerator
         if ($comment !== null) {
             $parameter->setComment($comment);
         }
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function resolve(ParameterDefinition $parameterDefinition): ResolvedPhpType
+    {
+        return $this->resolveTypeDefinition($parameterDefinition->typeDefinition);
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function resolveTypeDefinition(ParameterTypeDefinition $typeDefinition): ResolvedPhpType
+    {
+        return $this->telegramTypeResolver->resolve($typeDefinition);
     }
 
     private function getOrCreateConstructor(ClassType $class): Method

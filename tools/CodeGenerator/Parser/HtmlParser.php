@@ -99,7 +99,6 @@ class HtmlParser
                 $itemNodes = [];
             }
 
-            printf("    Adding node: %s\n", $this->domNodeToString($node));
             $itemNodes[] = $node;
         }
 
@@ -129,10 +128,6 @@ class HtmlParser
             throw new LogicException(sprintf('Node %s must be a H4 tag', $nodeClass));
         }
         /** @var Element $h4Node */
-
-        foreach ($nodes as $node) {
-            printf("    Section item: %s\n", $node->nodeName);
-        }
 
         $isFirstUpper = $h4Node->textContent
             |> trim(...)
