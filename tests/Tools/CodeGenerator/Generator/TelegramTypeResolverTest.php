@@ -10,6 +10,7 @@ use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterTypeDefiniti
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\ResolvedPhpType;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\TelegramTypeFqcnResolver;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\TelegramTypeResolver;
 
 class TelegramTypeResolverTest extends TestCase
@@ -17,7 +18,7 @@ class TelegramTypeResolverTest extends TestCase
     public function testResolve_WithScalarAndArrayOfObject_ReturnsUnionWithObjectImport(): void
     {
         $botApiDefinition = new BotApiDefinition();
-        $sectionDefinition = new SectionDefinition('Available types', $botApiDefinition);
+        $sectionDefinition = new SectionDefinition('Getting updates', $botApiDefinition);
         $photoSizeDefinition = new TypeDefinition('PhotoSize', '#photosize', $sectionDefinition);
         $sectionDefinition->addItem($photoSizeDefinition);
         $botApiDefinition->addSection($sectionDefinition);
@@ -28,16 +29,16 @@ class TelegramTypeResolverTest extends TestCase
 
         $resolver = new TelegramTypeResolver(
             $botApiDefinition,
-            static fn (TypeDefinition $typeDefinition): string => 'Test\\' . $typeDefinition->name,
+            new TelegramTypeFqcnResolver('Test'),
         );
 
         $resolvedType = $resolver->resolve($parameterTypeDefinition);
 
         self::assertEquals(
             new ResolvedPhpType(
-                nativeType: 'int|array',
-                phpDocType: 'int|list<PhotoSize>',
-                imports: ['Test\\PhotoSize'],
+                nativeTypes: ['int', 'array'],
+                phpDocType: 'int|list<Test\\Update\\PhotoSize>',
+                imports: ['Test\\Update\\PhotoSize'],
             ),
             $resolvedType,
         );
@@ -50,11 +51,14 @@ class TelegramTypeResolverTest extends TestCase
 
         $resolver = new TelegramTypeResolver(
             new BotApiDefinition(),
-            static fn (TypeDefinition $typeDefinition): string => 'Test\\' . $typeDefinition->name,
+            new TelegramTypeFqcnResolver('Test'),
         );
 
         self::assertEquals(
-            new ResolvedPhpType('mixed'),
+            new ResolvedPhpType(
+                nativeTypes: ['mixed'],
+                rawPhpDocType: 'mixed Unknown type: #message',
+            ),
             $resolver->resolve($parameterTypeDefinition),
         );
     }

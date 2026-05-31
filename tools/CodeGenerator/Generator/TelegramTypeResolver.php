@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator;
 
-use Closure;
 use LogicException;
 use RuntimeException;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\BotApiDefinition;
@@ -13,34 +12,27 @@ use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
 
 readonly class TelegramTypeResolver
 {
-    /**
-     * @var Closure(TypeDefinition): class-string
-     */
-    private Closure $typeFqcnResolver;
-
-    /**
-     * @param callable(TypeDefinition): class-string $typeFqcnResolver
-     *
-     * @psalm-mutation-free
-     */
     public function __construct(
         private BotApiDefinition $botApiDefinition,
-        callable $typeFqcnResolver,
+        private TelegramTypeFqcnResolver $typeFqcnResolver,
     ) {
-        $this->typeFqcnResolver = Closure::fromCallable($typeFqcnResolver);
     }
 
     public function resolve(ParameterTypeDefinition $typeDefinition): ResolvedPhpType
     {
         $nativeTypes = [];
         $phpDocTypes = [];
+        $rawPhpDocTypes = [];
         $imports = [];
 
         foreach ($typeDefinition->getTypes() as $telegramTypeName) {
             $resolvedType = $this->resolveSingleType($telegramTypeName);
 
-            $nativeTypes[] = $resolvedType->nativeType;
-            $phpDocTypes[] = $resolvedType->phpDocType ?? $resolvedType->nativeType;
+            $nativeTypes = [...$nativeTypes, ...$resolvedType->nativeTypes];
+            $phpDocTypes[] = $resolvedType->phpDocType ?? implode('|', $resolvedType->nativeTypes);
+            if ($resolvedType->rawPhpDocType !== null) {
+                $rawPhpDocTypes[] = $resolvedType->rawPhpDocType;
+            }
             $imports = [...$imports, ...$resolvedType->imports];
         }
 
@@ -50,12 +42,13 @@ readonly class TelegramTypeResolver
 
         $nativeTypes = array_values(array_unique($nativeTypes));
         $phpDocTypes = array_values(array_unique($phpDocTypes));
+        $rawPhpDocTypes = array_values(array_unique($rawPhpDocTypes));
         $imports = array_values(array_unique($imports));
 
-        $nativeType = implode('|', $nativeTypes);
         $phpDocType = $phpDocTypes === $nativeTypes ? null : implode('|', $phpDocTypes);
+        $rawPhpDocType = $rawPhpDocTypes === [] ? null : implode("\n", $rawPhpDocTypes);
 
-        return new ResolvedPhpType($nativeType, $phpDocType, $imports);
+        return new ResolvedPhpType($nativeTypes, $phpDocType, $imports, $rawPhpDocType);
     }
 
     private function resolveSingleType(string $telegramTypeName): ResolvedPhpType
@@ -68,12 +61,13 @@ readonly class TelegramTypeResolver
         }
 
         return new ResolvedPhpType(
-            nativeType: 'array',
+            nativeTypes: ['array'],
             phpDocType: $this->wrapArrayPhpDocType(
-                $resolvedBaseType->phpDocType ?? $resolvedBaseType->nativeType,
+                $resolvedBaseType->phpDocType ?? implode('|', $resolvedBaseType->nativeTypes),
                 $arrayDepth
             ),
             imports: $resolvedBaseType->imports,
+            rawPhpDocType: $resolvedBaseType->rawPhpDocType,
         );
     }
 
@@ -83,13 +77,16 @@ readonly class TelegramTypeResolver
             return $this->resolveObjectType($telegramTypeName);
         }
 
-        return new ResolvedPhpType($this->resolveScalarType($telegramTypeName));
+        return new ResolvedPhpType([$this->resolveScalarType($telegramTypeName)]);
     }
 
     private function resolveObjectType(string $typeId): ResolvedPhpType
     {
         if (!$this->botApiDefinition->hasItem($typeId)) {
-            return new ResolvedPhpType('mixed');
+            return new ResolvedPhpType(
+                nativeTypes: ['mixed'],
+                rawPhpDocType: 'mixed Unknown type: ' . $typeId,
+            );
         }
 
         $definition = $this->botApiDefinition->getItem($typeId);
@@ -98,10 +95,10 @@ readonly class TelegramTypeResolver
             throw new LogicException(sprintf('Expected type definition for "%s", got "%s".', $typeId, $definition::class));
         }
 
-        $fqcn = ltrim(($this->typeFqcnResolver)($definition), '\\');
+        $fqcn = ltrim($this->typeFqcnResolver->resolve($definition), '\\');
 
         return new ResolvedPhpType(
-            nativeType: $this->extractShortClassName($fqcn),
+            nativeTypes: [$fqcn],
             imports: [$fqcn],
         );
     }
@@ -149,19 +146,5 @@ readonly class TelegramTypeResolver
         }
 
         return $typeName;
-    }
-
-    /**
-     * @psalm-pure
-     */
-    private function extractShortClassName(string $fqcn): string
-    {
-        $lastNamespaceSeparatorPosition = strrpos($fqcn, '\\');
-
-        if ($lastNamespaceSeparatorPosition === false) {
-            return $fqcn;
-        }
-
-        return substr($fqcn, $lastNamespaceSeparatorPosition + 1);
     }
 }

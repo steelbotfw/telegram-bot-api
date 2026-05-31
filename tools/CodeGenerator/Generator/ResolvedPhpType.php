@@ -10,14 +10,16 @@ namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator;
 readonly class ResolvedPhpType
 {
     /**
+     * @param list<string> $nativeTypes
      * @param list<class-string> $imports
      *
      * @psalm-mutation-free
      */
     public function __construct(
-        public string $nativeType,
+        public array $nativeTypes,
         public ?string $phpDocType = null,
         public array $imports = [],
+        public ?string $rawPhpDocType = null,
     ) {
     }
 }

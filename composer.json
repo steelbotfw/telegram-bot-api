@@ -26,6 +26,7 @@
     },
     "require-dev": {
         "ext-dom": "*",
+        "ext-libxml": "*",
         "phpunit/phpunit": "^12.5",
         "vimeo/psalm": "^7.0@dev",
         "symfony/dom-crawler": "^8.1",

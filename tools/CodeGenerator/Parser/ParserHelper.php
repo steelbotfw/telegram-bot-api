@@ -20,7 +20,7 @@ class ParserHelper
         $aNodes = $h4Node->getElementsByTagName('a');
         assert($aNodes->count() === 1);
 
-        return $aNodes->item(0)->getAttribute('name');
+        return '#' . $aNodes->item(0)->getAttribute('name');
 
     }
 

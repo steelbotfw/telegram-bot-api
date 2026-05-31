@@ -9,6 +9,7 @@ use LogicException;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpNamespace;
+use Nette\PhpGenerator\Type;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterDefinition;
 
 readonly class ParameterTypeGenerator
@@ -34,10 +35,17 @@ readonly class ParameterTypeGenerator
         $parameter = $this->getOrCreateConstructor($class)
             ->addPromotedParameter($this->snakeToCamel($parameterDefinition->name))
             ->setNullable($parameterDefinition->isOptional)
-            ->setType($resolvedType->nativeType);
+            ->setType(Type::union(...$resolvedType->nativeTypes));
 
-        if ($resolvedType->phpDocType !== null) {
-            $parameter->setComment(sprintf('@var %s', $resolvedType->phpDocType));
+        if ($parameterDefinition->isOptional) {
+            $parameter->setDefaultValue(null);
+        }
+
+        $comment = $resolvedType->rawPhpDocType
+            ?? ($resolvedType->phpDocType !== null ? sprintf('@var %s', $resolvedType->phpDocType) : null);
+
+        if ($comment !== null) {
+            $parameter->setComment($comment);
         }
     }
 

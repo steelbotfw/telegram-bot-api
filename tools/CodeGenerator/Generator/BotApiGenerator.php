@@ -14,7 +14,6 @@ use RuntimeException;
 use SplFileInfo;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\BotApiDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\MethodDefinition;
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
 
 readonly class BotApiGenerator
@@ -32,7 +31,7 @@ readonly class BotApiGenerator
     public function generate(BotApiDefinition $botApiDefinition): void
     {
         foreach ($botApiDefinition->getSections() as $section) {
-            printf("Generating classes for section %s\n", $section->getTitle());
+            printf("Generating classes for section '%s'\n", $section->getTitle());
             foreach ($section->getItems() as $item) {
                 if ($item instanceof TypeDefinition) {
                     $this->generateApiType($item);
@@ -47,7 +46,15 @@ readonly class BotApiGenerator
 
     private function generateApiType(TypeDefinition $typeDefinition): string
     {
-        $classDir = $this->buildDir('Type', $this->sectionToDir($typeDefinition->owner));
+        $classDir = $this->buildDir('Type', $typeDefinition->owner->getSectionId());
+        $filename = $classDir . DIRECTORY_SEPARATOR . $typeDefinition->name . '.php';
+
+        printf(
+            "  Generating class for type '%s': \$baseDir%s%s\n",
+            $typeDefinition->name,
+            DIRECTORY_SEPARATOR,
+            $this->getRelativeFilename($filename),
+        );
 
         $file = new PhpFile()->setStrictTypes();
         $namespace = $file->addNamespace($this->getNamespaceByDirectory($classDir));
@@ -58,7 +65,7 @@ readonly class BotApiGenerator
             $this->parameterTypeGenerator->injectParameterTypes($class, $field);
         }
 
-        $filename = $classDir . DIRECTORY_SEPARATOR . $typeDefinition->name . '.php';
+
         $this->saveFile($file, $filename);
 
         return $filename;
@@ -66,14 +73,20 @@ readonly class BotApiGenerator
 
     private function generateApiMethod(MethodDefinition $methodDefinition): string
     {
-        $classDir = $this->buildDir('Method', $this->sectionToDir($methodDefinition->owner));
+        $classDir = $this->buildDir('Method', $methodDefinition->owner->getSectionId());
+        $filename = $classDir . DIRECTORY_SEPARATOR . mb_ucfirst($methodDefinition->name) . '.php';
+        printf(
+            "  Generating class for method '%s': \$baseDir%s%s\n",
+            $methodDefinition->name,
+            DIRECTORY_SEPARATOR,
+            $this->getRelativeFilename($filename)
+        );
 
         $file = new PhpFile()->setStrictTypes();
         $namespace = $file->addNamespace($this->getNamespaceByDirectory($classDir));
         $class = $namespace->addClass(mb_ucfirst($methodDefinition->name))
             ->setReadOnly();
 
-        $filename = $classDir . DIRECTORY_SEPARATOR . mb_ucfirst($methodDefinition->name) . '.php';
         $this->saveFile($file, $filename);
 
         return $filename;
@@ -112,18 +125,6 @@ readonly class BotApiGenerator
         throw new RuntimeException("Can't determine namesapce for directory $targetDir");
     }
 
-    /**
-     * @psalm-mutation-free
-     */
-    private function sectionToDir(SectionDefinition $sectionDefinition): string
-    {
-        return match ($sectionDefinition->getTitle()) {
-            'Getting updates' => 'Update',
-
-            default => throw new RuntimeException("Unknown section: {$sectionDefinition->getTitle()}"),
-        };
-    }
-
     private function buildDir(string ...$subdirectories): string
     {
         $dir = $this->baseDir . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $subdirectories);
@@ -140,5 +141,10 @@ readonly class BotApiGenerator
         }
 
         return $dir;
+    }
+
+    private function getRelativeFilename(string $filename): string
+    {
+        return mb_substr($filename, strlen($this->baseDir)+1);
     }
 }

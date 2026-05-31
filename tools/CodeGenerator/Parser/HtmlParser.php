@@ -18,20 +18,6 @@ use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
  */
 class HtmlParser
 {
-    private const array SECTIONS = [
-      'Getting updates',
-        /* TODO
-      'Available types',
-      'Available methods',
-      'Updating messages',
-      'Stickers',
-      'Inline mode',
-      'Payments',
-      'Telegram Passport',
-      'Games',
-        */
-    ];
-
     private readonly TypeParser $typeParser;
     private readonly MethodParser $methodParser;
 
@@ -58,7 +44,7 @@ class HtmlParser
             }
 
             $sectionTitle = self::normalizeText($h3Node->textContent);
-            if (!in_array($sectionTitle, self::SECTIONS, true)) {
+            if (!array_key_exists($sectionTitle, SectionDefinition::SECTION_MAP)) {
                 printf("Skipping section:\"%s\"\n", $sectionTitle);
 
                 continue;
