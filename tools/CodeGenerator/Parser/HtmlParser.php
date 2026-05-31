@@ -8,6 +8,7 @@ use Dom\Element;
 use Dom\HTMLDocument;
 use Dom\Node;
 use Dom\Text;
+use LogicException;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\BotApiDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\MethodDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
@@ -25,7 +26,6 @@ class HtmlParser
      * @psalm-mutation-free
      */
     public function __construct(
-
         private readonly ParserHelper $parserHelper = new ParserHelper(),
     ) {
         $this->typeParser = new TypeParser($this->parserHelper);
@@ -120,13 +120,13 @@ class HtmlParser
         SectionDefinition $sectionDefinition
     ): TypeDefinition|MethodDefinition {
         if ($nodes === []) {
-            throw new \LogicException('Section item must contain a H4 tag');
+            throw new LogicException('Section item must contain a H4 tag');
         }
 
         $h4Node = array_shift($nodes);
         if (!$this->parserHelper->isH4Node($h4Node)) {
             $nodeClass = $h4Node::class;
-            throw new \LogicException(sprintf('Node %s must be a H4 tag', $nodeClass));
+            throw new LogicException(sprintf('Node %s must be a H4 tag', $nodeClass));
         }
         /** @var Element $h4Node */
 

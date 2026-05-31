@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser;
 
 use Dom\Element;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterDefinition;
 
 /**
  * @internal

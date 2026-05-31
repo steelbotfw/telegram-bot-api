@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition;
 
+use LogicException;
+
 /**
  * @psalm-external-mutation-free
  */
@@ -28,7 +30,7 @@ class BotApiDefinition
 
         foreach ($section->getItems() as $item) {
             if (isset($this->itemMap[$item->id])) {
-                throw new \LogicException("Item {$item->id} is already defined");
+                throw new LogicException("Item {$item->id} is already defined");
             }
 
             $this->itemMap[$item->id] = $item;

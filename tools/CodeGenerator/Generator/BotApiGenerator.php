@@ -103,7 +103,7 @@ readonly class BotApiGenerator
     private function getNamespaceByDirectory(string $directory): string
     {
         $targetDir = realpath($directory);
-        if (!$targetDir)  {
+        if (!$targetDir) {
             throw new RuntimeException('Target directory not found: ' . $directory);
         }
 
@@ -118,7 +118,7 @@ readonly class BotApiGenerator
                 }
 
                 if (str_starts_with($targetDir, $dir)) {
-                    $relativePath = substr($targetDir, strlen($dir)+1);
+                    $relativePath = substr($targetDir, strlen($dir) + 1);
                     $subNamespace = str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
 
                     return rtrim($namespace . $subNamespace, '\\');
@@ -152,6 +152,6 @@ readonly class BotApiGenerator
      */
     private function getRelativeFilename(string $filename): string
     {
-        return mb_substr($filename, strlen($this->baseDir)+1);
+        return mb_substr($filename, strlen($this->baseDir) + 1);
     }
 }

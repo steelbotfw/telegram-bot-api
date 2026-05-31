@@ -6,6 +6,7 @@ namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser;
 
 use Dom\Element;
 use Dom\Node;
+use LogicException;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterTypeDefinition;
 
 /**
@@ -22,7 +23,7 @@ class ParserHelper
 
         $aNode = $aNodes->item(0);
         if (!$aNode instanceof Element) {
-            throw new \LogicException('H4 node must contain an anchor element');
+            throw new LogicException('H4 node must contain an anchor element');
         }
 
         return '#' . $aNode->getAttribute('name');
@@ -94,7 +95,7 @@ class ParserHelper
         }
 
         if ($typeName === null) {
-            throw new \LogicException('Parameter type cannot be determined');
+            throw new LogicException('Parameter type cannot be determined');
         }
 
         $vtd->addType($typeName, $isArray);

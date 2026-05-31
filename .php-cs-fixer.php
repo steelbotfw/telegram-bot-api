@@ -27,6 +27,9 @@ return (new Config())
         'fully_qualified_strict_types' => [
             'import_symbols' => true,
         ],
+        'function_declaration' => [
+            'closure_fn_spacing' => 'none',
+        ],
         'global_namespace_import' => [
             'import_classes' => true,
             'import_constants' => false,
