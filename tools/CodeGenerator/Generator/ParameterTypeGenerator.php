@@ -5,86 +5,65 @@ declare(strict_types=1);
 
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator;
 
-use Composer\Autoload\ClassLoader;
-use LanguageServerProtocol\DiagnosticRelatedInformation;
+use LogicException;
 use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\PhpFile;
+use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpNamespace;
-use Nette\PhpGenerator\Printer;
-use Nette\PhpGenerator\PsrPrinter;
-use Nette\PhpGenerator\Type;
-use RuntimeException;
-use SplFileInfo;
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\BotApiDefinition;
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\MethodDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterDefinition;
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
 
 readonly class ParameterTypeGenerator
 {
-    private function injectParameterTypes(
+    public function __construct(
+        private TelegramTypeResolver $telegramTypeResolver
+    ) {
+    }
+
+    public function injectParameterTypes(
         ClassType $class,
-        ParameterDefinition $parameterDefinition, // Type or Method parameter
-        BotApiDefinition $botApiDefinition,
+        ParameterDefinition $parameterDefinition,
     ): void {
-        var_dump($parameterDefinition->typeDefinition->getTypes());
+        $resolvedType = $this->telegramTypeResolver->resolve($parameterDefinition->typeDefinition);
 
-        $parameter = $class->getMethod('__construct')
-            ->addPromotedParameter($this->snakeToCamel($parameterDefinition->name))
-            ->setNullable($parameterDefinition->isOptional)
-            ->setType(ParameterTypeGenerator::class);
-
-        $types = [];
-        foreach ($parameterDefinition->typeDefinition->getTypes() as $telegramTypeName) {
-            if ($this->isObjectType($telegramTypeName)) { // object type
-
-            } else { // scalar type
-                $type = match ($telegramTypeName) {
-                    'Integer' => Type::Int,
-                    'Boolean' => Type::Bool,
-                    'String' => Type::String,
-                    default => throw new RuntimeException(
-                        sprintf(
-                            "Unknown telegram scalar type %s for parameter %s",
-                            $telegramTypeName,
-                            $parameterDefinition->name
-                        )
-                    )
-                };
-                $parameter->setType($type);
-            }
+        foreach ($resolvedType->imports as $import) {
+            $this->addImport($class, $import);
         }
 
-        switch (count($types)) {
-            case 1:
-                $parameter->setType($types[0]);
-                break;
+        $parameter = $this->getOrCreateConstructor($class)
+            ->addPromotedParameter($this->snakeToCamel($parameterDefinition->name))
+            ->setNullable($parameterDefinition->isOptional)
+            ->setType($resolvedType->nativeType);
 
-            case 0:
-                throw new \LogicException("Parameter {$parameterDefinition->name} has no types.");
-
-            default:
-                $parameter->setType(Type::union(...$types));
+        if ($resolvedType->phpDocType !== null) {
+            $parameter->setComment(sprintf('@var %s', $resolvedType->phpDocType));
         }
     }
 
-    private function snakeToCamel($string)
+    private function getOrCreateConstructor(ClassType $class): Method
+    {
+        if ($class->hasMethod('__construct')) {
+            return $class->getMethod('__construct');
+        }
+
+        return $class->addMethod('__construct');
+    }
+
+    private function addImport(ClassType $class, string $import): void
+    {
+        $namespace = $class->getNamespace();
+
+        if (!$namespace instanceof PhpNamespace) {
+            throw new LogicException(sprintf('Cannot add import "%s" to class without namespace.', $import));
+        }
+
+        $namespace->addUse($import);
+    }
+
+    private function snakeToCamel(string $string): string
     {
         return $string
                 |> strtolower(...)
                 |> (static fn($x) => ucwords($x, '_'))
                 |> (static fn($x) => str_replace('_', '', $x))
                 |> lcfirst(...);
-    }
-
-    private function isArrayType(string $typeName): bool
-    {
-        return str_ends_with($typeName, '[]');
-    }
-
-    private function isObjectType(string $typeName): bool
-    {
-        return str_starts_with($typeName, '#');
     }
 }

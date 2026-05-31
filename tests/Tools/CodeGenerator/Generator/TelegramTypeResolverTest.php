@@ -42,4 +42,20 @@ class TelegramTypeResolverTest extends TestCase
             $resolvedType,
         );
     }
+
+    public function testResolve_WithUnknownObject_ReturnsMixed(): void
+    {
+        $parameterTypeDefinition = new ParameterTypeDefinition();
+        $parameterTypeDefinition->addType('#message', false);
+
+        $resolver = new TelegramTypeResolver(
+            new BotApiDefinition(),
+            static fn (TypeDefinition $typeDefinition): string => 'Test\\' . $typeDefinition->name,
+        );
+
+        self::assertEquals(
+            new ResolvedPhpType('mixed'),
+            $resolver->resolve($parameterTypeDefinition),
+        );
+    }
 }

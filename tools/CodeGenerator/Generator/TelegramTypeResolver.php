@@ -86,6 +86,10 @@ readonly class TelegramTypeResolver
 
     private function resolveObjectType(string $typeId): ResolvedPhpType
     {
+        if (!$this->botApiDefinition->hasItem($typeId)) {
+            return new ResolvedPhpType('mixed');
+        }
+
         $definition = $this->botApiDefinition->getItem($typeId);
 
         if (!$definition instanceof TypeDefinition) {

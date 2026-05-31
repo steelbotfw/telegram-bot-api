@@ -3,7 +3,10 @@
 
 declare(strict_types=1);
 
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\ClassGenerator;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\BotApiGenerator;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\ParameterTypeGenerator;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\TelegramTypeResolver;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser\HtmlParser;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -23,7 +26,22 @@ $parser = new HtmlParser();
 printf("Parsing HTML ...\n");
 $botApiDefinition = $parser->parse($html);
 
-$generator = new ClassGenerator(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src');
+$telegramTypeResolver = new TelegramTypeResolver(
+    $botApiDefinition,
+    static fn (TypeDefinition $typeDefinition): string => sprintf(
+        'Steelbot\\TelegramBotApi\\Type\\%s\\%s',
+        match ($typeDefinition->owner->getTitle()) {
+            'Getting updates' => 'Update',
+            default => throw new RuntimeException("Unknown section: {$typeDefinition->owner->getTitle()}"),
+        },
+        $typeDefinition->name,
+    ),
+);
+$parameterTypeGenerator = new ParameterTypeGenerator($telegramTypeResolver);
+$generator = new BotApiGenerator(
+    dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src',
+    $parameterTypeGenerator,
+);
 $generator->generate($botApiDefinition);
 
 printf("Done.\n");

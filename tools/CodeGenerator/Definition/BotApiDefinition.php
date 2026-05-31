@@ -38,4 +38,9 @@ class BotApiDefinition
     {
         return $this->itemMap[$id];
     }
+
+    public function hasItem(string $id): bool
+    {
+        return isset($this->itemMap[$id]);
+    }
 }

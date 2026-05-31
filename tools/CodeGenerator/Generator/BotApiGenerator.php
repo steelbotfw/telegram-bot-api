@@ -6,27 +6,24 @@ declare(strict_types=1);
 namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator;
 
 use Composer\Autoload\ClassLoader;
-use LanguageServerProtocol\DiagnosticRelatedInformation;
-use Nette\PhpGenerator\ClassType;
+use LogicException;
 use Nette\PhpGenerator\PhpFile;
-use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\Printer;
 use Nette\PhpGenerator\PsrPrinter;
-use Nette\PhpGenerator\Type;
 use RuntimeException;
 use SplFileInfo;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\BotApiDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\MethodDefinition;
-use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\SectionDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
 
-readonly class ClassGenerator
+readonly class BotApiGenerator
 {
     private Printer $printer;
 
     public function __construct(
-        private string $baseDir
+        private string $baseDir,
+        private ParameterTypeGenerator $parameterTypeGenerator,
     ) {
         $this->printer = new PsrPrinter();
         $this->printer->indentation = '    ';
@@ -42,7 +39,7 @@ readonly class ClassGenerator
                 } elseif ($item instanceof MethodDefinition) {
                     $this->generateApiMethod($item);
                 } else {
-                    throw new \LogicException("Unknown item: " . $item::class);
+                    throw new LogicException("Unknown item: " . $item::class);
                 }
             }
         }
@@ -57,12 +54,8 @@ readonly class ClassGenerator
         $class = $namespace->addClass($typeDefinition->name)
             ->setReadOnly();
 
-        $constructor = $class->addMethod('__construct');
-
-        $useClassList = [];
-
         foreach ($typeDefinition->getFields() as $field) {
-            $this->injectParameterTypes($class, $field, $typeDefinition->owner->owner);
+            $this->parameterTypeGenerator->injectParameterTypes($class, $field);
         }
 
         $filename = $classDir . DIRECTORY_SEPARATOR . $typeDefinition->name . '.php';
@@ -84,41 +77,6 @@ readonly class ClassGenerator
         $this->saveFile($file, $filename);
 
         return $filename;
-    }
-
-    private function injectParameterTypes(
-        ClassType $class,
-        ParameterDefinition $parameterDefinition, // Type or Method parameter
-        BotApiDefinition $botApiDefinition,
-    ): void {
-        //$parameterNamespace = $this->getParameterNamespace($fiel, $botApiDefinition);
-        // $parameterClass =
-        var_dump($parameterDefinition->typeDefinition->getTypes());
-
-        $parameter = $class->getMethod('__construct')
-            ->addPromotedParameter($this->snakeToCamel($parameterDefinition->name))
-            ->setNullable($parameterDefinition->isOptional)
-            ->setType(ClassGenerator::class);
-
-        foreach ($parameterDefinition->typeDefinition->getTypes() as $telegramTypeName) {
-            if (str_starts_with($telegramTypeName, '#')) { // object type
-
-            } else { // scalar type
-                $type = match ($telegramTypeName) {
-                    'Integer' => Type::Int,
-                    'Boolean' => Type::Bool,
-                    'String' => Type::String,
-                    default => throw new RuntimeException(
-                        sprintf(
-                            "Unknown telegram scalar type %s for parameter %s",
-                            $telegramTypeName,
-                            $parameterDefinition->name
-                        )
-                    )
-                };
-                $parameter->setType($type);
-            }
-        }
     }
 
     private function saveFile(PhpFile $file, string $filename): void
@@ -154,21 +112,6 @@ readonly class ClassGenerator
         throw new RuntimeException("Can't determine namesapce for directory $targetDir");
     }
 
-    private function itemToFilename(TypeDefinition|MethodDefinition $itemDefinition): string
-    {
-        $itemDirMap = [
-            TypeDefinition::class => 'Type',
-            MethodDefinition::class => 'Method',
-        ];
-        $classDir = $this->baseDir .
-            DIRECTORY_SEPARATOR .
-            $this->sectionToDir($itemDefinition->owner) .
-            DIRECTORY_SEPARATOR .
-            $itemDirMap[$itemDefinition::class];
-
-        return $classDir . DIRECTORY_SEPARATOR . $itemDefinition->name . '.php';
-    }
-
     private function sectionToDir(SectionDefinition $sectionDefinition): string
     {
         return match ($sectionDefinition->getTitle()) {
@@ -177,8 +120,6 @@ readonly class ClassGenerator
             default => throw new RuntimeException("Unknown section: {$sectionDefinition->getTitle()}"),
         };
     }
-
-
 
     private function buildDir(string ...$subdirectories): string
     {
