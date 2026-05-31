@@ -119,10 +119,14 @@ class HtmlParser
         array $nodes,
         SectionDefinition $sectionDefinition
     ): TypeDefinition|MethodDefinition {
+        if ($nodes === []) {
+            throw new \LogicException('Section item must contain a H4 tag');
+        }
+
         $h4Node = array_shift($nodes);
         if (!$this->parserHelper->isH4Node($h4Node)) {
-            var_dump($h4Node);
-            throw new \LogicException(sprintf('Node %s must have a H4 tag', $h4Node::class));
+            $nodeClass = $h4Node::class;
+            throw new \LogicException(sprintf('Node %s must be a H4 tag', $nodeClass));
         }
         /** @var Element $h4Node */
 

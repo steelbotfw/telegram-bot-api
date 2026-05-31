@@ -100,7 +100,7 @@ readonly class BotApiGenerator
         $fileObject->fwrite($this->printer->printFile($file));
     }
 
-    private function getNamespaceByDirectory(string $directory): ?string
+    private function getNamespaceByDirectory(string $directory): string
     {
         $targetDir = realpath($directory);
         if (!$targetDir)  {
@@ -113,6 +113,10 @@ readonly class BotApiGenerator
         foreach ($prefixes as $namespace => $dirs) {
             foreach ($dirs as $dir) {
                 $dir = realpath($dir);
+                if ($dir === false) {
+                    continue;
+                }
+
                 if (str_starts_with($targetDir, $dir)) {
                     $relativePath = substr($targetDir, strlen($dir)+1);
                     $subNamespace = str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
@@ -143,6 +147,9 @@ readonly class BotApiGenerator
         return $dir;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     private function getRelativeFilename(string $filename): string
     {
         return mb_substr($filename, strlen($this->baseDir)+1);

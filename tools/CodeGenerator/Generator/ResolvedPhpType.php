@@ -11,7 +11,7 @@ readonly class ResolvedPhpType
 {
     /**
      * @param list<string> $nativeTypes
-     * @param list<class-string> $imports
+     * @param list<string> $imports
      *
      * @psalm-mutation-free
      */

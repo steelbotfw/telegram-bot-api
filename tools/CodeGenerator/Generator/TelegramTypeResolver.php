@@ -10,14 +10,23 @@ use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\BotApiDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterTypeDefinition;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
 
+/**
+ * @psalm-external-mutation-free
+ */
 readonly class TelegramTypeResolver
 {
+    /**
+     * @psalm-mutation-free
+     */
     public function __construct(
         private BotApiDefinition $botApiDefinition,
         private TelegramTypeFqcnResolver $typeFqcnResolver,
     ) {
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function resolve(ParameterTypeDefinition $typeDefinition): ResolvedPhpType
     {
         $nativeTypes = [];
@@ -51,6 +60,9 @@ readonly class TelegramTypeResolver
         return new ResolvedPhpType($nativeTypes, $phpDocType, $imports, $rawPhpDocType);
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     private function resolveSingleType(string $telegramTypeName): ResolvedPhpType
     {
         [$baseTypeName, $arrayDepth] = $this->parseArrayType($telegramTypeName);
@@ -71,6 +83,9 @@ readonly class TelegramTypeResolver
         );
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     private function resolveBaseType(string $telegramTypeName): ResolvedPhpType
     {
         if (str_starts_with($telegramTypeName, '#')) {
@@ -80,6 +95,9 @@ readonly class TelegramTypeResolver
         return new ResolvedPhpType([$this->resolveScalarType($telegramTypeName)]);
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     private function resolveObjectType(string $typeId): ResolvedPhpType
     {
         if (!$this->botApiDefinition->hasItem($typeId)) {

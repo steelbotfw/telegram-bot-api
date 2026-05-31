@@ -55,6 +55,9 @@ class SectionDefinition
         return $this->items;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function getSectionId(): string
     {
         return self::SECTION_MAP[$this->title] ??

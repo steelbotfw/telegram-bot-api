@@ -6,13 +6,22 @@ namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator;
 
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\TypeDefinition;
 
+/**
+ * @psalm-external-mutation-free
+ */
 readonly class TelegramTypeFqcnResolver
 {
+    /**
+     * @psalm-mutation-free
+     */
     public function __construct(
         private string $baseNamespace = 'Steelbot\\TelegramBotApi\\Type',
     ) {
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function resolve(TypeDefinition $typeDefinition): string
     {
         return sprintf(

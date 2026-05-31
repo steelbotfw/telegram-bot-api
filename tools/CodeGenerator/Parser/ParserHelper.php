@@ -20,7 +20,12 @@ class ParserHelper
         $aNodes = $h4Node->getElementsByTagName('a');
         assert($aNodes->count() === 1);
 
-        return '#' . $aNodes->item(0)->getAttribute('name');
+        $aNode = $aNodes->item(0);
+        if (!$aNode instanceof Element) {
+            throw new \LogicException('H4 node must contain an anchor element');
+        }
+
+        return '#' . $aNode->getAttribute('name');
 
     }
 
@@ -86,6 +91,10 @@ class ParserHelper
             $typeName = $a->getAttribute('href');
         } else {
             $typeName = $isArray ? substr($valueText, strlen('Array of')) : $valueText;
+        }
+
+        if ($typeName === null) {
+            throw new \LogicException('Parameter type cannot be determined');
         }
 
         $vtd->addType($typeName, $isArray);
