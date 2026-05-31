@@ -31,7 +31,8 @@
         "vimeo/psalm": "^7.0@dev",
         "symfony/dom-crawler": "^8.1",
         "symfony/css-selector": "^8.1",
-        "nette/php-generator": "^4.2.2"
+        "nette/php-generator": "^4.2.2",
+        "friendsofphp/php-cs-fixer": "^3.75"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit"
