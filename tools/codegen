@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\BotApiGenerator;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\ParameterTypeGenerator;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\TelegramTypeFqcnResolver;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator\TelegramTypeResolver;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser\HtmlParser;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$filename = isset($argv[1]) ?
+    realpath($argv[1]) :
+    'https://core.telegram.org/bots/api';
+
+printf("Loading HTML from %s ...\n", $filename);
+
+$html = file_get_contents($filename);
+
+printf("Loaded %d bytes\n", strlen($html));
+
+$parser = new HtmlParser();
+
+printf("Parsing HTML ...\n");
+$botApiDefinition = $parser->parse($html);
+
+$telegramTypeResolver = new TelegramTypeResolver(
+    $botApiDefinition,
+    new TelegramTypeFqcnResolver(),
+);
+$parameterTypeGenerator = new ParameterTypeGenerator($telegramTypeResolver);
+$generator = new BotApiGenerator(
+    dirname(__DIR__) . DIRECTORY_SEPARATOR . 'src',
+    $parameterTypeGenerator,
+);
+$generator->generate($botApiDefinition);
+
+printf("Done.\n");

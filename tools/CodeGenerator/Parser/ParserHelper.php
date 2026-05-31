@@ -1,0 +1,109 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Parser;
+
+use Dom\Element;
+use Dom\Node;
+use LogicException;
+use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\ParameterTypeDefinition;
+
+/**
+ * @internal
+ */
+class ParserHelper
+{
+    public function fetchSectionItemId(Element $h4Node): string
+    {
+        assert($this->isH4Node($h4Node));
+
+        $aNodes = $h4Node->getElementsByTagName('a');
+        assert($aNodes->count() === 1);
+
+        $aNode = $aNodes->item(0);
+        if (!$aNode instanceof Element) {
+            throw new LogicException('H4 node must contain an anchor element');
+        }
+
+        return '#' . $aNode->getAttribute('name');
+
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function isPNode(Node $node): bool
+    {
+        return $node instanceof Element && strtolower($node->tagName) === 'p';
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function isH3Node(Node $node): bool
+    {
+        return $node instanceof Element && strtolower($node->tagName) === 'h3';
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function isH4Node(Node $node): bool
+    {
+        return $node instanceof Element && strtolower($node->tagName) === 'h4';
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function isBlockquoteNode(Node $node): bool
+    {
+        return $node instanceof Element && strtolower($node->tagName) === 'blockquote';
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function isTableNode(Node $node): bool
+    {
+        return $node instanceof Element && strtolower($node->tagName) === 'table';
+    }
+
+    /**
+     * @psalm-mutation-free
+     */
+    public function isTdNode(Node $node): bool
+    {
+        return $node instanceof Element && strtolower($node->tagName) === 'td';
+    }
+
+    public function parseValueType(Element $tdNode): ParameterTypeDefinition
+    {
+        assert($this->isTdNode($tdNode));
+
+        $vtd = new ParameterTypeDefinition();
+
+        $valueText = preg_replace('/\s+/', ' ', trim($tdNode->textContent)) ?? '';
+        $isArray = str_starts_with($valueText, 'Array of');
+
+        $a = $tdNode->querySelector('a');
+        if ($a) {
+            $typeName = $a->getAttribute('href');
+        } else {
+            $typeName = $isArray ? substr($valueText, strlen('Array of')) : $valueText;
+        }
+
+        if ($typeName === null) {
+            throw new LogicException('Parameter type cannot be determined');
+        }
+
+        $vtd->addType($typeName, $isArray);
+
+        // todo parse OR definition
+
+        // todo parse Array of Array of
+
+        return $vtd;
+    }
+}

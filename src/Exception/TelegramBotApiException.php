@@ -2,9 +2,10 @@
 
 namespace Steelbot\TelegramBotApi\Exception;
 
+use Exception;
 use Steelbot\TelegramBotApi\Type\ResponseParameters;
 
-class TelegramBotApiException extends \Exception
+class TelegramBotApiException extends Exception
 {
     /**
      * @var ResponseParameters|null
@@ -23,6 +24,8 @@ class TelegramBotApiException extends \Exception
      * @param null|ResponseParameters $parameters
      *
      * @return TelegramBotApiException
+     *
+     * @psalm-external-mutation-free
      */
     public function setParameters(?ResponseParameters $parameters)
     {

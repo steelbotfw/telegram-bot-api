@@ -2,8 +2,11 @@
 
 namespace Steelbot\TelegramBotApi;
 
+/**
+ * @psalm-immutable
+ */
 final class ParseMode
 {
-    const MARKDOWN = 'Markdown';
-    const HTML = 'HTML';
+    public const MARKDOWN = 'Markdown';
+    public const HTML = 'HTML';
 }
