@@ -7,9 +7,12 @@ namespace Steelbot\TelegramBotApi\Tools\CodeGenerator\Generator;
 
 use Composer\Autoload\ClassLoader;
 use LanguageServerProtocol\DiagnosticRelatedInformation;
+use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpFile;
+use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\Printer;
 use Nette\PhpGenerator\PsrPrinter;
+use Nette\PhpGenerator\Type;
 use RuntimeException;
 use SplFileInfo;
 use Steelbot\TelegramBotApi\Tools\CodeGenerator\Definition\BotApiDefinition;
@@ -56,14 +59,10 @@ readonly class ClassGenerator
 
         $constructor = $class->addMethod('__construct');
 
+        $useClassList = [];
+
         foreach ($typeDefinition->getFields() as $field) {
-            //$parameterNamespace = $this->getParameterNamespace($fiel, $botApiDefinition);
-           // $parameterClass =
-            $constructor->addPromotedParameter($this->snakeToCamel($field->name))
-                ->setNullable($field->isOptional)
-                ->setType('string');
-                //->setType($field->)
-                //->setPublic();
+            $this->injectParameterTypes($class, $field, $typeDefinition->owner->owner);
         }
 
         $filename = $classDir . DIRECTORY_SEPARATOR . $typeDefinition->name . '.php';
@@ -87,11 +86,39 @@ readonly class ClassGenerator
         return $filename;
     }
 
-    private function generateParameterNamespace(
-        ParameterDefinition $parameterDefinition,
-        BotApiDefinition $botApiDefinition
-    ): string {
+    private function injectParameterTypes(
+        ClassType $class,
+        ParameterDefinition $parameterDefinition, // Type or Method parameter
+        BotApiDefinition $botApiDefinition,
+    ): void {
+        //$parameterNamespace = $this->getParameterNamespace($fiel, $botApiDefinition);
+        // $parameterClass =
+        var_dump($parameterDefinition->typeDefinition->getTypes());
 
+        $parameter = $class->getMethod('__construct')
+            ->addPromotedParameter($this->snakeToCamel($parameterDefinition->name))
+            ->setNullable($parameterDefinition->isOptional)
+            ->setType(ClassGenerator::class);
+
+        foreach ($parameterDefinition->typeDefinition->getTypes() as $telegramTypeName) {
+            if (str_starts_with($telegramTypeName, '#')) { // object type
+
+            } else { // scalar type
+                $type = match ($telegramTypeName) {
+                    'Integer' => Type::Int,
+                    'Boolean' => Type::Bool,
+                    'String' => Type::String,
+                    default => throw new RuntimeException(
+                        sprintf(
+                            "Unknown telegram scalar type %s for parameter %s",
+                            $telegramTypeName,
+                            $parameterDefinition->name
+                        )
+                    )
+                };
+                $parameter->setType($type);
+            }
+        }
     }
 
     private function saveFile(PhpFile $file, string $filename): void
@@ -151,14 +178,7 @@ readonly class ClassGenerator
         };
     }
 
-    private function snakeToCamel($string)
-    {
-        return $string
-                |> strtolower(...)
-                |> (static fn($x) => ucwords($x, '_'))
-                |> (static fn($x) => str_replace('_', '', $x))
-                |> lcfirst(...);
-    }
+
 
     private function buildDir(string ...$subdirectories): string
     {

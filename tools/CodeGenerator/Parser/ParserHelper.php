@@ -74,6 +74,8 @@ class ParserHelper
 
         // todo parse OR definition
 
+        // todo parse Array of Array of
+
         return $vtd;
     }
 }

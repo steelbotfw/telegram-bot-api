@@ -69,7 +69,7 @@ class HtmlParser
 
                 $contentNode = $contentNode->nextSibling;
             }
-            $botApiDefinition->addSection($this->parseSection($sectionTitle, $sectionsNodes));
+            $botApiDefinition->addSection($this->parseSection($sectionTitle, $sectionsNodes, $botApiDefinition));
         }
 
         return $botApiDefinition;
@@ -86,9 +86,9 @@ class HtmlParser
      *
      * @return SectionDefinition
      */
-    private function parseSection(string $title, array $nodes): SectionDefinition
+    private function parseSection(string $title, array $nodes, BotApiDefinition $botApiDefinition): SectionDefinition
     {
-        $section = new SectionDefinition($title);
+        $section = new SectionDefinition($title, $botApiDefinition);
         printf("  Nodes in section %s: %d\n", $title, count($nodes));
 
         $itemNodes = [];

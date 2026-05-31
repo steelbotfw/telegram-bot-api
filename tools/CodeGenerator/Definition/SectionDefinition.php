@@ -12,7 +12,8 @@ class SectionDefinition
     private array $items = [];
 
     public function __construct(
-        private readonly string $title
+        private readonly string $title,
+        public readonly BotApiDefinition $owner,
     ) {
     }
 
