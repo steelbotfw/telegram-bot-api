@@ -24,6 +24,8 @@ class TelegramBotApiException extends Exception
      * @param null|ResponseParameters $parameters
      *
      * @return TelegramBotApiException
+     *
+     * @psalm-external-mutation-free
      */
     public function setParameters(?ResponseParameters $parameters)
     {

@@ -1,6 +1,6 @@
 {
     "name": "steelbotfw/telegram-bot-api",
-    "description": "Telegram bot API implementation using Icicle",
+    "description": "Telegram bot API implementation",
     "keywords": ["bot", "telegram", "asynchronous", "api"],
     "license": "BSD-3-Clause",
     "authors": [
