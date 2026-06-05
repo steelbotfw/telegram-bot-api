@@ -42,11 +42,6 @@ class SendVoice extends AbstractMethod implements \JsonSerializable
         return $this->voice;
     }
 
-    /**
-     * @param string $photo
-     *
-     * @return SendVoice
-     */
     public function setVoice(string $voice): self
     {
         $this->voice = $voice;

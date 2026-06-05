@@ -31,9 +31,6 @@ class KeyboardButton implements \JsonSerializable
      */
     protected $requestLocation;
 
-    /**
-     * @param array $data
-     */
     public function __construct(string $text)
     {
         $this->text = $text;

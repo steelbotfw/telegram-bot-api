@@ -52,11 +52,6 @@ class SendVideo extends AbstractMethod implements \JsonSerializable
         return $this->video;
     }
 
-    /**
-     * @param string $photo
-     *
-     * @return SendVideo
-     */
     public function setVideo(string $video): self
     {
         $this->video = $video;

@@ -5,15 +5,16 @@ namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult;
 use Steelbot\TelegramBotApi\{
     InlineQueryResult\AbstractInlineQueryResult, Type\InlineKeyboardMarkup, Type\InputMessageContentInterface
 };
+use PHPUnit\Framework\TestCase;
 
-class AbstractInlineQueryResultTest extends \PHPUnit_Framework_TestCase
+class AbstractInlineQueryResultTest extends TestCase
 {
     /**
      * @var AbstractInlineQueryResult
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $inputMessageContent = $this->createMock(InputMessageContentInterface::class);
 

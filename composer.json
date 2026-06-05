@@ -16,7 +16,8 @@
     "type": "library",
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.4",
+        "ext-json": "*",
         "ext-mbstring": "*",
 
         "icicleio/icicle": "*",
@@ -24,7 +25,8 @@
         "icicleio/dns": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7.13"
+        "phpunit/phpunit": "^9.6",
+        "vimeo/psalm": "^5.26"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit"
@@ -42,6 +44,9 @@
     "config": {
         "audit": {
             "block-insecure": false
+        },
+        "platform": {
+            "php": "7.4.0"
         }
     }
 }

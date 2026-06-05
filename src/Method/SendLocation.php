@@ -41,8 +41,6 @@ class SendLocation extends AbstractMethod implements \JsonSerializable
     }
 
     /**
-     * @param mixed $text
-     *
      * @return SendLocation
      */
     public function setLatitude(float $latitude)
@@ -61,8 +59,6 @@ class SendLocation extends AbstractMethod implements \JsonSerializable
     }
 
     /**
-     * @param mixed $text
-     *
      * @return SendLocation
      */
     public function setLongitude(float $longitude)
@@ -72,11 +68,6 @@ class SendLocation extends AbstractMethod implements \JsonSerializable
         return $this;
     }
 
-    /**
-     * Get method name.
-     *
-     * @return string
-     */
     public function getMethodName(): string
     {
         return 'sendLocation';

@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [ '7.1', '7.2', '7.3', '7.4' ]
+        php-version: [ '7.4' ]
         composer-version: [ 'v2' ]
 
     steps:
@@ -35,3 +35,6 @@ jobs:
 
     - name: Run Tests
       run: ./vendor/bin/phpunit
+
+    - name: Run Psalm
+      run: ./vendor/bin/psalm --show-info=false
