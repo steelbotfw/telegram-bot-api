@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: [ '7.1' ]
+        php-version: [ '7.1', '7.2', '7.3', '7.4' ]
         composer-version: [ 'v2' ]
 
     steps:
@@ -24,7 +24,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
-        extensions: mbstring, xml, ctype
+        extensions: mbstring, xml
         tools: composer:v2
 
     - name: Check PHP Version
