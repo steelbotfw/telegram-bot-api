@@ -8,14 +8,14 @@ use Steelbot\TelegramBotApi\{
     Type\ReplyKeyboardMarkup
 };
 
-class InlineQueryResultCachedVideoTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultCachedVideoTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var InlineQueryResultCachedVideo
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $inputMessageContent = $this->createMock(InputMessageContentInterface::class);
         $this->inlineQueryResult = new InlineQueryResultCachedVideo(null, '123-4');

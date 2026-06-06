@@ -8,7 +8,7 @@ use Steelbot\TelegramBotApi\{
     Type\ReplyKeyboardMarkup
 };
 
-class InlineQueryResultContactTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultContactTest extends \PHPUnit\Framework\TestCase
 {
     const THUMB_URL = 'http://example.com/img.jpg';
 
@@ -17,7 +17,7 @@ class InlineQueryResultContactTest extends \PHPUnit_Framework_TestCase
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inlineQueryResult = new InlineQueryResultContact(null, '+0123456789', 'Firstname');
     }

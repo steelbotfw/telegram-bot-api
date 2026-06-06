@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultVideo;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 use Steelbot\TelegramBotApi\Type\ReplyKeyboardMarkup;
 
-class InlineQueryResultVideoTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultVideoTest extends \PHPUnit\Framework\TestCase
 {
     const URL = 'http://mpeg.url/file.mpeg';
     const THUMB_URL = 'http://thumb.url/thumb.png';
@@ -16,7 +16,7 @@ class InlineQueryResultVideoTest extends \PHPUnit_Framework_TestCase
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inlineQueryResult = new InlineQueryResultVideo(null, self::URL, 'application/mpeg', self::THUMB_URL, 'Video Title');
     }

@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\{
     Method\AbstractMethod, Method\GetChatAdministrators, Type\ChatMember
 };
 
-class GetChatAdministratorsTest extends \PHPUnit_Framework_TestCase
+class GetChatAdministratorsTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetMethodName()
     {

@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\ThumbUrlRequiredTrait;
 
-class ThumbUrlRequiredTraitTest extends \PHPUnit_Framework_TestCase
+class ThumbUrlRequiredTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetTitle()
     {

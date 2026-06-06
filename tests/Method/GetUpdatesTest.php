@@ -9,7 +9,7 @@ use Steelbot\TelegramBotApi\Type\ChosenInlineResult;
 use Steelbot\TelegramBotApi\Type\Message;
 use Steelbot\TelegramBotApi\Type\Update;
 
-class GetUpdatesTest extends \PHPUnit_Framework_TestCase
+class GetUpdatesTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetMethodName()
     {
@@ -86,12 +86,6 @@ class GetUpdatesTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testBuildResultInlineQuery()
-    {
-        $this->markTestIncomplete();
-
-    }
-
     public function testBuildResultChosenInlineResult()
     {
         $result = [[
@@ -121,10 +115,5 @@ class GetUpdatesTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Update::class, $update);
         $this->assertEquals($result[0]['update_id'], $update->updateId);
         $this->assertInstanceOf(ChosenInlineResult::class, $update->chosenInlineResult);
-    }
-
-    public function testBuildResultCallbackQuery()
-    {
-        $this->markTestIncomplete();
     }
 }

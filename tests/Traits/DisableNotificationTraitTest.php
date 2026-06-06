@@ -4,7 +4,7 @@ namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\DisableNotificationTrait;
 
-class DisableNotificationTraitTest extends \PHPUnit_Framework_TestCase
+class DisableNotificationTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetDisableNotification()
     {

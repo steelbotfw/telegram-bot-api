@@ -8,7 +8,7 @@ use Steelbot\TelegramBotApi\{
     Type\ReplyKeyboardMarkup
 };
 
-class InlineQueryResultVenueTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultVenueTest extends \PHPUnit\Framework\TestCase
 {
     const THUMB_URL = 'http://thumb.url/thumb.png';
 
@@ -17,7 +17,7 @@ class InlineQueryResultVenueTest extends \PHPUnit_Framework_TestCase
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inlineQueryResult = new InlineQueryResultVenue(null, 12.3, 45.6, 'Venue Title', 'Venue Address');
     }

@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\{
     InlineQueryResult\InlineQueryResultGif, InputMessageContent\InputTextMessageContent, Type\InputMessageContentInterface, Type\ReplyKeyboardMarkup
 };
 
-class InlineQueryResultGifTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultGifTest extends \PHPUnit\Framework\TestCase
 {
     const THUMB_URL = 'http://example.com/pic.jpg';
     const URL = 'http://example.com/pic.gif';
@@ -16,7 +16,7 @@ class InlineQueryResultGifTest extends \PHPUnit_Framework_TestCase
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inlineQueryResult = new InlineQueryResultGif(null, self::URL, self::THUMB_URL);
     }

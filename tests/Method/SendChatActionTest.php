@@ -5,7 +5,7 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 use Steelbot\TelegramBotApi\Method\SendChatAction;
 use Steelbot\TelegramBotApi\Type\Message;
 
-class SendChatActionTest extends \PHPUnit_Framework_TestCase
+class SendChatActionTest extends \PHPUnit\Framework\TestCase
 {
     public function testBuildResult()
     {

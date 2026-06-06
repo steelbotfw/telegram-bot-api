@@ -7,7 +7,7 @@ use Steelbot\TelegramBotApi\{
     Method\GetChatMembersCount
 };
 
-class GetChatMembersCountTest extends \PHPUnit_Framework_TestCase
+class GetChatMembersCountTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetMethodName()
     {

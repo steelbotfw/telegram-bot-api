@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Method\AnswerCallbackQuery;
 
-class AnswerCallbackQueryTest extends \PHPUnit_Framework_TestCase
+class AnswerCallbackQueryTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

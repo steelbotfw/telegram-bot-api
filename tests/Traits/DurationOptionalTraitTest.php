@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\DurationOptionalTrait;
 
-class DurationOptionalTraitTest extends \PHPUnit_Framework_TestCase
+class DurationOptionalTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetDuration()
     {

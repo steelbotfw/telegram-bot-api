@@ -7,7 +7,7 @@ use Steelbot\TelegramBotApi\Type\PhotoSize;
 use Steelbot\TelegramBotApi\Type\Sticker;
 use Steelbot\TelegramBotApi\Type\Message;
 
-class SendStickerTest extends \PHPUnit_Framework_TestCase
+class SendStickerTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

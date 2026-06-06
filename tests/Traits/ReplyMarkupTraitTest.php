@@ -5,7 +5,7 @@ namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
 use Steelbot\TelegramBotApi\Traits\ReplyMarkupTrait;
 use Steelbot\TelegramBotApi\Type\ReplyKeyboardMarkup;
 
-class ReplyMarkupTraitTest extends \PHPUnit_Framework_TestCase
+class ReplyMarkupTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetParseMode()
     {

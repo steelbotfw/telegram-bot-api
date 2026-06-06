@@ -4,14 +4,14 @@ namespace Steelbot\Tests\TelegramBotApi\InputMessageContent;
 
 use Steelbot\TelegramBotApi\InputMessageContent\InputContactMessageContent;
 
-class InputContacteMessageContentTest extends \PHPUnit_Framework_TestCase
+class InputContacteMessageContentTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var InputContactMessageContent
      */
     protected $inputMessageContent;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inputMessageContent = new InputContactMessageContent('+0123456789', 'First Name');
     }

@@ -4,7 +4,7 @@ namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\ReplyToMessageIdTrait;
 
-class ReplyToMessageIdTraitTest extends \PHPUnit_Framework_TestCase
+class ReplyToMessageIdTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetReplyToMessageId()
     {

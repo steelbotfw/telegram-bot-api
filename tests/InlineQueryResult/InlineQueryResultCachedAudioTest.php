@@ -8,14 +8,14 @@ use Steelbot\TelegramBotApi\{
     Type\ReplyKeyboardMarkup
 };
 
-class InlineQueryResultCachedAudioTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultCachedAudioTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var InlineQueryResultCachedAudio
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $inputMessageContent = $this->createMock(InputMessageContentInterface::class);
         $this->inlineQueryResult = new InlineQueryResultCachedAudio(null, '123-4');

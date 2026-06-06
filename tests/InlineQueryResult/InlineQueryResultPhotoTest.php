@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultPhoto;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 use Steelbot\TelegramBotApi\Type\ReplyKeyboardMarkup;
 
-class InlineQueryResultPhotoTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultPhotoTest extends \PHPUnit\Framework\TestCase
 {
     const PHOTO_URL = 'http://photo.url';
     const THUMB_URL = 'http://thumb.url';
@@ -16,7 +16,7 @@ class InlineQueryResultPhotoTest extends \PHPUnit_Framework_TestCase
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inlineQueryResult = new InlineQueryResultPhoto(null, self::PHOTO_URL, self::THUMB_URL);
     }

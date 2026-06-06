@@ -8,7 +8,7 @@ use Steelbot\TelegramBotApi\{
     Type\ReplyKeyboardMarkup
 };
 
-class InlineQueryResultLocationTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultLocationTest extends \PHPUnit\Framework\TestCase
 {
     const THUMB_URL = 'http://example.com/img.jpg';
 
@@ -17,7 +17,7 @@ class InlineQueryResultLocationTest extends \PHPUnit_Framework_TestCase
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inlineQueryResult = new InlineQueryResultLocation(null, 12.3, 45.6, 'Some location');
     }

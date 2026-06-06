@@ -5,7 +5,7 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 use Steelbot\TelegramBotApi\Method\SetWebhook;
 use Steelbot\TelegramBotApi\Type\Update;
 
-class SetWebhookTest extends \PHPUnit_Framework_TestCase
+class SetWebhookTest extends \PHPUnit\Framework\TestCase
 {
     const URL = 'https://webhook.url';
 

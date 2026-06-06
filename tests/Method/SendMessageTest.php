@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\Method\SendMessage;
 use Steelbot\TelegramBotApi\ParseMode;
 use Steelbot\TelegramBotApi\Type\Message;
 
-class SendMessageTest extends \PHPUnit_Framework_TestCase
+class SendMessageTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

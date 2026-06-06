@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultArticle;
 use Steelbot\TelegramBotApi\InputMessageContent\InputTextMessageContent;
 use Steelbot\TelegramBotApi\Method\AnswerInlineQuery;
 
-class AnswerInlineQueryTest extends \PHPUnit_Framework_TestCase
+class AnswerInlineQueryTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

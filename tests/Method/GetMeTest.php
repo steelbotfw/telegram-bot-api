@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Method\GetMe;
 use Steelbot\TelegramBotApi\Type\User;
 
-class GetMeTest extends \PHPUnit_Framework_TestCase
+class GetMeTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetMethodName()
     {

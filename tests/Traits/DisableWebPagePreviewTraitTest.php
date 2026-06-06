@@ -4,7 +4,7 @@ namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\DisableWebPagePreviewTrait;
 
-class DisableWebPagePreviewTraitTest extends \PHPUnit_Framework_TestCase
+class DisableWebPagePreviewTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetDisableWebPagePreview()
     {

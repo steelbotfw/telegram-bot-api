@@ -4,14 +4,14 @@ namespace Steelbot\Tests\TelegramBotApi\InputMessageContent;
 
 use Steelbot\TelegramBotApi\InputMessageContent\InputLocationMessageContent;
 
-class InputLocationMessageContentTest extends \PHPUnit_Framework_TestCase
+class InputLocationMessageContentTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var InputLocationMessageContent
      */
     protected $inputMessageContent;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inputMessageContent = new InputLocationMessageContent(12.3, 45.6);
     }

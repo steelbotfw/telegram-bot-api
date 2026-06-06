@@ -8,7 +8,7 @@ use Steelbot\TelegramBotApi\{
     Type\ReplyKeyboardMarkup
 };
 
-class EditMessageReplyMarkupTest extends \PHPUnit_Framework_TestCase
+class EditMessageReplyMarkupTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

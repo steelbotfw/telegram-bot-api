@@ -8,7 +8,7 @@ use Steelbot\TelegramBotApi\{
     Type\ReplyKeyboardMarkup
 };
 
-class InlineQueryResultAudioTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultAudioTest extends \PHPUnit\Framework\TestCase
 {
     const AUDIO_URL = 'http://audio.url/file.mp3';
 
@@ -17,7 +17,7 @@ class InlineQueryResultAudioTest extends \PHPUnit_Framework_TestCase
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inlineQueryResult = new InlineQueryResultAudio(null, self::AUDIO_URL, 'Title');
     }
