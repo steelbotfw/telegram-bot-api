@@ -3,10 +3,7 @@
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-use Icicle\{
-    Coroutine\Coroutine,
-    Loop
-};
+use Amp\Loop;
 use Steelbot\TelegramBotApi\{
     Api, Method\AnswerCallbackQuery, Method\SendMessage, Type\Chat, Type\InlineKeyboardButton, Type\InlineKeyboardMarkup, Type\Update
 };
@@ -53,7 +50,6 @@ function processUpdate(Update $update)
                         $method->setReplyMarkup($inlineReplyMarkup);
 
                         return $method;
-                        break;
                     case Chat::TYPE_GROUP:
                     case Chat::TYPE_SUPERGROUP:
                         printf("  Inline keyboard is available only for private chats\n");
@@ -97,27 +93,27 @@ function botCoroutine(): \Generator
 
         // waiting for updates from telegram server
         /** @var Update[] $updates */
-        $updates = yield from $api->getUpdates($updateId);
+        $updates = yield $api->getUpdates($updateId);
 
         foreach ($updates as $update) {
             $method = processUpdate($update);
 
             if (is_object($method)) {
-                yield from $api->execute($method);
+                yield $api->execute($method);
             }
             $updateId = $update->updateId;
         }
     }
-};
+}
 
-$coroutine = new Coroutine(botCoroutine());
-$coroutine->done(null, function (\Throwable $exception) {
-    echo "Exception catched:\n";
+try {
+    Loop::run(static function () {
+        yield from botCoroutine();
+    });
+} catch (\Throwable $exception) {
+    echo "Exception caught:\n";
     echo "    Code: {$exception->getCode()}\n";
     echo "    Message: {$exception->getMessage()}\n";
     echo "    File: {$exception->getFile()}\n";
     echo "    Line: {$exception->getLine()}\n";
-});
-
-Loop\run();
-
+}

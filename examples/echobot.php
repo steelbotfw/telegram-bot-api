@@ -1,9 +1,11 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 require dirname(__DIR__).'/vendor/autoload.php';
 
-use Icicle\Loop;
+use Amp\Loop;
 use Steelbot\TelegramBotApi\Api;
 use Steelbot\TelegramBotApi\Method\SendMessage;
 use Steelbot\TelegramBotApi\Type\Chat;
@@ -15,62 +17,60 @@ if (!getenv('BOT_TOKEN')) {
     exit(-1);
 }
 
-$generator = function () {
-    $api = new Api(getenv('BOT_TOKEN'));
+try {
+    Loop::run(static function () {
+        $api = new Api(getenv('BOT_TOKEN'));
 
-    $updateId = 1;
+        $updateId = 1;
 
-    while (true) {
+        while (true) {
+            // waiting for updates from telegram server
+            /** @var Update[] $updates */
+            $updates = yield $api->getUpdates($updateId);
 
-        // waiting for updates from telegram server
-        /** @var Update[] $updates */
-        $updates = yield from $api->getUpdates($updateId);
+            foreach ($updates as $update) {
+                $updateId = $update->updateId;
 
-        foreach ($updates as $update) {
-            $updateId = $update->updateId;
+                printf("Got update #%d\n", $updateId);
 
-            printf("Got update #%d\n", $updateId);
+                if (!empty($update->message)) {
+                    if (empty($update->message->text)) {
+                        printf("  Message text is empty\n");
 
-            if (!empty($update->message)) {
-                if (empty($update->message->text)) {
-                    printf("  Message text is empty\n");
+                    } else {
+                        $message = $update->message;
+                        $method = null;
 
-                } else {
-                    $message = $update->message;
+                        printf("  Got message: %s\n", $message->text);
 
-                    printf("  Got message: %s\n", $message->text);
+                        if (!empty($message->from) && !empty($message->chat)) {
+                            switch ($message->chat->type) {
+                                case Chat::TYPE_PRIVATE:
+                                    printf("  Sending answer to a user %s\n", $message->chat->id);
+                                    $method = new SendMessage($message->chat->id, $message->text);
+                                    break;
+                                case Chat::TYPE_GROUP:
+                                case Chat::TYPE_SUPERGROUP:
+                                    printf("  Sending answer to a chat %s\n", $message->chat->id);
+                                    $method = (new SendMessage($message->chat->id, $message->text))
+                                        ->setReplyToMessageId($message->messageId);
+                                    break;
+                            }
 
-                    if (!empty($message->from) && !empty($message->chat)) {
-                        switch ($message->chat->type) {
-                            case Chat::TYPE_PRIVATE:
-                                printf("  Sending answer to a user %s\n", $message->chat->id);
-                                $method = (new SendMessage($message->chat->id, $message->text));
-                                break;
-                            case Chat::TYPE_GROUP:
-                            case Chat::TYPE_SUPERGROUP:
-                                printf("  Sending answer to a chat %s\n", $message->chat->id);
-                                $method = (new SendMessage($message->chat->id, $message->text))
-                                    ->setReplyToMessageId($message->messageId);
-                                break;
+                            if ($method !== null) {
+                                yield $api->execute($method);
+                            }
+
                         }
-
-                        yield from $api->execute($method);
-
                     }
                 }
             }
         }
-    }
-};
-
-$coroutine = new \Icicle\Coroutine\Coroutine($generator());
-$coroutine->done(null, function (\Throwable $exception) {
-    echo "Exception catched:\n";
+    });
+} catch (\Throwable $exception) {
+    echo "Exception caught:\n";
     echo "    Code: {$exception->getCode()}\n";
     echo "    Message: {$exception->getMessage()}\n";
     echo "    File: {$exception->getFile()}\n";
     echo "    Line: {$exception->getLine()}\n";
-});
-
-Loop\run();
-
+}

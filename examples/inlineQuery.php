@@ -3,7 +3,7 @@
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-use Icicle\Loop;
+use Amp\Loop;
 use Steelbot\TelegramBotApi\{
     Api,
     InlineQueryResult\InlineQueryResultArticle,
@@ -11,6 +11,7 @@ use Steelbot\TelegramBotApi\{
     InputMessageContent\InputLocationMessageContent,
     InputMessageContent\InputTextMessageContent,
     InputMessageContent\InputVenueMessageContent,
+    Method\AnswerInlineQuery,
     Type\Update
 };
 
@@ -20,49 +21,53 @@ if (!getenv('BOT_TOKEN')) {
     exit(-1);
 }
 
-$generator = function () {
-    $api = new Api(getenv('BOT_TOKEN'));
+try {
+    Loop::run(static function () {
+        $api = new Api(getenv('BOT_TOKEN'));
 
-    while (true) {
-        // waiting for updates from telegram server
-        /** @var Update[] $updates */
-        $updates = yield from $api->getUpdates();
+        while (true) {
+            // waiting for updates from telegram server
+            /** @var Update[] $updates */
+            $updates = yield $api->getUpdates();
 
-        foreach ($updates as $update) {
-            if ($update->inlineQuery) {
-                $inlineQuery = $update->inlineQuery;
+            foreach ($updates as $update) {
+                if ($update->inlineQuery) {
+                    $inlineQuery = $update->inlineQuery;
+                    $results = [
+                        new InlineQueryResultArticle(
+                            null,
+                            "Text result",
+                            new InputTextMessageContent("You entered 1: " . $inlineQuery->query)
+                        ),
+                        new InlineQueryResultArticle(
+                            null,
+                            "Location result",
+                            new InputLocationMessageContent(55.757, 37.616)
+                        ),
+                        new InlineQueryResultArticle(
+                            null,
+                            "Venue result",
+                            new InputVenueMessageContent(55.757, 37.616, "Venue title", "Venue address")
+                        ),
+                        new InlineQueryResultArticle(
+                            null,
+                            "Contact result",
+                            new InputContactMessageContent('+0123456789', "First Name")
+                        ),
+                    ];
 
-                $results[] = new InlineQueryResultArticle(
-                    null, "Text result", new InputTextMessageContent("You entered 1: " . $inlineQuery->query)
-                );
-                $results[] = new InlineQueryResultArticle(
-                    null, "Location result", new InputLocationMessageContent(55.757, 37,616)
-                );
-                $results[] = new InlineQueryResultArticle(
-                    null, "Venue result", new InputVenueMessageContent(55.757, 37.616, "Venue title", "Venue address")
-                );
-                $results[] = new InlineQueryResultArticle(
-                    null, "Contact result", new InputContactMessageContent('+0123456789', "First Name")
-                );
+                    $method = new AnswerInlineQuery($inlineQuery->id, $results);
 
-                $method = new \Steelbot\TelegramBotApi\Method\AnswerInlineQuery($inlineQuery->id, $results);
-
-                echo "Answering to #{$inlineQuery->id}\n";
-                yield from $api->execute($method);
+                    echo "Answering to #{$inlineQuery->id}\n";
+                    yield $api->execute($method);
+                }
             }
-
         }
-    }
-};
-
-$coroutine = new \Icicle\Coroutine\Coroutine($generator());
-$coroutine->done(null, function (\Throwable $exception) {
-    echo "Exception catched:\n";
+    });
+} catch (\Throwable $exception) {
+    echo "Exception caught:\n";
     echo "    Code: {$exception->getCode()}\n";
     echo "    Message: {$exception->getMessage()}\n";
     echo "    File: {$exception->getFile()}\n";
     echo "    Line: {$exception->getLine()}\n";
-});
-
-Loop\run();
-
+}
