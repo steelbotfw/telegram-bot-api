@@ -1,6 +1,6 @@
 {
     "name": "steelbotfw/telegram-bot-api",
-    "description": "Telegram bot API implementation using Icicle",
+    "description": "Telegram bot API implementation using Amphp",
     "keywords": ["bot", "telegram", "asynchronous", "api"],
     "license": "BSD-3-Clause",
     "authors": [
@@ -16,15 +16,16 @@
     "type": "library",
     "minimum-stability": "dev",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.4",
+        "ext-json": "*",
         "ext-mbstring": "*",
 
-        "icicleio/icicle": "*",
-        "icicleio/http": "*",
-        "icicleio/dns": "*"
+        "amphp/amp": "^2.6.0",
+        "amphp/http-client": "^4.6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7.13"
+        "phpunit/phpunit": "^9.6",
+        "vimeo/psalm": "^5.26"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit"
@@ -42,6 +43,9 @@
     "config": {
         "audit": {
             "block-insecure": false
+        },
+        "platform": {
+            "php": "7.4.0"
         }
     }
 }

@@ -32,7 +32,7 @@ class AttributesBuilderExample
     }
 }
 
-class JsonAttributesBuilderTest extends \PHPUnit_Framework_TestCase
+class JsonAttributesBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testBuildJsonAttributesSuccess()
     {

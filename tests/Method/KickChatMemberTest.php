@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Method\KickChatMember;
 
-class KickChatMemberTest extends \PHPUnit_Framework_TestCase
+class KickChatMemberTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

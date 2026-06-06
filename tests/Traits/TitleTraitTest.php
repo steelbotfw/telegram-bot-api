@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\TitleTrait;
 
-class TitleTraitTest extends \PHPUnit_Framework_TestCase
+class TitleTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetTitle()
     {

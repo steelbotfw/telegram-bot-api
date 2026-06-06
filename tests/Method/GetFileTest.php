@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Method\GetFile;
 use Steelbot\TelegramBotApi\Type\File;
 
-class GetFileTest extends \PHPUnit_Framework_TestCase
+class GetFileTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetMethodName()
     {

@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\ThumbWidthHeightOptionalTrait;
 
-class ThumbWidthHeightOptionalTraitTest extends \PHPUnit_Framework_TestCase
+class ThumbWidthHeightOptionalTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetThumbWidth()
     {

@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\ChatIdRequiredTrait;
 
-class ChatIdRequiredTraitTest extends \PHPUnit_Framework_TestCase
+class ChatIdRequiredTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetChatId()
     {

@@ -4,7 +4,7 @@ namespace Steelbot\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\SelectiveTrait;
 
-class SelectiveTraitTest extends \PHPUnit_Framework_TestCase
+class SelectiveTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetSelective()
     {

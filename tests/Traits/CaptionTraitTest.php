@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\InlineQueryResult\Traits;
 
 use Steelbot\TelegramBotApi\Traits\CaptionTrait;
 
-class CaptionTraitTest extends \PHPUnit_Framework_TestCase
+class CaptionTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetCaption()
     {

@@ -5,14 +5,14 @@ namespace Steelbot\Tests\TelegramBotApi\InputMessageContent;
 use Steelbot\TelegramBotApi\InputMessageContent\InputTextMessageContent;
 use Steelbot\TelegramBotApi\ParseMode;
 
-class InputTextMessageContentTest extends \PHPUnit_Framework_TestCase
+class InputTextMessageContentTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var InputTextMessageContent
      */
     protected $inputMessageContent;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inputMessageContent = new InputTextMessageContent('message text');
     }

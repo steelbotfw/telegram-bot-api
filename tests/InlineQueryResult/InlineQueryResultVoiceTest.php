@@ -8,7 +8,7 @@ use Steelbot\TelegramBotApi\{
     Type\ReplyKeyboardMarkup
 };
 
-class InlineQueryResultVoiceTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultVoiceTest extends \PHPUnit\Framework\TestCase
 {
     const URL = 'http://voice.url/voice.ogg';
 
@@ -17,7 +17,7 @@ class InlineQueryResultVoiceTest extends \PHPUnit_Framework_TestCase
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inlineQueryResult = new InlineQueryResultVoice(null, self::URL, 'Voice Title');
     }

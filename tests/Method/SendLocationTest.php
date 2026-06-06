@@ -5,7 +5,7 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 use Steelbot\TelegramBotApi\Method\SendLocation;
 use Steelbot\TelegramBotApi\Type\Message;
 
-class SendLocationTest extends \PHPUnit_Framework_TestCase
+class SendLocationTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

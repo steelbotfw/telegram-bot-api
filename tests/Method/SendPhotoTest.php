@@ -8,7 +8,7 @@ use Steelbot\TelegramBotApi\Type\Message;
 use Steelbot\TelegramBotApi\Type\PhotoSize;
 use Steelbot\TelegramBotApi\Type\ReplyKeyboardMarkup;
 
-class SendPhotoTest extends \PHPUnit_Framework_TestCase
+class SendPhotoTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

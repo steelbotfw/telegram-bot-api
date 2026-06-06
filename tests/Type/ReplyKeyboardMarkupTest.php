@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\Type\Traits;
 
 use Steelbot\TelegramBotApi\Type\ReplyKeyboardMarkup;
 
-class ReplyKeyboardMarkupTest extends \PHPUnit_Framework_TestCase
+class ReplyKeyboardMarkupTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetKeyboard()
     {
@@ -76,7 +76,7 @@ class ReplyKeyboardMarkupTest extends \PHPUnit_Framework_TestCase
 
         $expectedJson = json_encode([
             'keyboard' => ['1', '2', '3'],
-            'selective' => 1
+            'selective' => true
         ]);
 
         $this->assertJsonStringEqualsJsonString($expectedJson, json_encode($markup));

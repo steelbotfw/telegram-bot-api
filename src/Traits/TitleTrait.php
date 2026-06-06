@@ -17,11 +17,6 @@ trait TitleTrait
         return $this->title;
     }
 
-    /**
-     * @param null|string $description
-     *
-     * @return $this
-     */
     public function setTitle(string $title = null): self
     {
         $this->title = $title;

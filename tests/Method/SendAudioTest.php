@@ -9,7 +9,7 @@ use Steelbot\TelegramBotApi\{
     Type\ReplyKeyboardMarkup
 };
 
-class SendAudioTest extends \PHPUnit_Framework_TestCase
+class SendAudioTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

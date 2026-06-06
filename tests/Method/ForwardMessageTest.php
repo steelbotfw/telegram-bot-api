@@ -5,7 +5,7 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 use Steelbot\TelegramBotApi\Method\ForwardMessage;
 use Steelbot\TelegramBotApi\Type\Message;
 
-class ForwardMessageTest extends \PHPUnit_Framework_TestCase
+class ForwardMessageTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider buildResultDataProvider

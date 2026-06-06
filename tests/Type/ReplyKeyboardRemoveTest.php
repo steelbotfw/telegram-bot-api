@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\Type\Traits;
 
 use Steelbot\TelegramBotApi\Type\ReplyKeyboardRemove;
 
-class ReplyKeyboardRemoveTest extends \PHPUnit_Framework_TestCase
+class ReplyKeyboardRemoveTest extends \PHPUnit\Framework\TestCase
 {
     public function testJsonSerialize()
     {

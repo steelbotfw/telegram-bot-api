@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\Type\Traits;
 
 use Steelbot\TelegramBotApi\Type\ForceReply;
 
-class ForceReplyTest extends \PHPUnit_Framework_TestCase
+class ForceReplyTest extends \PHPUnit\Framework\TestCase
 {
     public function testJsonSerialize()
     {

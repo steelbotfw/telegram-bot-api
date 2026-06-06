@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\{
     Method\EditMessageText, ParseMode, Type\Message, Type\ReplyKeyboardMarkup
 };
 
-class EditMessageTextTest extends \PHPUnit_Framework_TestCase
+class EditMessageTextTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\Method\SendContact;
 use Steelbot\TelegramBotApi\Type\Contact;
 use Steelbot\TelegramBotApi\Type\Message;
 
-class SendContactTest extends \PHPUnit_Framework_TestCase
+class SendContactTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

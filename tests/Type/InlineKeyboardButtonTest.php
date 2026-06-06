@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\Type;
 
 use Steelbot\TelegramBotApi\Type\InlineKeyboardButton;
 
-class InlineKeyboardButtonTest extends \PHPUnit_Framework_TestCase
+class InlineKeyboardButtonTest extends \PHPUnit\Framework\TestCase
 {
     public function testJsonSerialize()
     {

@@ -8,7 +8,7 @@ use Steelbot\TelegramBotApi\{
     Type\WebhookInfo
 };
 
-class GetWebhookInfoTest extends \PHPUnit_Framework_TestCase
+class GetWebhookInfoTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetMethodName()
     {

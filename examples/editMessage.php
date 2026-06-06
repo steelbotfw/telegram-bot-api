@@ -3,10 +3,7 @@
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-use Icicle\{
-    Coroutine\Coroutine,
-    Loop
-};
+use Amp\Loop;
 use Steelbot\TelegramBotApi\{
     Api, Method\AnswerCallbackQuery,
     Method\EditMessageReplyMarkup,
@@ -61,7 +58,7 @@ class Bot
 
             // waiting for updates from telegram server
             /** @var Update[] $updates */
-            $updates = yield from $this->api->getUpdates($updateId);
+            $updates = yield $this->api->getUpdates($updateId);
 
             foreach ($updates as $update) {
                 yield from $this->processUpdate($update);
@@ -105,7 +102,7 @@ class Bot
                             $method = new SendMessage($message->chat->id, $text);
 
                             $this->state = self::STATE_WAITING_COMMAND;
-                            $this->message = yield from $this->api->execute($method);
+                            $this->message = yield $this->api->execute($method);
 
                             break;
 
@@ -174,10 +171,10 @@ class Bot
                 $editMethod->setMessageId($this->message->messageId);
                 $editMethod->setChatId($this->message->chat->id);
                 $editMethod->setReplyMarkup($this->inlineKeyboardMarkup);
-                $this->message = yield from $this->api->execute($editMethod);
+                $this->message = yield $this->api->execute($editMethod);
             }
 
-            yield from $this->api->execute($method);
+            yield $this->api->execute($method);
         }
 
         return null;
@@ -191,7 +188,7 @@ class Bot
         $method->setMessageId($this->message->messageId);
         $method->setChatId($this->message->chat->id);
         $this->inlineKeyboardMarkup = null;
-        $this->message = yield from $this->api->execute($method);
+        $this->message = yield $this->api->execute($method);
     }
 
     protected function markupCommand(): \Generator
@@ -219,7 +216,7 @@ class Bot
         $method->setChatId($this->message->chat->id);
 
         $method->setReplyMarkup($this->inlineKeyboardMarkup);
-        $this->message = yield from $this->api->execute($method);
+        $this->message = yield $this->api->execute($method);
     }
 
     protected function endCommand(): \Generator
@@ -228,20 +225,21 @@ class Bot
 
         $method = new SendMessage($this->message->chat->id, "Edit mode cancelled");
         $this->message = null;
-        yield from $this->api->execute($method);
+        yield $this->api->execute($method);
     }
 
 }
 
 $bot = new Bot();
-$coroutine = new Coroutine($bot->coroutine());
-$coroutine->done(null, function (\Throwable $exception) {
-    echo "Exception catched:\n";
+
+try {
+    Loop::run(static function () use ($bot) {
+        yield from $bot->coroutine();
+    });
+} catch (\Throwable $exception) {
+    echo "Exception caught:\n";
     echo "    Code: {$exception->getCode()}\n";
     echo "    Message: {$exception->getMessage()}\n";
     echo "    File: {$exception->getFile()}\n";
     echo "    Line: {$exception->getLine()}\n";
-});
-
-Loop\run();
-
+}

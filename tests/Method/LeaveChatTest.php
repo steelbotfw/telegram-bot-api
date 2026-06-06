@@ -7,7 +7,7 @@ use Steelbot\TelegramBotApi\{
     Method\LeaveChat
 };
 
-class LeaveChatTest extends \PHPUnit_Framework_TestCase
+class LeaveChatTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetMethodName()
     {

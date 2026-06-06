@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultMpeg4Gif;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 use Steelbot\TelegramBotApi\Type\ReplyKeyboardMarkup;
 
-class InlineQueryResultMpeg4GifTest extends \PHPUnit_Framework_TestCase
+class InlineQueryResultMpeg4GifTest extends \PHPUnit\Framework\TestCase
 {
     const URL = 'http://mpeg.url/file.mpeg';
     const THUMB_URL = 'http://thumb.url/thumb/png';
@@ -16,7 +16,7 @@ class InlineQueryResultMpeg4GifTest extends \PHPUnit_Framework_TestCase
      */
     protected $inlineQueryResult;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->inlineQueryResult = new InlineQueryResultMpeg4Gif(null, self::URL, self::THUMB_URL);
     }

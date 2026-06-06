@@ -4,7 +4,7 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 
 use Steelbot\TelegramBotApi\Method\UnbanChatMember;
 
-class UnbanChatMemberTest extends \PHPUnit_Framework_TestCase
+class UnbanChatMemberTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

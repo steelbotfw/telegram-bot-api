@@ -5,7 +5,7 @@ namespace Steelbot\Tests\TelegramBotApi\Method;
 use Steelbot\TelegramBotApi\Method\AbstractMethod;
 use Steelbot\TelegramBotApi\Method\DeleteWebhook;
 
-class DeleteWebhookTest extends \PHPUnit_Framework_TestCase
+class DeleteWebhookTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetMethodName()
     {

@@ -6,7 +6,7 @@ use Steelbot\TelegramBotApi\{
     Method\SendDocument, Type\Document, Type\Message, Type\PhotoSize, Type\ReplyKeyboardMarkup
 };
 
-class SendDocumentTest extends \PHPUnit_Framework_TestCase
+class SendDocumentTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetParams()
     {

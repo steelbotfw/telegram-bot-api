@@ -5,7 +5,7 @@ namespace Steelbot\Tests\TelegramBotApi\Traits;
 use Steelbot\TelegramBotApi\Traits\InputMessageContentTrait;
 use Steelbot\TelegramBotApi\Type\InputMessageContentInterface;
 
-class InputMessageContentTraitTest extends \PHPUnit_Framework_TestCase
+class InputMessageContentTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSetInputMessageContent()
     {
