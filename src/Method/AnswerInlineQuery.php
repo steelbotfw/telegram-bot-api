@@ -214,23 +214,7 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
      */
     public function getParams(): array
     {
-        $params = [
-            'inline_query_id' => $this->inlineQueryId,
-        ];
-
-        if ($this->cacheTime) {
-            $params['cache_time'] = $this->cacheTime;
-        }
-
-        if ($this->isPersonal !== null) {
-            $params['is_personal'] = (int)$this->isPersonal;
-        }
-
-        if ($this->nextOffset) {
-            $params['next_offset'] = $this->nextOffset;
-        }
-
-        return $params;
+        return [];
     }
 
     /**
@@ -251,10 +235,23 @@ class AnswerInlineQuery extends AbstractMethod implements \JsonSerializable
     function jsonSerialize(): array
     {
         $result =  [
+            'inline_query_id' => $this->inlineQueryId,
             'results' => $this->results
         ];
 
-        if ($this->switchPmText !== null) {
+        if ($this->cacheTime) {
+            $result['cache_time'] = $this->cacheTime;
+        }
+
+        if ($this->isPersonal !== null) {
+            $result['is_personal'] = $this->isPersonal;
+        }
+
+        if ($this->nextOffset) {
+            $result['next_offset'] = $this->nextOffset;
+        }
+
+        if ($this->switchPmParameter !== null) {
             $result['switch_pm_parameter'] = $this->switchPmParameter;
         }
 

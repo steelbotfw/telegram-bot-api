@@ -6,14 +6,10 @@ use PHPUnit\Framework\TestCase;
 use Steelbot\TelegramBotApi\InlineQueryResult\InlineQueryResultArticle;
 use Steelbot\TelegramBotApi\InputMessageContent\InputTextMessageContent;
 use Steelbot\TelegramBotApi\Method\AnswerInlineQuery;
+use Steelbot\TelegramBotApi\Method\HttpMethod;
 
 class AnswerInlineQueryTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $this->markTestSkipped('Need to refactor tests');
-    }
-
     public function testGetParams()
     {
         $method = new AnswerInlineQuery(123, []);
@@ -23,12 +19,7 @@ class AnswerInlineQueryTest extends TestCase
 
         $params = $method->getParams();
 
-        $this->assertArrayHasKey('cache_time', $params);
-        $this->assertEquals(20, $params['cache_time']);
-        $this->assertArrayHasKey('is_personal', $params);
-        $this->assertEquals('1', $params['is_personal']);
-        $this->assertArrayHasKey('next_offset', $params);
-        $this->assertEquals('abc', $params['next_offset']);
+        $this->assertSame([], $params);
     }
 
     public function testBuildResult()
@@ -48,9 +39,12 @@ class AnswerInlineQueryTest extends TestCase
         $method = new AnswerInlineQuery(123, [$result1]);
         $method->setSwitchPmText('switchPmText')
             ->setSwitchPmParameter('switchPmParameter')
-            ->setSwitchPmText('switchPmText');
+            ->setCacheTime(20)
+            ->setIsPersonal(true)
+            ->setNextOffset('abc');
 
         $json = [
+            'inline_query_id' => 123,
             'results' => [
                 [
                     'type' => 'article',
@@ -61,6 +55,9 @@ class AnswerInlineQueryTest extends TestCase
                     ]
                 ]
             ],
+            'cache_time' => 20,
+            'is_personal' => true,
+            'next_offset' => 'abc',
             'switch_pm_parameter' => 'switchPmParameter',
             'switch_pm_text' => 'switchPmText'
         ];
@@ -73,7 +70,7 @@ class AnswerInlineQueryTest extends TestCase
     {
         $method = new AnswerInlineQuery(123, []);
 
-        $this->assertEquals(AnswerInlineQuery::HTTP_POST, $method->getHttpMethod());
+        $this->assertSame(HttpMethod::POST, $method->getHttpMethod());
     }
 
     public function testGetMethodName()
