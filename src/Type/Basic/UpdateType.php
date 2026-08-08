@@ -14,4 +14,5 @@ enum UpdateType: string
     case InlineQuery = 'inline_query';
     case ChosenInlineResult = 'chosen_inline_result';
     case CallbackQuery = 'callback_query';
+    case MyChatMember = 'my_chat_member';
 }

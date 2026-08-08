@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Steelbot\TelegramBotApi\Type\Basic;
 
 use Steelbot\TelegramBotApi\Type\CallbackQuery;
+use Steelbot\TelegramBotApi\Type\ChatMemberUpdated;
 use Steelbot\TelegramBotApi\Type\ChosenInlineResult;
 use Steelbot\TelegramBotApi\Type\InlineQuery;
 use Steelbot\TelegramBotApi\Type\Message;
@@ -22,6 +23,8 @@ class Update
 
     public ?CallbackQuery $callbackQuery;
 
+    public ?ChatMemberUpdated $myChatMember;
+
     protected array $rawData;
 
     public function __construct(array $data)
@@ -35,6 +38,8 @@ class Update
             new ChosenInlineResult($data['chosen_inline_result']) : null;
         $this->callbackQuery = isset($data['callback_query']) ?
             new CallbackQuery($data['callback_query']) : null;
+        $this->myChatMember = isset($data['my_chat_member']) ?
+            new ChatMemberUpdated($data['my_chat_member']) : null;
 
         $this->rawData = $data;
     }
@@ -46,6 +51,7 @@ class Update
             $this->inlineQuery !== null => UpdateType::InlineQuery,
             $this->chosenInlineResult !== null => UpdateType::ChosenInlineResult,
             $this->callbackQuery !== null => UpdateType::CallbackQuery,
+            $this->myChatMember !== null => UpdateType::MyChatMember,
             default => throw new LogicException("Unknown update type"),
         };
     }
